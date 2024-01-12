@@ -9,10 +9,11 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorTimeBase;
+// import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkPIDController; 
+import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -23,12 +24,12 @@ public class SwerveModuleOffboard {
   // Drive motor
   private final CANSparkMax m_driveMotor;
   private final RelativeEncoder m_driveEncoder;
-  private final SparkMaxPIDController m_drivePID;
+  private final SparkPIDController m_drivePID;
 
   // Turning motor
   private final CANSparkMax m_turningMotor;
   private final RelativeEncoder m_turningEncoder;
-  private final SparkMaxPIDController m_turningPID;
+  private final SparkPIDController m_turningPID;
   
   // Swerve module absolute encoder (wheel angle)
   private final CANCoder m_canCoder;
