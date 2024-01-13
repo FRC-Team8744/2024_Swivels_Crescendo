@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /*
@@ -45,9 +46,23 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // // Subsystem initialization
+    // swerve = new Swerve();
+    // exampleSubsystem = new ExampleSubsystem();
+
+    // // Register Named Commands
+    // NamedCommands.registerCommand("autoBalance", swerve.autoBalanceCommand());
+    // NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
+    // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
+
+    // // Do all other initialization
+    // configureButtonBindings();
+    
     // Configure the button bindings
     configureButtonBindings();
 
+
+     // ...
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
