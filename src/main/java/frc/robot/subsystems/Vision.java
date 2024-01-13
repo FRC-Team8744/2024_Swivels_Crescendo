@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.commands.AutoTurnToAngle;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -34,7 +33,7 @@ double AprilNumber = tid.getDouble(0.0);
 double CanSeeTag= tv.getDouble(0.0);
 
 SmartDashboard.putNumber("Tid", AprilNumber);
-
+SmartDashboard.getNumber(("Tid"), CanSeeTag);
 //post to smart dashboard periodically
 if (x > 0) {
   SmartDashboard.putNumber("limelight x positive", x);
