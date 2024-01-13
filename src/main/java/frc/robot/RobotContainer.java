@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 /*
@@ -41,7 +42,8 @@ public class RobotContainer {
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
   // A chooser for autonomous commands
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+//   SendableChooser<Command> m_chooser = new SendableChooser<>();
+  private final SendableChooser<Command> m_autoChooser;
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -58,17 +60,20 @@ public class RobotContainer {
                     -m_driverController.getLeftY(),
                     -m_driverController.getLeftX(),
                     -m_driverController.getRightX(),
-                    false),
+                    true),
             m_robotDrive));
 
     // Add commands to the autonomous command chooser
-    m_chooser.setDefaultOption("Example Auto", SwerveCommand());
-    m_chooser.addOption("Test Auto", Swerve2Command());
+    // m_chooser.setDefaultOption("SwerveCommand", SwerveCommand());
+    // m_chooser.addOption("Swerve2Command", Swerve2Command());
+    // m_chooser.addOption("PathPlannerCommand",PathPlannerCommand());
+    m_autoChooser = AutoBuilder.buildAutoChooser();  // Default auto will be 'Commands.none()'
 
     // Put the chooser on the dashboard
-    SmartDashboard.putData(m_chooser);
+    // SmartDashboard.putData(m_chooser);
+    SmartDashboard.putData("Auto Mode", m_autoChooser);
 
-    SmartDashboard.putData("SwerveBase", m_robotDrive);
+    // SmartDashboard.putData("SwerveBase", m_robotDrive);
   }
 
   /**
@@ -77,9 +82,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
+  }
 
-  public Command getAutonomousCommand(){
+  public Command PathPlannerCommand(){
     return new PathPlannerAuto("AutoTest");
   }
 
@@ -90,6 +97,8 @@ public class RobotContainer {
    */
 
   public Command SwerveCommand() {
+    m_robotDrive.resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));
+
       // Create config for trajectory
     TrajectoryConfig config =
         new TrajectoryConfig(
@@ -104,17 +113,19 @@ public class RobotContainer {
             // Start at the origin facing the +X direction
             new Pose2d(0, 0, new Rotation2d(0)),
             // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1),
-                    new Translation2d(2, -1)),
+            List.of(new Translation2d(1, 0),
+                    new Translation2d(2, 0)),
             // End 3 meters straight ahead of where we started, facing forward
             new Pose2d(3, 0, new Rotation2d(0)),
             config);
+
+    // m_robotDrive.m_field.getObject("traj").setTrajectory(exampleTrajectory);
 
     var thetaController =
         new ProfiledPIDController(
             AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
+  
     SwerveControllerCommand swerveControllerCommand =
         new SwerveControllerCommand(
             exampleTrajectory,
@@ -156,6 +167,8 @@ public class RobotContainer {
           new Pose2d(0, 0, new Rotation2d(0)),
           config);
 
+    // m_robotDrive.m_field.getObject("traj").setTrajectory(exampleTrajectory);
+
   var thetaController =
       new ProfiledPIDController(
           AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
@@ -181,6 +194,7 @@ public class RobotContainer {
   return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
 }
 
-// public Command getAutonomousCommand() {return m_chooser.getSelected();}  //return SwerveCommand();}
+//  public Command getAutonomousCommand() {return m_chooser.getSelected();}  //return SwerveCommand();}
+ public Command getAutonomousCommand() {return m_autoChooser.getSelected();}  //return SwerveCommand();}
 
 }

@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 // import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
@@ -19,6 +22,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -26,6 +33,9 @@ import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
+  StructPublisher<Pose2d> pose_publisher = NetworkTableInstance.getDefault().getStructTopic("RobotPose", Pose2d.struct).publish();
+  StructArrayPublisher<SwerveModuleState> swerve_publisher = NetworkTableInstance.getDefault().getStructArrayTopic("Swerve States", SwerveModuleState.struct).publish();
+
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft =
     new SwerveModuleOffboard(
@@ -71,7 +81,7 @@ public class DriveSubsystem extends SubsystemBase {
           });
 
   // Create Field2d for robot and trajectory visualizations.
-  private Field2d m_field;
+  public Field2d m_field;
   
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -81,20 +91,37 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Configure the AutoBuilder last
     
-    //   AutoBuilder.configureHolonomic(
-    //   this::getPose, // Robot pose supplier
-    //   this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-    //   this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-    //   this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-    //   new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-    //       new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-    //       new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-    //       4.5, // Max module speed, in m/s
-    //       0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-    //       new ReplanningConfig() // Default path replanning config. See the API for the options here
-    //   ), // Reference to this subsystem to set requirements
-    // );
+     AutoBuilder.configureHolonomic(
+      this::getPose, // Robot pose supplier
+      this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+      this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+      this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+      new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+          new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+          new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+          4.5, // Max module speed, in m/s
+          0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+          new ReplanningConfig() // Default path replanning config. See the API for the options here
+      ), // Reference to this subsystem to set requirements
+      ()->{
+        //Boolean Supplier that controls when the path will be mirrored for the red alliance
+        //This wil flip the path being followed to the red side of the feild
+        //THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+        
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent()) {
+         return alliance.get() == DriverStation.Alliance.Red; 
+        }
+        return false;       
+      },
+      this
+    );
     // Reference: https://www.chiefdelphi.com/t/has-anyone-gotten-pathplanner-integrated-with-the-maxswerve-template/443646
+
+    // Set up custom logging to add the current path to a field 2d widget
+    PathPlannerLogging.setLogActivePathCallback((poses) -> m_field.getObject("path").setPoses(poses));
+
+    SmartDashboard.putData(m_field);
   }
 
   @Override
@@ -112,21 +139,28 @@ public class DriveSubsystem extends SubsystemBase {
     // Update robot position on Field2d.
     m_field.setRobotPose(getPose());
 
+    pose_publisher.set(getPose());
+    swerve_publisher.set(new SwerveModuleState[] {
+            m_frontLeft.getState(),
+            m_frontRight.getState(),
+            m_rearLeft.getState(),
+            m_rearRight.getState() } );
+
     // Diagnostics
-    SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
-    SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
-    SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
-    SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
+    // SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
+    // SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
+    // SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
+    // SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
 
     SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
     SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
     SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
     SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
     
-    SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
   }
 
   /**
