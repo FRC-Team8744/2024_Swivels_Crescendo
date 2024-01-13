@@ -9,21 +9,37 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+// import edu.wpi.first.networktables.NetworkTable;
+// import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Vision extends SubsystemBase {
+
+    public static void main(String[] args) {
+
+        NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+
+        switchPipeline(limelightTable, 0);
+
+        switchPipeline(limelightTable, 1);
+    }
+
+    private static void switchPipeline(NetworkTable limelightTable, int pipelineIndex) {
+        // Set the pipeline index in the Limelight network table
+        limelightTable.getEntry("pipeline").setNumber(pipelineIndex);
+    }
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    NetworkTableEntry tid = table.getEntry("tid");
+    NetworkTableEntry tv = table.getEntry("tv");
+
   /** Creates a new Vison. */
   public Vision() {}
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-NetworkTableEntry tx = table.getEntry("tx");
-NetworkTableEntry ty = table.getEntry("ty");
-NetworkTableEntry ta = table.getEntry("ta");
-NetworkTableEntry tid = table.getEntry("tid");
-NetworkTableEntry tv = table.getEntry("tv");
 
 //read values periodically
 double x = tx.getDouble(0.0);
@@ -33,7 +49,8 @@ double AprilNumber = tid.getDouble(0.0);
 double CanSeeTag= tv.getDouble(0.0);
 
 SmartDashboard.putNumber("Tid", AprilNumber);
-SmartDashboard.getNumber(("Tid"), CanSeeTag);
+SmartDashboard.getNumber("CanSeeTag", CanSeeTag);
+SmartDashboard.putNumber("tx",x);
 //post to smart dashboard periodically
 if (x > 0) {
   SmartDashboard.putNumber("limelight x positive", x);
@@ -53,10 +70,6 @@ if (y > 0) {
 else if (y <= 0) {
   SmartDashboard.putNumber("limelight y negative", y);
 }
-else {
-  SmartDashboard.putNumber("limelight y negative", 999);
-  SmartDashboard.putNumber("limelight y positive", 999);
-}
 
 if (x > 5) {
   SmartDashboard.putNumber("limelight x to go", Math.abs(x));
@@ -68,4 +81,5 @@ if (x < 5) {
   }
   }
 
+  
 
