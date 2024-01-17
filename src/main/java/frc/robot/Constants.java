@@ -20,6 +20,15 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  // TODO: Update motor port numbers
+  public static final int kFrontIntakePort = 30;
+  public static final int kRearIntakePort = 31;
+  public static final int kRightFlywheelShooterPort = 32;
+  public static final int kLeftFlwheelShooterPort = 33;
+  public static final int kIndexShooterPort = 34;
+  public static final int kRightClimberPort = 35;
+  public static final int kLeftClimberPort = 36;
+
   public static final class SwerveConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;
 
@@ -117,7 +126,7 @@ public final class Constants {
     public static final double ANGLE_KF = 0.0;
     
     /** Swerve constraints. */
-    public static final double MAX_SPEED_IN_PERCENT = 30.0;
+    public static final double MAX_SPEED_IN_PERCENT = 100.0;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 0.0442 * MAX_SPEED_IN_PERCENT;
     public static final double MAX_ANGULAR_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND * 4/3;
 

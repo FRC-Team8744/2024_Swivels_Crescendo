@@ -8,7 +8,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TestSwivels"
+            "pathName": "MiddleBaseLine1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleBaseLine2"
           }
         }
       ]
