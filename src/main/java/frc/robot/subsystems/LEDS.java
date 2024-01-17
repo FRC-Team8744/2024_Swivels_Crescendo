@@ -34,9 +34,17 @@ public class LEDS extends SubsystemBase {
   @Override
   public void periodic() {
     // Fill the buffer with a rainbow
-    rainbow();
+    // rainbow();
     // Set the LEDs
     m_led.setData(m_ledBuffer);
+  }
+  
+  public void solid() {
+      
+       for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+        m_ledBuffer.setRGB(i, 255, 0, 0);
+      }
+  
   }
 
   private void rainbow() {
@@ -53,4 +61,14 @@ public class LEDS extends SubsystemBase {
     // Check bounds
     m_rainbowFirstPixelHue %= 180;
   }
+
+  public void adjustLEDs(double steeringAdjust) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'adjustLEDs'");
+  }
+
+public void defaultLEDs() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'defaultLEDs'");
+}
 }

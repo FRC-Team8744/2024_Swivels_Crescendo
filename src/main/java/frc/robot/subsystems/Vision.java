@@ -49,7 +49,7 @@ double AprilNumber = tid.getDouble(0.0);
 double CanSeeTag= tv.getDouble(0.0);
 
 SmartDashboard.putNumber("Tid", AprilNumber);
-SmartDashboard.getNumber("CanSeeTag", CanSeeTag);
+SmartDashboard.putNumber("CanSeeTag", CanSeeTag);
 SmartDashboard.putNumber("tx",x);
 //post to smart dashboard periodically
 if (x > 0) {
@@ -79,6 +79,16 @@ if (x < 5) {
   SmartDashboard.putNumber("limelight x to go", Math.abs(x));
 }
   }
+
+  public double getTx() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getTx'");
+  }
+
+public double getTv() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getTv'");
+}
   }
 
   

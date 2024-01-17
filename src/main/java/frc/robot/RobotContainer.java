@@ -13,11 +13,13 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
@@ -80,7 +82,10 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    new JoystickButton(m_driverController, Button.kA.value)
+      .onTrue(new auto_led(m_leds, m_Vision));
+  }
 
   public Command getAutonomousCommand(){
     return new PathPlannerAuto("AutoTest");
