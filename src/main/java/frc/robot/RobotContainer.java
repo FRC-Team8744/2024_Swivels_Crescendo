@@ -84,7 +84,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, Button.kA.value)
-      .onTrue(new auto_led(m_leds, m_Vision));
+      .onTrue(new auto_led());
   }
 
   public Command getAutonomousCommand(){
