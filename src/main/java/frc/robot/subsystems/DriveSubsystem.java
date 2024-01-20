@@ -28,7 +28,7 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -71,7 +71,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
-          DriveConstants.kDriveKinematics,
+          SwerveConstants.kDriveKinematics,
           Rotation2d.fromDegrees(m_imu.getYaw()),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -99,8 +99,8 @@ public class DriveSubsystem extends SubsystemBase {
       new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
           new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
           new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-          4.5, // Max module speed, in m/s
-          0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+          ConstantsOffboard.DRIVE_RPM_TO_METERS_PER_SECOND * ConstantsOffboard.kMaximumSparkMaxRPM, // Max module speed, in m/s
+          Math.sqrt(SwerveConstants.kWheelBase*SwerveConstants.kWheelBase + SwerveConstants.kTrackWidth*SwerveConstants.kTrackWidth), // Drive base radius in meters. Distance from robot center to furthest module.
           new ReplanningConfig() // Default path replanning config. See the API for the options here
       ), // Reference to this subsystem to set requirements
       ()->{
@@ -156,7 +156,14 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
     SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
     SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
-    
+
+    SmartDashboard.putNumber("FL Disired Speed", m_frontLeft.getState().speedMetersPerSecond);
+    SmartDashboard.putNumber("FL Actual Speed", m_frontLeft.getVelocity());
+    SmartDashboard.putNumber("FL Drive Current", m_frontLeft.getCurrent());
+
+
+
+
     // SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
     // SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
     // SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
@@ -208,12 +215,12 @@ public class DriveSubsystem extends SubsystemBase {
     rot = MathUtil.applyDeadband(rot, 0.1, 1.0);
 
     var swerveModuleStates =
-        DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        SwerveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_imu.getYaw()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+        swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFL_enum]);
     m_frontRight.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFR_enum]);
     m_rearLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveRL_enum]);
@@ -227,7 +234,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+        desiredStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveFL_enum]);
     m_frontRight.setDesiredState(desiredStates[SwerveConstants.kSwerveFR_enum]);
     m_rearLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveRL_enum]);
@@ -242,7 +249,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
   public ChassisSpeeds getRobotRelativeSpeeds(){
-    return DriveConstants.kDriveKinematics.toChassisSpeeds(m_frontLeft.getState(),
+    return SwerveConstants.kDriveKinematics.toChassisSpeeds(m_frontLeft.getState(),
                                                            m_frontRight.getState(),
                                                            m_rearLeft.getState(),
                                                            m_rearRight.getState());
