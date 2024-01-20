@@ -83,8 +83,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData(m_field);
 
     // Configure the AutoBuilder last
-    
-    //   AutoBuilder.configureHolonomic(
+
+    // AutoBuilder.configureHolonomic(
+
     //   this::getPose, // Robot pose supplier
     //   this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
     //   this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
@@ -95,7 +96,10 @@ public class DriveSubsystem extends SubsystemBase {
     //       4.5, // Max module speed, in m/s
     //       0.4, // Drive base radius in meters. Distance from robot center to furthest module.
     //       new ReplanningConfig() // Default path replanning config. See the API for the options here
-    //   ), // Reference to this subsystem to set requirements
+
+    //   ),
+    //   this // Reference to this subsystem to set requirements
+
     // );
     // Reference: https://www.chiefdelphi.com/t/has-anyone-gotten-pathplanner-integrated-with-the-maxswerve-template/443646
   }
