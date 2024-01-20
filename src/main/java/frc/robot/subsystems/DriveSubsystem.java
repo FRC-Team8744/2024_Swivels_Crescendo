@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+// import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -18,6 +19,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
@@ -25,6 +27,8 @@ import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
+  DigitalInput input = new DigitalInput(0);
+  DigitalInput inputIR = new DigitalInput(1);
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft =
     new SwerveModuleOffboard(
@@ -79,7 +83,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData(m_field);
 
     // Configure the AutoBuilder last
+
     // AutoBuilder.configureHolonomic(
+
     //   this::getPose, // Robot pose supplier
     //   this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
     //   this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
@@ -90,8 +96,10 @@ public class DriveSubsystem extends SubsystemBase {
     //       4.5, // Max module speed, in m/s
     //       0.4, // Drive base radius in meters. Distance from robot center to furthest module.
     //       new ReplanningConfig() // Default path replanning config. See the API for the options here
+
     //   ),
     //   this // Reference to this subsystem to set requirements
+
     // );
     // Reference: https://www.chiefdelphi.com/t/has-anyone-gotten-pathplanner-integrated-with-the-maxswerve-template/443646
   }
@@ -112,11 +120,13 @@ public class DriveSubsystem extends SubsystemBase {
     m_field.setRobotPose(getPose());
 
     // Diagnostics
+    SmartDashboard.putBoolean("DigitalInput", input.get());
+    SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
     SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
     SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
     SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
     SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
-
+   
     SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
     SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
     SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
