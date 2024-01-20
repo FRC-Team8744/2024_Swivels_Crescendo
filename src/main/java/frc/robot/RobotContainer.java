@@ -17,12 +17,16 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Intake;
+import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,7 +50,8 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final Intake m_intake = new Intake();
-
+  public final Vision m_Vision = new Vision();
+  public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -111,9 +116,12 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kA.value)
-    .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
-    .onFalse(new InstantCommand(() -> m_intake.motorOff()));
+    // new JoystickButton(m_driverController, Button.kA.value)
+    //   //.onTrue(new auto_led())
+    //   .onFalse( m_led());
+    new JoystickButton(m_driverController, Button.kB.value)
+    .onTrue(new InstantCommand(() -> m_leds.ledOn()))
+    .onFalse(new InstantCommand(() -> m_leds.ledOff()));
   }
 
   public Command PathPlannerCommand(){

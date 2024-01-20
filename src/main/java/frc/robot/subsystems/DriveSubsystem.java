@@ -27,6 +27,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
@@ -37,6 +38,8 @@ public class DriveSubsystem extends SubsystemBase {
   StructPublisher<Pose2d> pose_publisher = NetworkTableInstance.getDefault().getStructTopic("RobotPose", Pose2d.struct).publish();
   StructArrayPublisher<SwerveModuleState> swerve_publisher = NetworkTableInstance.getDefault().getStructArrayTopic("Swerve States", SwerveModuleState.struct).publish();
 
+  DigitalInput input = new DigitalInput(0);
+  DigitalInput inputIR = new DigitalInput(1);
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft =
     new SwerveModuleOffboard(
@@ -149,11 +152,13 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getState() } );
 
     // Diagnostics
-    // SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
-    // SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
-    // SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
-    // SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
-
+    SmartDashboard.putBoolean("DigitalInput", input.get());
+    SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
+    SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
+    SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
+    SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
+    SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
+   
     SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
     SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
     SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
