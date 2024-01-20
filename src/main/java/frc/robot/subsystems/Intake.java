@@ -12,10 +12,19 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private CANSparkMax frontIntakeSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
-  private CANSparkMax rearIntakeCanSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
+  private CANSparkMax rearIntakeSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
   /** Creates a new Intake. */
-  public Intake() {}
+  public Intake() {
 
+  }
+  public void donutGrab() {
+    frontIntakeSparkMax.set(.8);
+    rearIntakeSparkMax.set(.8);
+  }
+  public void motorOff() {
+    frontIntakeSparkMax.stopMotor();
+    rearIntakeSparkMax.stopMotor();
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

@@ -28,6 +28,7 @@ public final class Constants {
   public static final int kIndexShooterPort = 34;
   public static final int kRightClimberPort = 35;
   public static final int kLeftClimberPort = 36;
+  public static final int kPivotSparkMax = 37;
 
   public static final class SwerveConstants {
     public static final double kMaxSpeedMetersPerSecond = 3;

@@ -14,7 +14,9 @@ public class Climber extends SubsystemBase {
   private CANSparkMax leftClimberSparkMax = new CANSparkMax(Constants.kLeftClimberPort, MotorType.kBrushless);
   private CANSparkMax rightClimberSparkMax = new CANSparkMax(Constants.kRightClimberPort, MotorType.kBrushless);
   /** Creates a new Climber. */
-  public Climber() {}
+  public Climber() {
+    
+  } 
 
   @Override
   public void periodic() {
