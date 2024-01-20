@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.BooleanSupplier;
+
 // import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
@@ -20,13 +23,20 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
+  StructPublisher<Pose2d> pose_publisher = NetworkTableInstance.getDefault().getStructTopic("RobotPose", Pose2d.struct).publish();
+  StructArrayPublisher<SwerveModuleState> swerve_publisher = NetworkTableInstance.getDefault().getStructArrayTopic("Swerve States", SwerveModuleState.struct).publish();
+
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft =
     new SwerveModuleOffboard(
@@ -62,7 +72,7 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
-          DriveConstants.kDriveKinematics,
+          SwerveConstants.kDriveKinematics,
           Rotation2d.fromDegrees(m_imu.getYaw()),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -72,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase {
           });
 
   // Create Field2d for robot and trajectory visualizations.
-  private Field2d m_field;
+  public Field2d m_field;
   
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -109,6 +119,11 @@ public class DriveSubsystem extends SubsystemBase {
     );
 
     // Reference: https://www.chiefdelphi.com/t/has-anyone-gotten-pathplanner-integrated-with-the-maxswerve-template/443646
+
+    // Set up custom logging to add the current path to a field 2d widget
+    PathPlannerLogging.setLogActivePathCallback((poses) -> m_field.getObject("path").setPoses(poses));
+
+    SmartDashboard.putData(m_field);
   }
 
   @Override
@@ -126,21 +141,35 @@ public class DriveSubsystem extends SubsystemBase {
     // Update robot position on Field2d.
     m_field.setRobotPose(getPose());
 
+    pose_publisher.set(getPose());
+    swerve_publisher.set(new SwerveModuleState[] {
+            m_frontLeft.getState(),
+            m_frontRight.getState(),
+            m_rearLeft.getState(),
+            m_rearRight.getState() } );
+
     // Diagnostics
-    SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
-    SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
-    SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
-    SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
+    // SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
+    // SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
+    // SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
+    // SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
 
     SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
     SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
     SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
     SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
-    
-    SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
+
+    SmartDashboard.putNumber("FL Disired Speed", m_frontLeft.getState().speedMetersPerSecond);
+    SmartDashboard.putNumber("FL Actual Speed", m_frontLeft.getVelocity());
+    SmartDashboard.putNumber("FL Drive Current", m_frontLeft.getCurrent());
+
+
+
+
+    // SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
+    // SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
   }
 
   /**
@@ -188,12 +217,12 @@ public class DriveSubsystem extends SubsystemBase {
     rot = MathUtil.applyDeadband(rot, 0.1, 1.0);
 
     var swerveModuleStates =
-        DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        SwerveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_imu.getYaw()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+        swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFL_enum]);
     m_frontRight.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFR_enum]);
     m_rearLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveRL_enum]);
@@ -207,7 +236,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        desiredStates, DriveConstants.kMaxSpeedMetersPerSecond);
+        desiredStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveFL_enum]);
     m_frontRight.setDesiredState(desiredStates[SwerveConstants.kSwerveFR_enum]);
     m_rearLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveRL_enum]);
@@ -222,7 +251,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
   
   public ChassisSpeeds getRobotRelativeSpeeds(){
-    return DriveConstants.kDriveKinematics.toChassisSpeeds(m_frontLeft.getState(),
+    return SwerveConstants.kDriveKinematics.toChassisSpeeds(m_frontLeft.getState(),
                                                            m_frontRight.getState(),
                                                            m_rearLeft.getState(),
                                                            m_rearRight.getState());
