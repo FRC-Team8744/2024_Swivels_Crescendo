@@ -22,10 +22,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
+
+
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
@@ -33,9 +36,13 @@ import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
+
   StructPublisher<Pose2d> pose_publisher = NetworkTableInstance.getDefault().getStructTopic("RobotPose", Pose2d.struct).publish();
   StructArrayPublisher<SwerveModuleState> swerve_publisher = NetworkTableInstance.getDefault().getStructArrayTopic("Swerve States", SwerveModuleState.struct).publish();
 
+
+  DigitalInput input = new DigitalInput(0);
+  DigitalInput inputIR = new DigitalInput(1);
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft =
     new SwerveModuleOffboard(
@@ -90,6 +97,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData(m_field);
 
     // Configure the AutoBuilder last
+
     
      AutoBuilder.configureHolonomic(
       this::getPose, // Robot pose supplier
@@ -116,6 +124,26 @@ public class DriveSubsystem extends SubsystemBase {
       },
       this
     );
+=======
+
+    // AutoBuilder.configureHolonomic(
+
+    //   this::getPose, // Robot pose supplier
+    //   this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+    //   this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+    //   this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+    //   new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+    //       new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+    //       new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+    //       4.5, // Max module speed, in m/s
+    //       0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+    //       new ReplanningConfig() // Default path replanning config. See the API for the options here
+
+    //   ),
+    //   this // Reference to this subsystem to set requirements
+
+    // );
+
     // Reference: https://www.chiefdelphi.com/t/has-anyone-gotten-pathplanner-integrated-with-the-maxswerve-template/443646
 
     // Set up custom logging to add the current path to a field 2d widget
@@ -147,10 +175,15 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getState() } );
 
     // Diagnostics
-    // SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
-    // SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
-    // SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
-    // SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
+
+
+    SmartDashboard.putBoolean("DigitalInput", input.get());
+    SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
+    SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
+    SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
+    SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
+    SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
+   
 
     SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
     SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
