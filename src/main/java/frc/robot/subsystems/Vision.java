@@ -5,36 +5,49 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.LimelightHelpers;
+// import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+// import edu.wpi.first.wpiutil.net.PortForwarder;
 
 public class Vision extends SubsystemBase {
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
-  NetworkTableEntry tid = table.getEntry("tid");
-
+  NetworkTableEntry tid = table.getEntry("id");
+  NetworkTableEntry tv = table.getEntry("tv");
 
   public Vision() {}
 
   @Override
   public void periodic() {
-    double tax = LimelightHelpers.getTX("");
+ //   double tax = LimelightHelpers.getTX("");
 
     double x = tx.getDouble(0.0);
 double y = ty.getDouble(0.0);
 double area = ta.getDouble(0.0);
 double AprilNumber = tid.getDouble(0.0);
+double v = tv.getDouble(0.0);
 
 //post to smart dashboard periodically
 SmartDashboard.putNumber("LimelightX", x);
 SmartDashboard.putNumber("LimelightY", y);
 SmartDashboard.putNumber("LimelightArea", area);
-SmartDashboard.putNumber("tid", AprilNumber);
-    // This method will be called once per scheduler run
+SmartDashboard.putNumber("id", AprilNumber);
+SmartDashboard.putNumber("tv", v);
+
+// This method will be called once per scheduler run
+  // }
+  //  @Override
+  //   public void robotInit()
+  //   {
+  //       // Make sure you only configure port forwarding once in your robot code.
+  //       // Do not place these function calls in any periodic functions
+  //       for (int port = 5800; port <= 5807; port++) {
+  //           PortForwarder.add(port, "http://limelight.local:5801/", port);
+  //       }
+    }
   }
-}
