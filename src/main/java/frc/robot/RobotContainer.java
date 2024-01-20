@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static edu.wpi.first.wpilibj.XboxController.Button;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,6 +26,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -41,7 +44,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
     public final Vision m_Vision = new Vision();
-    public final LEDS m_leds =new LEDS();
+    public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -83,8 +86,12 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kA.value)
-      .onTrue(new auto_led());
+    // new JoystickButton(m_driverController, Button.kA.value)
+    //   //.onTrue(new auto_led())
+    //   .onFalse( m_led());
+    new JoystickButton(m_driverController, Button.kB.value)
+    .onTrue(new InstantCommand(() -> m_leds.ledOn()))
+    .onFalse(new InstantCommand(() -> m_leds.ledOff()));
   }
 
   public Command getAutonomousCommand(){

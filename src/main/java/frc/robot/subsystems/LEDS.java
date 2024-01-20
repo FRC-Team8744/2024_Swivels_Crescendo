@@ -35,7 +35,7 @@ public class LEDS extends SubsystemBase {
   public void periodic() {
     // Fill the buffer with a rainbow
     //rainbow();
-    setLed(1, 100);
+    // setLed(35, 100);
     // Set the LEDs
     m_led.setData(m_ledBuffer);
   }
@@ -63,9 +63,25 @@ public class LEDS extends SubsystemBase {
     m_rainbowFirstPixelHue %= 180;
   }
 
-  private void setLed(int position, int color) {
+public void ledOn() {
+  // setRainbow(255, 0, 0);
+  setLed(18, 255, 1, 1);
+}
+public void ledOff() {
+  // setRainbow(78, 178, 9);
+  setLed(18, 1, 255, 1);
+}
+
+  private void setLed(int position, int r, int g, int b) {
     if (position < m_ledBuffer.getLength()) {
-      m_ledBuffer.setHSV(position, color, 255, 128);
+      m_ledBuffer.setRGB(position, r, g, b);
+    }
+  }
+  private void setRainbow(int r, int g, int b) {
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      if (i < m_ledBuffer.getLength()) {
+        m_ledBuffer.setRGB(i, r, g, b);
+      }
     }
   }
 }
