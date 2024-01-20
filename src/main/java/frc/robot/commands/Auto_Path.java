@@ -17,7 +17,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class Auto_Path extends Command {
@@ -44,7 +44,7 @@ public class Auto_Path extends Command {
             AutoConstants.kMaxSpeedMetersPerSecond,
             AutoConstants.kMaxAccelerationMetersPerSecondSquared)
         // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics);
+        .setKinematics(SwerveConstants.kDriveKinematics);
 
     // An example trajectory to follow.  All units in meters.
     Trajectory exampleTrajectory =
@@ -63,7 +63,7 @@ public class Auto_Path extends Command {
         new SwerveControllerCommand(
             exampleTrajectory,
             m_drive::getPose, // Functional interface to feed supplier
-            DriveConstants.kDriveKinematics,
+            SwerveConstants.kDriveKinematics,
 
             // Position controllers
             new PIDController(AutoConstants.kPXController, 0, 0),

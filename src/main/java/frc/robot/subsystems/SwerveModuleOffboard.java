@@ -129,6 +129,14 @@ public class SwerveModuleOffboard {
     return new SwerveModulePosition(distance, rot);
   }
 
+  public double getVelocity() {
+    return m_driveEncoder.getVelocity();
+  }
+  
+  public double getCurrent() {
+    return m_driveMotor.getOutputCurrent();
+  }
+
   private void configureDevices() {
     // Drive motor configuration.
     m_driveMotor.restoreFactoryDefaults();
