@@ -4,8 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
+import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DriveSubsystem;
@@ -44,7 +47,11 @@ public class RobotContainer {
   // A chooser for autonomous commands
 //   SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final SendableChooser<Command> m_autoChooser;
-  
+    // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
+  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -57,9 +64,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    -m_driverController.getLeftY()*SwerveConstants.kMaxSpeedTeleop,
-                    -m_driverController.getLeftX()*SwerveConstants.kMaxSpeedTeleop,
-                    -m_driverController.getRightX(),
+                    m_xspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
+                    m_yspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
+                    m_rotLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getRightX(), 0.02))*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
                     false),
             m_robotDrive));
 
