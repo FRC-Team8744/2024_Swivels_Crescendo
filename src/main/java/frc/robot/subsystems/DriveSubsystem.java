@@ -26,6 +26,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DriverStation;
 
 
@@ -74,7 +75,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The imu sensor
   private final PigeonIMU m_imu = new PigeonIMU(SwerveConstants.kIMU_ID);
-  
+  private final BuiltInAccelerometer accelerometer = new BuiltInAccelerometer();
+
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
@@ -124,7 +126,6 @@ public class DriveSubsystem extends SubsystemBase {
       },
       this
     );
-=======
 
     // AutoBuilder.configureHolonomic(
 
@@ -174,6 +175,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getState(),
             m_rearRight.getState() } );
 
+    
+
     // Diagnostics
 
 
@@ -183,7 +186,6 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
     SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
     SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
-   
 
     SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
     SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
@@ -197,10 +199,13 @@ public class DriveSubsystem extends SubsystemBase {
 
 
 
-    // SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
-    // SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
-    // SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
-    // SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
+    SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
+
+    SmartDashboard.putNumber("Accel_X", accelerometer.getX());
+    SmartDashboard.putNumber("Accel_Y", accelerometer.getY());
   }
 
   /**

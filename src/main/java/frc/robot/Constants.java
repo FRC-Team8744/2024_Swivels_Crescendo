@@ -105,7 +105,7 @@ public final class Constants {
     public static final double DRIVE_KP = 0.1;
     public static final double DRIVE_KI = 0.0;
     public static final double DRIVE_KD = 0.0;
-    public static final double DRIVE_KF = 0.0;
+    public static final double DRIVE_KF = 0.25;
 
     /** Drive motor characterization. */
     // public static final double DRIVE_KS = 0.11937;
@@ -167,9 +167,9 @@ public final class Constants {
     //     // Assumes the encoders are on a 1:1 reduction with the module shaft.
     //     (2 * Math.PI) / (double) kEncoderCPR;
 
-    public static final double kPModuleTurningController = 1;
+    // public static final double kPModuleTurningController = 1;
 
-    public static final double kPModuleDriveController = 1;
+    // public static final double kPModuleDriveController = 1;
   }
 
   public static final class OIConstants {

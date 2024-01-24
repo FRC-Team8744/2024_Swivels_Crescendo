@@ -74,7 +74,7 @@ public class RobotContainer {
                     m_xspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
                     m_yspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
                     m_rotLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getRightX(), 0.02))*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
-                    false),
+                    true),
             m_robotDrive));
 
     // Add commands to the autonomous command chooser
@@ -82,6 +82,7 @@ public class RobotContainer {
     // m_chooser.addOption("Swerve2Command", Swerve2Command());
     // m_chooser.addOption("PathPlannerCommand",PathPlannerCommand());
     m_autoChooser = AutoBuilder.buildAutoChooser();  // Default auto will be 'Commands.none()'
+    m_autoChooser.addOption("SwerveCommand", SwerveCommand());
 
     // Put the chooser on the dashboard
     // SmartDashboard.putData(m_chooser);
