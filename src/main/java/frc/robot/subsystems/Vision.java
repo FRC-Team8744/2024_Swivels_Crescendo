@@ -17,7 +17,7 @@ public class Vision extends SubsystemBase {
   NetworkTableEntry tx = table.getEntry("tx");
   NetworkTableEntry ty = table.getEntry("ty");
   NetworkTableEntry ta = table.getEntry("ta");
-  NetworkTableEntry tid = table.getEntry("id");
+  NetworkTableEntry id = table.getEntry("id");
   NetworkTableEntry tv = table.getEntry("tv");
 
   public Vision() {}
@@ -26,10 +26,10 @@ public class Vision extends SubsystemBase {
   public void periodic() {
  //   double tax = LimelightHelpers.getTX("");
 
-    double x = tx.getDouble(0.0);
+double x = tx.getDouble(0.0);
 double y = ty.getDouble(0.0);
 double area = ta.getDouble(0.0);
-double AprilNumber = tid.getDouble(0.0);
+double AprilNumber = id.getDouble(0.0);
 double v = tv.getDouble(0.0);
 
 //post to smart dashboard periodically

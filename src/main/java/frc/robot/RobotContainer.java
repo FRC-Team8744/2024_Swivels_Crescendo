@@ -22,6 +22,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
@@ -99,9 +100,13 @@ public class RobotContainer {
     // new JoystickButton(m_driverController, Button.kA.value)
     //   //.onTrue(new auto_led())
     //   .onFalse( m_led());
-    new JoystickButton(m_driverController, Button.kB.value)
-    .onTrue(new InstantCommand(() -> m_leds.ledOn()))
-    .onFalse(new InstantCommand(() -> m_leds.ledOff()));
+    // new JoystickButton(m_driverController, Button.kY.value)
+    // .onTrue(new InstantCommand(() -> m_leds.ledOn()))
+    // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
+
+new JoystickButton(m_driverController, Button.kB.value)
+    .onTrue(new auto_led(m_leds, m_robotDrive));
+    // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
     // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
   }
 
