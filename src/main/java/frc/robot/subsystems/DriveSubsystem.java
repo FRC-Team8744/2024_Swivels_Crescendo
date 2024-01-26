@@ -27,11 +27,13 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -127,24 +129,6 @@ public class DriveSubsystem extends SubsystemBase {
       this
     );
 
-    // AutoBuilder.configureHolonomic(
-
-    //   this::getPose, // Robot pose supplier
-    //   this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-    //   this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-    //   this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-    //   new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-    //       new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-    //       new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-    //       4.5, // Max module speed, in m/s
-    //       0.4, // Drive base radius in meters. Distance from robot center to furthest module.
-    //       new ReplanningConfig() // Default path replanning config. See the API for the options here
-
-    //   ),
-    //   this // Reference to this subsystem to set requirements
-
-    // );
-
     // Reference: https://www.chiefdelphi.com/t/has-anyone-gotten-pathplanner-integrated-with-the-maxswerve-template/443646
 
     // Set up custom logging to add the current path to a field 2d widget
@@ -179,33 +163,37 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Diagnostics
 
+  if (Constants.kDebugLevel >=3) {
 
-    SmartDashboard.putBoolean("DigitalInput", input.get());
-    SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
-    SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
-    SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
-    SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
-    SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
+      SmartDashboard.putBoolean("DigitalInput", input.get());
+      SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
 
-    SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
-    SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
-    SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
-    SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
+      SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
+      SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
+      SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
+      SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
 
-    SmartDashboard.putNumber("FL Disired Speed", m_frontLeft.getState().speedMetersPerSecond);
-    SmartDashboard.putNumber("FL Actual Speed", m_frontLeft.getVelocity());
-    SmartDashboard.putNumber("FL Drive Current", m_frontLeft.getCurrent());
+      SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
+      SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
+      SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
+      SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
 
+      SmartDashboard.putNumber("FL Disired Speed", m_frontLeft.getState().speedMetersPerSecond);
+      SmartDashboard.putNumber("FL Actual Speed", m_frontLeft.getVelocity());
+      SmartDashboard.putNumber("FL Drive Current", m_frontLeft.getCurrent());
 
+      SmartDashboard.putNumber("FL Rot Speed", m_frontLeft.getState().angle.getDegrees());
+      SmartDashboard.putNumber("FL Actual Rot", m_frontLeft.getAngle().getDegrees());
+      SmartDashboard.putNumber("FL Drive Current",m_frontLeft.getTurnCurrent());
+      
+      SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
+      SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
+      SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
+      SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
 
-
-    SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
-    SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
-
-    SmartDashboard.putNumber("Accel_X", accelerometer.getX());
-    SmartDashboard.putNumber("Accel_Y", accelerometer.getY());
+      SmartDashboard.putNumber("Accel_X", accelerometer.getX());
+      SmartDashboard.putNumber("Accel_Y", accelerometer.getY());
+    }
   }
 
   /**

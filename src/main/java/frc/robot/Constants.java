@@ -20,9 +20,15 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final int kDebugLevel = 3; // 0 = None, 1 = Errors, @ = Info, 3 = Debug
+  
+  public static final int kMaxSpeedPercentAuto = 100;
+  public static final int kMaxSpeedPercentTeleop = 100;
+  public static final int kMaxAccelerationPercent = 100;
+
   public static final class SwerveConstants {
-    public static final double kMaxSpeedMetersPerSecond = 4.4;
-    public static final double kMaxSpeedTeleop = 3;
+    public static final double kMaxSpeedMetersPerSecond = (4.4 * kMaxSpeedPercentAuto) / 100;
+    public static final double kMaxSpeedTeleop = (3 * kMaxSpeedPercentTeleop) / 100;
 
     // The drive classes use the NWU axes convention (North-West-Up as external reference in the world frame).
     // The positive X axis points ahead, the positive Y axis points left, and the positive Z axis points up.
@@ -154,8 +160,8 @@ public final class Constants {
 
 
   public static final class ModuleConstants {
-    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
+  //   public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
+  //   public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
     // public static final int kEncoderCPR = 1024;
     // public static final double kWheelDiameterMeters = 0.15;
@@ -177,8 +183,8 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 4.4;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 30;
+    public static final double kMaxSpeedMetersPerSecond = (4.4 * kMaxSpeedPercentAuto) / 100;
+    public static final double kMaxAccelerationMetersPerSecondSquared = (30 * kMaxAccelerationPercent) / 100;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 

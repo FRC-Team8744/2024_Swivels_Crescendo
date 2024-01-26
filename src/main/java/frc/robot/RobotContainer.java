@@ -98,11 +98,12 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() {
+  private void configureButtonBindings() { }
     // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
   public Command PathPlannerCommand(){
     return new PathPlannerAuto("AutoTest");
   }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
