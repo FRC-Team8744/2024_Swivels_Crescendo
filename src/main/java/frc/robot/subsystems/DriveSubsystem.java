@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 
 // import com.ctre.phoenix6.hardware.Pigeon2;
-import com.ctre.phoenix.sensors.PigeonIMU;
+// import com.ctre.phoenix.sensors.PigeonIMU;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -13,7 +13,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
+// import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -56,13 +56,14 @@ public class DriveSubsystem extends SubsystemBase {
       SwerveConstants.kRearRightMagEncoderOffsetDegrees);
 
   // The imu sensor
-  private final PigeonIMU m_imu = new PigeonIMU(SwerveConstants.kIMU_ID);
+  private final Multi_IMU m_imu = new Multi_IMU();
+  // private final PigeonIMU m_imu = new PigeonIMU(SwerveConstants.kIMU_ID);
   
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry =
       new SwerveDriveOdometry(
           DriveConstants.kDriveKinematics,
-          Rotation2d.fromDegrees(m_imu.getYaw()),
+          m_imu.getHeading(),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -101,7 +102,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        Rotation2d.fromDegrees(m_imu.getYaw()),
+        m_imu.getHeading(),
+        // Rotation2d.fromDegrees(m_imu.getYaw()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -145,7 +147,8 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        Rotation2d.fromDegrees(m_imu.getYaw()),
+        m_imu.getHeading(),
+        // Rotation2d.fromDegrees(m_imu.getYaw()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -176,7 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates =
         DriveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_imu.getYaw()))
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_imu.getHeading()) // Rotation2d.fromDegrees(m_imu.getYaw()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -223,16 +226,16 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /** Zeroes the heading of the robot. */
-  public void zeroHeading() {
-    m_imu.setYaw(0);
-  }
+  // public void zeroHeading() {
+  //   m_imu.setYaw(0);
+  // }
 
   /**
    * Returns the heading of the robot.
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
-  public double getHeading() {
-    return m_imu.getYaw();
-  }
+  // public double getHeading() {
+  //   return m_imu.getYaw();
+  // }
 }
