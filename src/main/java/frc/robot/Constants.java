@@ -50,10 +50,15 @@ public final class Constants {
     public static final int kRearLeftMagEncoderPort = 11;
     public static final int kRearRightMagEncoderPort = 10;
 
-    public static final double kFrontLeftMagEncoderOffsetDegrees = 81.12;
-    public static final double kFrontRightMagEncoderOffsetDegrees = 133.77;
-    public static final double kRearLeftMagEncoderOffsetDegrees = 11.25;
-    public static final double kRearRightMagEncoderOffsetDegrees = 66.71;
+    public static final double kFrontLeftMagEncoderOffsetDegrees_NoNo = 240.38;
+    public static final double kFrontRightMagEncoderOffsetDegrees_NoNo = 317.46;
+    public static final double kRearLeftMagEncoderOffsetDegrees_NoNo = 241.87;
+    public static final double kRearRightMagEncoderOffsetDegrees_NoNo = 133.46;
+
+    public static final double kFrontLeftMagEncoderOffsetDegrees_Swivels = 81.12;
+    public static final double kFrontRightMagEncoderOffsetDegrees_Swivels = 133.77;
+    public static final double kRearLeftMagEncoderOffsetDegrees_Swivels = 11.25;
+    public static final double kRearRightMagEncoderOffsetDegrees_Swivels = 66.71;
 
     // Distance between centers of right and left wheels on robot
     public static final double kTrackWidth = Units.inchesToMeters(20.472);
