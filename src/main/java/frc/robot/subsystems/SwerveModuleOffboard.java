@@ -137,6 +137,12 @@ public class SwerveModuleOffboard {
     return m_driveMotor.getOutputCurrent();
   }
 
+   public double getTurnCurrent() {
+    return m_driveMotor.getOutputCurrent();
+  }
+
+
+
   private void configureDevices() {
     // Drive motor configuration.
     m_driveMotor.restoreFactoryDefaults();

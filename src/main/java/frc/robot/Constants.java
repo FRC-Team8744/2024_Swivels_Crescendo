@@ -4,21 +4,12 @@
 
 package frc.robot;
 
-// import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
- */
 public final class Constants {
   public static final int kDebugLevel = 3; // 0 = None, 1 = Errors, @ = Info, 3 = Debug
   
@@ -113,10 +104,6 @@ public final class Constants {
     public static final double DRIVE_KD = 0.0;
     public static final double DRIVE_KF = 0.25;
 
-    /** Drive motor characterization. */
-    // public static final double DRIVE_KS = 0.11937;
-    // public static final double DRIVE_KV = 2.6335;
-    // public static final double DRIVE_KA = 0.46034;
 
     /** Angle motor PID values. */
     public static final double ANGLE_KP = 1.5;
@@ -138,44 +125,6 @@ public final class Constants {
     // public static final IdleMode DRIVE_IDLE_MODE = IdleMode.kBrake;
     // public static final IdleMode ANGLE_IDLE_MODE = IdleMode.kBrake;
 
-    // public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-    // public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-
-    // public static final int kEncoderCPR = 1024;
-
-
-    // public static final double kWheelDiameterMeters = 0.15;
-    // public static final double kDriveEncoderDistancePerPulse =
-    //     // Assumes the encoders are directly mounted on the wheel shafts
-    //     (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
-
-    // public static final double kTurningEncoderDistancePerPulse =
-    //     // Assumes the encoders are on a 1:1 reduction with the module shaft.
-    //     (2 * Math.PI) / (double) kEncoderCPR;
-
-    // public static final double kPModuleTurningController = 1;
-
-    // public static final double kPModuleDriveController = 1;
-  }
-
-
-  public static final class ModuleConstants {
-  //   public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-  //   public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-
-    // public static final int kEncoderCPR = 1024;
-    // public static final double kWheelDiameterMeters = 0.15;
-    // public static final double kDriveEncoderDistancePerPulse =
-    //     // Assumes the encoders are directly mounted on the wheel shafts
-    //     (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
-
-    // public static final double kTurningEncoderDistancePerPulse =
-    //     // Assumes the encoders are on a 1:1 reduction with the module shaft.
-    //     (2 * Math.PI) / (double) kEncoderCPR;
-
-    // public static final double kPModuleTurningController = 1;
-
-    // public static final double kPModuleDriveController = 1;
   }
 
   public static final class OIConstants {
