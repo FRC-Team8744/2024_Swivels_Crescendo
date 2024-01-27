@@ -7,6 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.io.PipedInputStream;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -19,13 +22,16 @@ public class Vision extends SubsystemBase {
   NetworkTableEntry ta = table.getEntry("ta");
   NetworkTableEntry id = table.getEntry("id");
   NetworkTableEntry tv = table.getEntry("tv");
+  NetworkTableEntry tpi = table.getEntry("getpipe");
+  NetworkTableEntry spi = table.getEntry("pipeline");
 
   public Vision() {}
 
   @Override
   public void periodic() {
  //   double tax = LimelightHelpers.getTX("");
-
+ int spi = (0);
+double pipeline = tpi.getDouble(0.0);
 double x = tx.getDouble(0.0);
 double y = ty.getDouble(0.0);
 double area = ta.getDouble(0.0);
@@ -38,9 +44,14 @@ SmartDashboard.putNumber("LimelightY", y);
 SmartDashboard.putNumber("LimelightArea", area);
 SmartDashboard.putNumber("id", AprilNumber);
 SmartDashboard.putNumber("tv", v);
-
+SmartDashboard.putNumber("pipeline", pipeline);
+SmartDashboard.putNumber("Pipe", spi);
 // This method will be called once per scheduler run
   // }
+  // public void setPipeline(int piepline){
+  //   NetworkTableEntry pipelineEntry = table.getEntry("pipeline");
+  //   pipelineEntry.setNumber(pipeline);
+  }
   //  @Override
   //   public void robotInit()
   //   {
@@ -50,4 +61,4 @@ SmartDashboard.putNumber("tv", v);
   //           PortForwarder.add(port, "http://limelight.local:5801/", port);
   //       }
     }
-  }
+  // }

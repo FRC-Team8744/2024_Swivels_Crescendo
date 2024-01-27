@@ -23,11 +23,12 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
+import frc.robot.commands.Trings;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+// import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -70,9 +71,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    m_xspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
-                    m_yspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
-                    m_rotLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getRightX(), 0.02))*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                    m_xspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.03))*SwerveConstants.kMaxSpeedTeleop,
+                    m_yspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.03))*SwerveConstants.kMaxSpeedTeleop,
+                    m_rotLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getRightX(), 0.03))*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
                     false),
             m_robotDrive));
 
@@ -108,6 +109,10 @@ new JoystickButton(m_driverController, Button.kB.value)
     .onTrue(new auto_led(m_leds, m_robotDrive));
     // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
     // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
+
+    new JoystickButton(m_driverController, Button.kA.value)
+    .onTrue(new Trings(m_leds, m_robotDrive));
+    // .onFalse(new Trings(m_leds, m_robotDrive));
   }
 
   public Command PathPlannerCommand(){

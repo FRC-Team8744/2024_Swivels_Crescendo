@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
 
-public class auto_led extends Command {
+public class Trings extends Command {
   private final LEDS m_lightbarLeds;
   private final DriveSubsystem m_drive;
     PIDController m_turnCtrl = new PIDController(5, 0, 0);
@@ -23,9 +23,8 @@ public class auto_led extends Command {
   private int x; // x tracks angle.
   private double tx;
   private boolean Done;
-  public int spi;
-  /** Creates a new auto_led. */
-  public auto_led(LEDS light, DriveSubsystem drive) {
+
+  public Trings(LEDS light, DriveSubsystem drive) {
     m_lightbarLeds = light;
     addRequirements(m_lightbarLeds);
     m_drive = drive;
@@ -102,3 +101,4 @@ SmartDashboard.putData("PID", m_turnCtrl);
     return Done;
   }
 }
+
