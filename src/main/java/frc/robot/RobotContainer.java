@@ -74,7 +74,7 @@ public class RobotContainer {
     // exampleSubsystem = new ExampleSubsystem();
 
     // // Register Named Commands
-    // NamedCommands.registerCommand("autoBalance", swerve.autoBalanceCommand());
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_leds).withTimeout(2));
     // NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
