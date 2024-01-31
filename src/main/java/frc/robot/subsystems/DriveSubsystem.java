@@ -39,7 +39,6 @@ public class DriveSubsystem extends SubsystemBase {
   StructArrayPublisher<SwerveModuleState> swerve_publisher = NetworkTableInstance.getDefault().getStructArrayTopic("Swerve States", SwerveModuleState.struct).publish();
 
   DigitalInput input = new DigitalInput(0);
-  DigitalInput inputIR = new DigitalInput(1);
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft =
     new SwerveModuleOffboard(
@@ -153,7 +152,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Diagnostics
     SmartDashboard.putBoolean("DigitalInput", input.get());
-    SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
+    // SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
     SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
     SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
     SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());

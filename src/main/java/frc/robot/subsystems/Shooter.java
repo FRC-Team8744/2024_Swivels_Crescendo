@@ -11,10 +11,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  private CANSparkMax rightFlywheelSparkMax = new CANSparkMax(Constants.kRightFlywheelShooterPort, MotorType.kBrushless);
-  private CANSparkMax leftFlwheelSparkMax = new CANSparkMax(Constants.kLeftFlwheelShooterPort, MotorType.kBrushless);
-  private CANSparkMax indexSparkMax = new CANSparkMax(Constants.kIndexShooterPort, MotorType.kBrushless);
-  private CANSparkMax pivotSparkMax = new CANSparkMax(Constants.kPivotSparkMax, MotorType.kBrushless); 
+  // private CANSparkMax rightFlywheelSparkMax = new CANSparkMax(Constants.kRightFlywheelShooterPort, MotorType.kBrushless);
+  // private CANSparkMax leftFlwheelSparkMax = new CANSparkMax(Constants.kLeftFlwheelShooterPort, MotorType.kBrushless);
+  // private CANSparkMax indexSparkMax = new CANSparkMax(Constants.kIndexShooterPort, MotorType.kBrushless);
+  // private CANSparkMax pivotSparkMax = new CANSparkMax(Constants.kPivotSparkMax, MotorType.kBrushless); 
   public Shooter() {}
 
   @Override

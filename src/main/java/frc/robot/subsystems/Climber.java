@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
-  private CANSparkMax leftClimberSparkMax = new CANSparkMax(Constants.kLeftClimberPort, MotorType.kBrushless);
-  private CANSparkMax rightClimberSparkMax = new CANSparkMax(Constants.kRightClimberPort, MotorType.kBrushless);
+  // private CANSparkMax leftClimberSparkMax = new CANSparkMax(Constants.kLeftClimberPort, MotorType.kBrushless);
+  // private CANSparkMax rightClimberSparkMax = new CANSparkMax(Constants.kRightClimberPort, MotorType.kBrushless);
   /** Creates a new Climber. */
   public Climber() {
     

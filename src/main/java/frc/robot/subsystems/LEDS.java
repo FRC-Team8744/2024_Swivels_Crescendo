@@ -68,7 +68,7 @@ public void ledOn() {
   // setLed(18, 255, 1, 1);
 }
 public void ledOff() {
-  setRainbow(255, 0, 0);
+  setRainbow(0, 0, 0);
   // setLed(18, 1, 255, 1);
 }
 

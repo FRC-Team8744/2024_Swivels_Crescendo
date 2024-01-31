@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,6 +29,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
+import frc.robot.commands.IntakeRun;
 import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
@@ -52,7 +54,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final Intake m_intake = new Intake();
-  public final Vision m_Vision = new Vision();
+  public final Vision m_vision = new Vision();
   public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -75,9 +77,6 @@ public class RobotContainer {
     // NamedCommands.registerCommand("autoBalance", swerve.autoBalanceCommand());
     // NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
-
-    // // Do all other initialization
-    // configureButtonBindings();
     
     // Configure the button bindings
     configureButtonBindings();
@@ -91,9 +90,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    m_xspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
-                    m_yspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
-                    m_rotLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getRightX(), 0.02))*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                    m_xspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.03))*SwerveConstants.kMaxSpeedTeleop,
+                    m_yspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.03))*SwerveConstants.kMaxSpeedTeleop,
+                    m_rotLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getRightX(), 0.03))*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
                     false),
             m_robotDrive));
 
@@ -122,8 +121,11 @@ public class RobotContainer {
     //   //.onTrue(new auto_led())
     //   .onFalse( m_led());
     new JoystickButton(m_driverController, Button.kB.value)
-    .onTrue(new InstantCommand(() -> m_leds.ledOn()))
-    .onFalse(new InstantCommand(() -> m_leds.ledOff()));
+    .onTrue(new IntakeRun(m_intake, m_leds).withTimeout(2));
+    ;
+  //   new JoystickButton(m_driverController, Button.kB.values)
+  //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
+  //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
   }
 
   public Command PathPlannerCommand(){

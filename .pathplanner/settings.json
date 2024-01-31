@@ -5,9 +5,12 @@
   "pathFolders": [
     "LeftBaseLine(2)",
     "MiddleBaseLine(2)",
+    "Bens",
     "RightBaseLine(2)"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Bens"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
