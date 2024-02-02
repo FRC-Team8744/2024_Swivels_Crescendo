@@ -71,9 +71,9 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    m_xspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
-                    m_yspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
-                    m_rotLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getRightX(), 0.02))*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                    m_xspeedLimiter.calculate(-m_driverController.getLeftY())*SwerveConstants.kMaxSpeedTeleop,
+                    m_yspeedLimiter.calculate(-m_driverController.getLeftX())*SwerveConstants.kMaxSpeedTeleop,
+                    m_rotLimiter.calculate(-m_driverController.getRightX())*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
                     true),
             m_robotDrive));
 
