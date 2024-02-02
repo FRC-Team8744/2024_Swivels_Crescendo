@@ -128,9 +128,9 @@ public class RobotContainer {
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
   }
 
-  public Command PathPlannerCommand(){
-    return new PathPlannerAuto("AutoTest");
-  }
+  // public Command PathPlannerCommand(){
+  //   return new PathPlannerAuto("AutoTest");
+  // }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

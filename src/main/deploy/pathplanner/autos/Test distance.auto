@@ -16,6 +16,25 @@
           "data": {
             "pathName": "Test distance"
           }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "RunIntake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Test Distance 2"
+                }
+              }
+            ]
+          }
         }
       ]
     }
