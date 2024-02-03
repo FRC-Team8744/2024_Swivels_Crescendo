@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,7 +29,7 @@ public class Multi_IMU extends SubsystemBase {
   public static final int PIGEON2 = 2;  // https://store.ctr-electronics.com/pigeon-2/
 
   // IMU selected for data output
-  public static final int IMU_SELECTED = PIGEON1;
+  public static final int IMU_SELECTED = PIGEON2;
 
   // PIGEON1
   // NOTES: Pigeon1 requires 5 seconds of zero robot motion after power up!
@@ -40,10 +41,10 @@ public class Multi_IMU extends SubsystemBase {
   // NOTES: NavX2 requires 5 seconds of zero robot motion after power up!
   // Specifications are equivalent to the Pigeon2
   // USB connection has a delay - try to connect with I2C
-  public static final boolean NAVX2_MICRO_ENABLE = false;
+  public static final boolean NAVX2_MICRO_ENABLE = true;
 
   // PIGEON2 (Using Phoenix6 library)
-  public static final boolean PIGEON2_ENABLE = false;
+  public static final boolean PIGEON2_ENABLE = true;
 
   public static final int PIGEON2_kIMU_CAN_ID = 14;  // TODO: what is this really?
 // End CONSTANTS
@@ -53,7 +54,26 @@ public class Multi_IMU extends SubsystemBase {
   private AHRS m_imu_navX2_micro;
   private Pigeon2 m_imu_pigeon2;
 
+  // Robot type
+  private String m_whoami;
+  private int m_imuSelected;
+
   public Multi_IMU() {
+    m_whoami = Preferences.getString("RobotName", "Undefined");
+    switch (m_whoami) {
+      case "Swivels":
+          m_imuSelected = PIGEON2;
+        break;
+    
+      case "NoNo":
+          m_imuSelected = NAVX2_MICRO;
+        break;
+    
+      default:
+          m_imuSelected = PIGEON1;
+        break;
+    }
+
     // Attempt to communicate with new sensor (may not exist)
     if (PIGEON1_ENABLE) m_imu_pigeon1 = new PigeonIMU(PIGEON1_kIMU_CAN_ID);
 
@@ -94,7 +114,6 @@ public class Multi_IMU extends SubsystemBase {
 
     if (NAVX2_MICRO_ENABLE && (DEBUG_IMU >= DEBUG_ALL)) {
       SmartDashboard.putNumber("NavX GyroZ", m_imu_navX2_micro.getYaw());
-      SmartDashboard.putNumber("NavX Fused GyroZ", m_imu_pigeon1.getFusedHeading());
     }
 
     if (PIGEON2_ENABLE && (DEBUG_IMU >= DEBUG_ALL)) {
@@ -126,7 +145,7 @@ public class Multi_IMU extends SubsystemBase {
    * @return the robot's heading as Rotation2D
    */
   public Rotation2d getHeading() {
-    switch (IMU_SELECTED){
+    switch (m_imuSelected){
       case PIGEON1:
         return Rotation2d.fromDegrees(m_imu_pigeon1.getYaw());
       case NAVX2_MICRO:
@@ -144,7 +163,7 @@ public class Multi_IMU extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeadingDegrees() {
-    switch (IMU_SELECTED){
+    switch (m_imuSelected){
       case PIGEON1:
         return m_imu_pigeon1.getYaw();
       case NAVX2_MICRO:
