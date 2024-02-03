@@ -25,6 +25,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
@@ -92,10 +93,10 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    m_xspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.03))*SwerveConstants.kMaxSpeedTeleop,
-                    m_yspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.03))*SwerveConstants.kMaxSpeedTeleop,
-                    m_rotLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getRightX(), 0.03))*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
-                    false),
+                    m_xspeedLimiter.calculate(-m_driverController.getLeftY())*SwerveConstants.kMaxSpeedTeleop,
+                    m_yspeedLimiter.calculate(-m_driverController.getLeftX())*SwerveConstants.kMaxSpeedTeleop,
+                    m_rotLimiter.calculate(-m_driverController.getRightX())*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                    true),
             m_robotDrive));
 
     // Add commands to the autonomous command chooser
@@ -103,6 +104,7 @@ public class RobotContainer {
     // m_chooser.addOption("Swerve2Command", Swerve2Command());
     // m_chooser.addOption("PathPlannerCommand",PathPlannerCommand());
     m_autoChooser = AutoBuilder.buildAutoChooser();  // Default auto will be 'Commands.none()'
+    m_autoChooser.addOption("SwerveCommand", SwerveCommand());
 
     // Put the chooser on the dashboard
     // SmartDashboard.putData(m_chooser);
@@ -123,8 +125,7 @@ public class RobotContainer {
     //   //.onTrue(new auto_led())
     //   .onFalse( m_led());
     new JoystickButton(m_driverController, Button.kB.value)
-    .onTrue(new IntakeRun(m_intake, m_leds).withTimeout(2));
-    ;
+    .whileTrue(new IntakeRun(m_intake, m_leds));
   //   new JoystickButton(m_driverController, Button.kB.values)
   //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));

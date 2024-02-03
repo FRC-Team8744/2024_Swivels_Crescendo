@@ -12,19 +12,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  public DigitalInput inputIR = new DigitalInput(1);
+  public DigitalInput inputIR = new DigitalInput(0);
   private CANSparkMax frontIntakeSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
-  private CANSparkMax rearIntakeSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
+  private CANSparkMax rearIntakeSparkMax = new CANSparkMax(Constants.kRearIntakePort, MotorType.kBrushless);
   /** Creates a new Intake. */
   public Intake() {
 
   }
   public void donutGrab() {
-    // frontIntakeSparkMax.set(.8);
-    rearIntakeSparkMax.set(.8);
+    double speedSetting = -.3;
+    frontIntakeSparkMax.set(speedSetting * 3/2); //Ratio of wheel sizes
+    rearIntakeSparkMax.set(speedSetting);
   }
   public void motorOff() {
-    // frontIntakeSparkMax.stopMotor();
+    frontIntakeSparkMax.stopMotor();
     rearIntakeSparkMax.stopMotor();
   }
   @Override
