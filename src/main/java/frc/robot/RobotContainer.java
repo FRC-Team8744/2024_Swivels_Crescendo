@@ -58,7 +58,7 @@ public class RobotContainer {
                     -m_driverController.getLeftY(),
                     -m_driverController.getLeftX(),
                     -m_driverController.getRightX(),
-                    false),
+                    true),
             m_robotDrive));
 
     // Add commands to the autonomous command chooser

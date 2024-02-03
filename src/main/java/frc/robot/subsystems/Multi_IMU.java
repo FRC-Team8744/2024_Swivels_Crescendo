@@ -28,11 +28,11 @@ public class Multi_IMU extends SubsystemBase {
   public static final int PIGEON2 = 2;  // https://store.ctr-electronics.com/pigeon-2/
 
   // IMU selected for data output
-  public static final int IMU_SELECTED = PIGEON1;
+  public static final int IMU_SELECTED = PIGEON2;
 
   // PIGEON1
   // NOTES: Pigeon1 requires 5 seconds of zero robot motion after power up!
-  public static final boolean PIGEON1_ENABLE = true;
+  public static final boolean PIGEON1_ENABLE = false;
 
   public static final int PIGEON1_kIMU_CAN_ID = 13;
 
@@ -45,7 +45,7 @@ public class Multi_IMU extends SubsystemBase {
   // PIGEON2 (Using Phoenix6 library)
   public static final boolean PIGEON2_ENABLE = true;
 
-  public static final int PIGEON2_kIMU_CAN_ID = 19;  // TODO: what is this really?
+  public static final int PIGEON2_kIMU_CAN_ID = 14;  // TODO: what is this really?
 // End CONSTANTS
 
   // The imu sensors
@@ -87,14 +87,14 @@ public class Multi_IMU extends SubsystemBase {
   @Override
   public void periodic() {
     if (PIGEON1_ENABLE && (DEBUG_IMU >= DEBUG_ALL)) {
-      SmartDashboard.putNumber("Pigeon1 GyroZ", m_imu_pigeon1.getYaw());
-      SmartDashboard.putNumber("Pigeon1 Absolute GyroZ", m_imu_pigeon1.getAbsoluteCompassHeading());
-      SmartDashboard.putNumber("Pigeon1 Fused GyroZ", m_imu_pigeon1.getFusedHeading());
+      // SmartDashboard.putNumber("Pigeon1 GyroZ", m_imu_pigeon1.getYaw());
+      // SmartDashboard.putNumber("Pigeon1 Absolute GyroZ", m_imu_pigeon1.getAbsoluteCompassHeading());
+      // SmartDashboard.putNumber("Pigeon1 Fused GyroZ", m_imu_pigeon1.getFusedHeading());
     }
 
     if (NAVX2_MICRO_ENABLE && (DEBUG_IMU >= DEBUG_ALL)) {
       SmartDashboard.putNumber("NavX GyroZ", m_imu_navX2_micro.getYaw());
-      SmartDashboard.putNumber("NavX Fused GyroZ", m_imu_pigeon1.getFusedHeading());
+      // SmartDashboard.putNumber("NavX Fused GyroZ", m_imu_pigeon1.getFusedHeading());
     }
 
     if (PIGEON2_ENABLE && (DEBUG_IMU >= DEBUG_ALL)) {
@@ -107,7 +107,7 @@ public class Multi_IMU extends SubsystemBase {
    */
   public void zeroHeading() {
     if (PIGEON1_ENABLE) {
-      m_imu_pigeon1.setYaw(0);
+      // m_imu_pigeon1.setYaw(0);
     }
 
     if (NAVX2_MICRO_ENABLE) {
