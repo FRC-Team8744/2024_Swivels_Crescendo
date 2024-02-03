@@ -134,6 +134,7 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final double kDeadband=0.03;
   }
 
   public static final class AutoConstants {
