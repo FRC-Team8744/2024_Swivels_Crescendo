@@ -30,6 +30,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.IntakeRun;
+import frc.robot.commands.Wait;
 import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
@@ -37,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
@@ -75,7 +77,7 @@ public class RobotContainer {
 
     // // Register Named Commands
     NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_leds).withTimeout(2));
-    // NamedCommands.registerCommand("exampleCommand", exampleSubsystem.exampleCommand());
+    NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
     // Configure the button bindings

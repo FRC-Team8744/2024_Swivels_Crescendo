@@ -13,19 +13,19 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   public DigitalInput inputIR = new DigitalInput(1);
-  // private CANSparkMax frontIntakeSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
-  // private CANSparkMax rearIntakeSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
+  private CANSparkMax frontIntakeSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
+  private CANSparkMax rearIntakeSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
   /** Creates a new Intake. */
   public Intake() {
 
   }
   public void donutGrab() {
-  //   frontIntakeSparkMax.set(.8);
-  //   rearIntakeSparkMax.set(.8);
+    // frontIntakeSparkMax.set(.8);
+    rearIntakeSparkMax.set(.8);
   }
   public void motorOff() {
-  //   frontIntakeSparkMax.stopMotor();
-  //   rearIntakeSparkMax.stopMotor();
+    // frontIntakeSparkMax.stopMotor();
+    rearIntakeSparkMax.stopMotor();
   }
   @Override
   public void periodic() {

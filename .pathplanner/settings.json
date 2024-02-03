@@ -9,7 +9,8 @@
     "RightBaseLine(2)"
   ],
   "autoFolders": [
-    "Bens"
+    "Bens",
+    "Autos"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

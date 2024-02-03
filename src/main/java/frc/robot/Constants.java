@@ -21,8 +21,8 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
   // TODO: Update motor port numbers
-  public static final int kFrontIntakePort = 30;
-  public static final int kRearIntakePort = 31;
+  public static final int kFrontIntakePort = 15;
+  public static final int kRearIntakePort = 16;
   public static final int kRightFlywheelShooterPort = 32;
   public static final int kLeftFlwheelShooterPort = 33;
   public static final int kIndexShooterPort = 34;
