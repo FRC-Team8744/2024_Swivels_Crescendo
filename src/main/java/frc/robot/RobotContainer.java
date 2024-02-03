@@ -77,7 +77,7 @@ public class RobotContainer {
     // exampleSubsystem = new ExampleSubsystem();
 
     // // Register Named Commands
-    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_leds).withTimeout(2));
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_leds).withTimeout(1.5));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
