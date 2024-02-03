@@ -29,6 +29,8 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
 
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
@@ -42,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   DigitalInput input = new DigitalInput(0);
-  DigitalInput inputIR = new DigitalInput(1);
+  public DigitalInput inputIR = new DigitalInput(1);
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft =
     new SwerveModuleOffboard(
@@ -175,8 +177,9 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getState() } );
 
     // Diagnostics
-
-
+    //ShuffleboardTab tab = Shuffleboard.getTab("senser stufffs");
+   // Shuffleboard.selectTab("senser stufffs");
+    //Shuffleboard.getTab("senser stufffs").add("DigitalInputI", input.get());
     SmartDashboard.putBoolean("DigitalInput", input.get());
     SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
     SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());

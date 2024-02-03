@@ -58,6 +58,7 @@ public final class Constants {
     public static final double kRearLeftMagEncoderOffsetDegrees = 11.25;
     public static final double kRearRightMagEncoderOffsetDegrees = 66.71;
 
+
     // Distance between centers of right and left wheels on robot
     public static final double kTrackWidth = Units.inchesToMeters(20.472);
 
