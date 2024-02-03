@@ -33,7 +33,7 @@ public class Multi_IMU extends SubsystemBase {
 
   // PIGEON1
   // NOTES: Pigeon1 requires 5 seconds of zero robot motion after power up!
-  public static final boolean PIGEON1_ENABLE = true;
+  public static final boolean PIGEON1_ENABLE = false;
 
   public static final int PIGEON1_kIMU_CAN_ID = 13;
 
@@ -41,12 +41,12 @@ public class Multi_IMU extends SubsystemBase {
   // NOTES: NavX2 requires 5 seconds of zero robot motion after power up!
   // Specifications are equivalent to the Pigeon2
   // USB connection has a delay - try to connect with I2C
-  public static final boolean NAVX2_MICRO_ENABLE = true;
+  public static final boolean NAVX2_MICRO_ENABLE = false;
 
   // PIGEON2 (Using Phoenix6 library)
   public static final boolean PIGEON2_ENABLE = true;
 
-  public static final int PIGEON2_kIMU_CAN_ID = 14;  // TODO: what is this really?
+  public static final int PIGEON2_kIMU_CAN_ID = 14;
 // End CONSTANTS
 
   // The imu sensors
@@ -62,11 +62,11 @@ public class Multi_IMU extends SubsystemBase {
     m_whoami = Preferences.getString("RobotName", "Undefined");
     switch (m_whoami) {
       case "Swivels":
-          m_imuSelected = PIGEON2;
+          m_imuSelected = PIGEON1;
         break;
     
       case "NoNo":
-          m_imuSelected = NAVX2_MICRO;
+          m_imuSelected = PIGEON2;
         break;
     
       default:
@@ -147,9 +147,13 @@ public class Multi_IMU extends SubsystemBase {
   public Rotation2d getHeading() {
     switch (m_imuSelected){
       case PIGEON1:
-        return Rotation2d.fromDegrees(m_imu_pigeon1.getYaw());
+        if (PIGEON1_ENABLE) {
+          return Rotation2d.fromDegrees(m_imu_pigeon1.getYaw());
+        } else return Rotation2d.fromDegrees(0.0);
       case NAVX2_MICRO:
-        return Rotation2d.fromDegrees(m_imu_navX2_micro.getYaw());
+        if (NAVX2_MICRO_ENABLE) {
+          return Rotation2d.fromDegrees(m_imu_navX2_micro.getYaw());
+        } else return Rotation2d.fromDegrees(0.0);
       case PIGEON2:
         return Rotation2d.fromDegrees(m_imu_pigeon2.getYaw().getValueAsDouble());
       default:
@@ -165,9 +169,13 @@ public class Multi_IMU extends SubsystemBase {
   public double getHeadingDegrees() {
     switch (m_imuSelected){
       case PIGEON1:
-        return m_imu_pigeon1.getYaw();
+        if (PIGEON1_ENABLE) {
+          return m_imu_pigeon1.getYaw();
+        } else return 9999999.9;
       case NAVX2_MICRO:
-        return m_imu_navX2_micro.getYaw();
+        if (NAVX2_MICRO_ENABLE) {
+          return m_imu_navX2_micro.getYaw();
+        } else return 9999999.9;
       case PIGEON2:
         return m_imu_pigeon2.getYaw().getValueAsDouble();
       default:
