@@ -4,8 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
+import static edu.wpi.first.wpilibj.XboxController.Button;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -15,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -25,15 +27,23 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
+import frc.robot.commands.IntakeRun;
+import frc.robot.commands.Wait;
+import frc.robot.commands.auto_led;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -46,8 +56,9 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-    public final Vision m_Vision = new Vision();
-    public final LEDS m_leds = new LEDS();
+  private final Intake m_intake = new Intake();
+  public final Vision m_vision = new Vision();
+  public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -61,9 +72,20 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // // Subsystem initialization
+    // swerve = new Swerve();
+    // exampleSubsystem = new ExampleSubsystem();
+
+    // // Register Named Commands
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_leds).withTimeout(2));
+    NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
+    // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
+    
     // Configure the button bindings
     configureButtonBindings();
 
+
+     // ...
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -71,10 +93,10 @@ public class RobotContainer {
         new RunCommand(
             () ->
                 m_robotDrive.drive(
-                    m_xspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
-                    m_yspeedLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.02))*SwerveConstants.kMaxSpeedTeleop,
-                    m_rotLimiter.calculate(MathUtil.applyDeadband(-m_driverController.getRightX(), 0.02))*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
-                    false),
+                    m_xspeedLimiter.calculate(-m_driverController.getLeftY())*SwerveConstants.kMaxSpeedTeleop,
+                    m_yspeedLimiter.calculate(-m_driverController.getLeftX())*SwerveConstants.kMaxSpeedTeleop,
+                    m_rotLimiter.calculate(-m_driverController.getRightX())*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                    true),
             m_robotDrive));
 
     // Add commands to the autonomous command chooser
@@ -82,6 +104,7 @@ public class RobotContainer {
     // m_chooser.addOption("Swerve2Command", Swerve2Command());
     // m_chooser.addOption("PathPlannerCommand",PathPlannerCommand());
     m_autoChooser = AutoBuilder.buildAutoChooser();  // Default auto will be 'Commands.none()'
+    m_autoChooser.addOption("SwerveCommand", SwerveCommand());
 
     // Put the chooser on the dashboard
     // SmartDashboard.putData(m_chooser);
@@ -98,10 +121,19 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
-  public Command PathPlannerCommand(){
-    return new PathPlannerAuto("AutoTest");
+    // new JoystickButton(m_driverController, Button.kA.value)
+    //   //.onTrue(new auto_led())
+    //   .onFalse( m_led());
+    new JoystickButton(m_driverController, Button.kB.value)
+    .whileTrue(new IntakeRun(m_intake, m_leds));
+  //   new JoystickButton(m_driverController, Button.kB.values)
+  //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
+  //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
   }
+
+  // public Command PathPlannerCommand(){
+  //   return new PathPlannerAuto("AutoTest");
+  // }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

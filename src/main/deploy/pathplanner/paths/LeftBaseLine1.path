@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.448760282137709,
-        "y": 1.4011058791334103
+        "x": 2.909982492594682,
+        "y": 7.0050704681015805
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9618413082997606,
-        "y": 2.328598503349428
+        "x": 2.909982492594682,
+        "y": 7.019756150424644
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "LeftBaseLine1"
     },
     {
       "anchor": {
-        "x": 4.826693499542605,
-        "y": 2.723276215781776
+        "x": 1.0302151552424759,
+        "y": 6.123929528717735
       },
       "prevControl": {
-        "x": 3.5341239913266658,
-        "y": 3.0192845001060364
-      },
-      "nextControl": {
-        "x": 6.205220882045742,
-        "y": 2.4075829220787677
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 5.941658037163988,
-        "y": 0.7597545964308449
-      },
-      "prevControl": {
-        "x": 6.316601863974718,
-        "y": 1.9733885621603138
+        "x": 0.7802151552424759,
+        "y": 7.623929528717736
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "StartingPoint1"
     }
   ],
   "rotationTargets": [],
@@ -59,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "LeftBaseLine(2)",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }
