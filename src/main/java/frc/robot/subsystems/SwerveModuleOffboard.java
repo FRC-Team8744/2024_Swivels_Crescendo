@@ -71,10 +71,10 @@ public class SwerveModuleOffboard {
    */
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
-    SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
+    // SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
 
     // Only enable when correcting wheel offsets!
-    // SwerveModuleState state = desiredState;
+    SwerveModuleState state = desiredState;
 
     // Set the PID reference states
     m_drivePID.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
@@ -136,6 +136,12 @@ public class SwerveModuleOffboard {
   public double getCurrent() {
     return m_driveMotor.getOutputCurrent();
   }
+
+   public double getTurnCurrent() {
+    return m_driveMotor.getOutputCurrent();
+  }
+
+
 
   private void configureDevices() {
     // Drive motor configuration.
