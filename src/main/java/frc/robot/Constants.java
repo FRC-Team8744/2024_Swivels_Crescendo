@@ -35,23 +35,27 @@ public final class Constants {
     public static final int kRearLeftTurningMotorPort = 7;
     public static final int kRearRightTurningMotorPort = 3;
 
-    public static final boolean kFrontLeftTurningEncoderReversed = false;
-    public static final boolean kFrontRightTurningEncoderReversed = false;
-    public static final boolean kRearLeftTurningEncoderReversed = true;
-    public static final boolean kRearRightTurningEncoderReversed = true;
+    // public static final boolean kFrontLeftTurningEncoderReversed = true;
+    // public static final boolean kFrontRightTurningEncoderReversed = false;
+    // public static final boolean kRearLeftTurningEncoderReversed = true;
+    // public static final boolean kRearRightTurningEncoderReversed = true;
 
-    public static final boolean kFrontLeftDriveEncoderReversed = false;
-    public static final boolean kFrontRightDriveEncoderReversed = false;
-    public static final boolean kRearLeftDriveEncoderReversed = true;
-    public static final boolean kRearRightDriveEncoderReversed = true;
+    // public static final boolean kFrontLeftDriveEncoderReversed = false;
+    // public static final boolean kFrontRightDriveEncoderReversed = false;
+    // public static final boolean kRearLeftDriveEncoderReversed = true;
+    // public static final boolean kRearRightDriveEncoderReversed = true;
 
     public static final int kFrontLeftMagEncoderPort = 12;
     public static final int kFrontRightMagEncoderPort = 9;
     public static final int kRearLeftMagEncoderPort = 11;
     public static final int kRearRightMagEncoderPort = 10;
 
-    public static final double kFrontLeftMagEncoderOffsetDegrees_NoNo = 240.38;
-    public static final double kFrontRightMagEncoderOffsetDegrees_NoNo = 317.46;
+    // Only disable the steering angle optimizer when measuring the CANcoder offsets!
+    public static final boolean DISABLE_ANGLE_OPTIMIZER = false;
+
+    // Note: Zeroing the CanCoder in Tuner X doesn't seem to affect the reported absolute position.
+    public static final double kFrontLeftMagEncoderOffsetDegrees_NoNo = 240.55;
+    public static final double kFrontRightMagEncoderOffsetDegrees_NoNo = 317.94;
     public static final double kRearLeftMagEncoderOffsetDegrees_NoNo = 241.87;
     public static final double kRearRightMagEncoderOffsetDegrees_NoNo = 133.46;
 
@@ -75,7 +79,7 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));  // Rear Right Quadrant
 
     public static final int kIMU_ID = 13;
-    public static final boolean kGyroReversed = false;
+    // public static final boolean kGyroReversed = false;
 
     public static int kSwerveFL_enum = 0;
     public static int kSwerveFR_enum = 1;
