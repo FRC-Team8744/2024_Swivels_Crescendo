@@ -10,11 +10,12 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.MechanismConstants;
 
 public class Intake extends SubsystemBase {
   public DigitalInput inputIR = new DigitalInput(0);
-  private CANSparkMax frontIntakeSparkMax = new CANSparkMax(Constants.kFrontIntakePort, MotorType.kBrushless);
-  private CANSparkMax rearIntakeSparkMax = new CANSparkMax(Constants.kRearIntakePort, MotorType.kBrushless);
+  private CANSparkMax frontIntakeSparkMax = new CANSparkMax(MechanismConstants.kFrontIntakePort, MotorType.kBrushless);
+  private CANSparkMax rearIntakeSparkMax = new CANSparkMax(MechanismConstants.kRearIntakePort, MotorType.kBrushless);
   /** Creates a new Intake. */
   public Intake() {
 

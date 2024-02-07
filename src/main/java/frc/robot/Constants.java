@@ -17,9 +17,10 @@ public final class Constants {
   public static final int kMaxSpeedPercentTeleop = 50;
   public static final int kMaxAccelerationPercent = 100;
 
-public static final int kRearIntakePort = 16;
-
-public static final int kFrontIntakePort = 15;
+  public static final class MechanismConstants {
+    public static final int kRearIntakePort = 16;
+    public static final int kFrontIntakePort = 15;
+  }
 
   public static final class SwerveConstants {
     public static final double kMaxSpeedMetersPerSecond = (4.4 * kMaxSpeedPercentAuto) / 100;
