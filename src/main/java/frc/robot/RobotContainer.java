@@ -27,6 +27,7 @@ import frc.robot.commands.Trings;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision2;
 import edu.wpi.first.wpilibj2.command.Command;
 // import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -47,6 +49,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
     public final Vision m_Vision = new Vision();
+    public final Vision2 m_Vision2 = new Vision2();
     public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
