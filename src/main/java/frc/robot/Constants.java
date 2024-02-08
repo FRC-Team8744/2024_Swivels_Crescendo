@@ -107,12 +107,33 @@ public final class Constants {
     public static final int DRIVE_CURRENT_LIMIT = 40;
     public static final int ANGLE_CURRENT_LIMIT = 20;
 
+    public static final boolean DRIVE_MOTOR_PROFILED_MODE = true;
+    /** Angle motor PID values for speed/acceleration limited mode. */
+    // Reference: https://github.com/REVrobotics/SPARK-MAX-Examples/blob/master/Java/Smart%20Motion%20Example/src/main/java/frc/robot/Robot.java
+    public static final double DRIVE_KP_PROFILED = 0.01;
+    public static final double DRIVE_KI_PROFILED = 0.0;
+    public static final double DRIVE_KD_PROFILED = 0.0;
+    public static final double DRIVE_KF_PROFILED = 0.23;
+    public static final double DRIVE_MAX_VEL_PROFILED = kMaximumSparkMaxRPM;  // Maximum Velocity, RPM
+    public static final double DRIVE_MAX_ACC_PROFILED = 20000;  // Maximum Acceleration, RPM^2
+    public static final double DRIVE_MAX_ERR_PROFILED = 0.02;  // Error tolerance of PID controller, rotations
+
     /** Drive motor PID values. */
     public static final double DRIVE_KP = 0.1;
     public static final double DRIVE_KI = 0.0;
     public static final double DRIVE_KD = 0.0;
     public static final double DRIVE_KF = 0.25;
 
+    public static final boolean ANGLE_MOTOR_PROFILED_MODE = true;
+    /** Angle motor PID values for speed/acceleration limited mode. */
+    // Reference: https://github.com/REVrobotics/SPARK-MAX-Examples/blob/master/Java/Smart%20Motion%20Example/src/main/java/frc/robot/Robot.java
+    public static final double ANGLE_KP_PROFILED = 0.00001;
+    public static final double ANGLE_KI_PROFILED = 0.0;
+    public static final double ANGLE_KD_PROFILED = 0.0;
+    public static final double ANGLE_KF_PROFILED = 0.0003;
+    public static final double ANGLE_MAX_VEL_PROFILED = kMaximumSparkMaxRPM;  // Maximum Velocity, RPM
+    public static final double ANGLE_MAX_ACC_PROFILED = 20000;  // Maximum Acceleration, RPM^2
+    public static final double ANGLE_MAX_ERR_PROFILED = 0.02;  // Error tolerance of PID controller, rotations
 
     /** Angle motor PID values. */
     public static final double ANGLE_KP = 1.5;
@@ -128,7 +149,7 @@ public final class Constants {
     /** Inversions. */
     public static final boolean DRIVE_MOTOR_INVERSION = true;
     public static final boolean ANGLE_MOTOR_INVERSION = true;
-    public static final boolean CANCODER_INVERSION = false;
+    // public static final boolean CANCODER_INVERSION = false;
 
     /** Idle modes. */
     // public static final IdleMode DRIVE_IDLE_MODE = IdleMode.kBrake;
