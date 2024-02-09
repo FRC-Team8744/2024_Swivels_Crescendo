@@ -104,10 +104,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   // Create Field2d for robot and trajectory visualizations.
   public Field2d m_field;
+
+  private String MyName;
   
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    switch(Preferences.getString("RobotName", "NoDefault")) {
+    MyName = Preferences.getString("RobotName", "NoDefault");
+    System.out.println("Robot ID: " + MyName);
+    switch(MyName) {
       case "Swivels":
         offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_Swivels;
         offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_Swivels;
@@ -119,6 +123,7 @@ public class DriveSubsystem extends SubsystemBase {
         offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_NoNo;
         offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_NoNo;
         offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_NoNo;
+        System.out.println("Offsets loaded for NoNo");
         break;
       default:
         // Raise error!
@@ -234,26 +239,28 @@ public class DriveSubsystem extends SubsystemBase {
 
   if (Constants.kDebugLevel >=3) {
 
-      SmartDashboard.putBoolean("DigitalInput", input.get());
-      SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
+      // SmartDashboard.putBoolean("DigitalInput", input.get());
+      // SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
 
       SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
       SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
       SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
       SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
 
-      SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
-      SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
-      SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
-      SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
+      // SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
+      // SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
+      // SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
+      // SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
 
-      SmartDashboard.putNumber("FL Disired Speed", m_frontLeft.getState().speedMetersPerSecond);
-      SmartDashboard.putNumber("FL Actual Speed", m_frontLeft.getVelocity());
-      SmartDashboard.putNumber("FL Drive Current", m_frontLeft.getCurrent());
+      // SmartDashboard.putNumber("FL Disired Speed", m_frontLeft.getState().speedMetersPerSecond);
+      // SmartDashboard.putNumber("FL Actual Speed", m_frontLeft.getVelocity());
+      // SmartDashboard.putNumber("FL Drive Current", m_frontLeft.getCurrent());
 
-      SmartDashboard.putNumber("FL Rot Speed", m_frontLeft.getState().angle.getDegrees());
-      SmartDashboard.putNumber("FL Actual Rot", m_frontLeft.getAngle().getDegrees());
-      SmartDashboard.putNumber("FL Drive Current",m_frontLeft.getTurnCurrent());
+      SmartDashboard.putNumber("FL Angle State", m_frontLeft.getState().angle.getDegrees());
+      SmartDashboard.putNumber("FL Angle SparkMax", m_frontLeft.getAngle().getDegrees());
+      SmartDashboard.putNumber("FL Angle CanCoder", m_frontLeft.getCanCoder());
+      SmartDashboard.putNumber("FL Angle Offset", m_frontLeft.getCanCoder() - m_frontLeft.getAngle().getDegrees());
+      SmartDashboard.putNumber("FL Angle Current",m_frontLeft.getTurnCurrent());
       
       SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
       SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
