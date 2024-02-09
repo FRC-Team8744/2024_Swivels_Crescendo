@@ -66,7 +66,7 @@ SmartDashboard.putData("PID", m_turnCtrl);
       m_lightbarLeds.allOff(); // after it's done it will be red
       m_lightbarLeds.setLed(17, 255, 1, 1); // red
     }
-        m_heading = m_drive.getHeading();
+        m_heading = m_drive.m_imu.getHeadingDegrees();
         // if (tx >= 0){
         //   m_goalAngle = m_heading + tx;
         // }
