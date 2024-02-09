@@ -62,11 +62,11 @@ public class Multi_IMU extends SubsystemBase {
     m_whoami = Preferences.getString("RobotName", "Undefined");
     switch (m_whoami) {
       case "Swivels":
-          m_imuSelected = PIGEON2;
+          m_imuSelected = PIGEON1;
         break;
     
       case "NoNo":
-          m_imuSelected = NAVX2_MICRO;
+          m_imuSelected = PIGEON2;
         break;
     
       default:
