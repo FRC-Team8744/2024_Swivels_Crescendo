@@ -29,8 +29,7 @@ import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
-
-
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -47,41 +46,119 @@ public class DriveSubsystem extends SubsystemBase {
 
   DigitalInput input = new DigitalInput(0);
   DigitalInput inputIR = new DigitalInput(1);
+
+  double offset_FL = 0;
+  double offset_RL = 0;
+  double offset_FR = 0;
+  double offset_RR = 0;
+  
   // Robot swerve modules
-  private final SwerveModuleOffboard m_frontLeft =
-    new SwerveModuleOffboard(
-      SwerveConstants.kFrontLeftDriveMotorPort,
-      SwerveConstants.kFrontLeftTurningMotorPort,
-      SwerveConstants.kFrontLeftMagEncoderPort,
-      SwerveConstants.kFrontLeftMagEncoderOffsetDegrees);
+  private final SwerveModuleOffboard m_frontLeft;
+  //  =
+  //   new SwerveModuleOffboard(
+  //     SwerveConstants.kFrontLeftDriveMotorPort,
+  //     SwerveConstants.kFrontLeftTurningMotorPort,
+  //     SwerveConstants.kFrontLeftMagEncoderPort,
+  //     SwerveConstants.kFrontLeftMagEncoderOffsetDegrees);
 
-  private final SwerveModuleOffboard m_rearLeft =
-    new SwerveModuleOffboard(
-      SwerveConstants.kRearLeftDriveMotorPort,
-      SwerveConstants.kRearLeftTurningMotorPort,
-      SwerveConstants.kRearLeftMagEncoderPort,
-      SwerveConstants.kRearLeftMagEncoderOffsetDegrees);
+  private final SwerveModuleOffboard m_rearLeft;
+  //  =
+  //   new SwerveModuleOffboard(
+  //     SwerveConstants.kRearLeftDriveMotorPort,
+  //     SwerveConstants.kRearLeftTurningMotorPort,
+  //     SwerveConstants.kRearLeftMagEncoderPort,
+  //     SwerveConstants.kRearLeftMagEncoderOffsetDegrees);
 
-  private final SwerveModuleOffboard m_frontRight =
-    new SwerveModuleOffboard(
-      SwerveConstants.kFrontRightDriveMotorPort,
-      SwerveConstants.kFrontRightTurningMotorPort,
-      SwerveConstants.kFrontRightMagEncoderPort,
-      SwerveConstants.kFrontRightMagEncoderOffsetDegrees);
+  private final SwerveModuleOffboard m_frontRight;
+  //  =
+  //   new SwerveModuleOffboard(
+  //     SwerveConstants.kFrontRightDriveMotorPort,
+  //     SwerveConstants.kFrontRightTurningMotorPort,
+  //     SwerveConstants.kFrontRightMagEncoderPort,
+  //     SwerveConstants.kFrontRightMagEncoderOffsetDegrees);
 
-  private final SwerveModuleOffboard m_rearRight =
-    new SwerveModuleOffboard(
-      SwerveConstants.kRearRightDriveMotorPort,
-      SwerveConstants.kRearRightTurningMotorPort,
-      SwerveConstants.kRearRightMagEncoderPort,
-      SwerveConstants.kRearRightMagEncoderOffsetDegrees);
+  private final SwerveModuleOffboard m_rearRight;
+  //  =
+  //   new SwerveModuleOffboard(
+  //     SwerveConstants.kRearRightDriveMotorPort,
+  //     SwerveConstants.kRearRightTurningMotorPort,
+  //     SwerveConstants.kRearRightMagEncoderPort,
+  //     SwerveConstants.kRearRightMagEncoderOffsetDegrees);
 
   // The imu sensor
   private final Multi_IMU m_imu = new Multi_IMU();
   // private final PigeonIMU m_imu = new PigeonIMU(SwerveConstants.kIMU_ID);
   
   // Odometry class for tracking robot pose
-  SwerveDriveOdometry m_odometry =
+  SwerveDriveOdometry m_odometry;
+  //  =
+  //     new SwerveDriveOdometry(
+  //         SwerveConstants.kDriveKinematics,
+  //         Rotation2d.fromDegrees(m_imu.getYaw()),
+  //         new SwerveModulePosition[] {
+  //           m_frontLeft.getPosition(),
+  //           m_frontRight.getPosition(),
+  //           m_rearLeft.getPosition(),
+  //           m_rearRight.getPosition()
+  //         });
+
+  // Create Field2d for robot and trajectory visualizations.
+  public Field2d m_field;
+
+  private String MyName;
+  
+  /** Creates a new DriveSubsystem. */
+  public DriveSubsystem() {
+    MyName = Preferences.getString("RobotName", "NoDefault");
+    System.out.println("Robot ID: " + MyName);
+    switch(MyName) {
+      case "Swivels":
+        offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_Swivels;
+        offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_Swivels;
+        offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_Swivels;
+        offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_Swivels;
+      break;
+      case "NoNo":
+        offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_NoNo;
+        offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_NoNo;
+        offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_NoNo;
+        offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_NoNo;
+        System.out.println("Offsets loaded for NoNo");
+        break;
+      default:
+        // Raise error!
+    }
+  
+  m_frontLeft =
+    new SwerveModuleOffboard(
+      SwerveConstants.kFrontLeftDriveMotorPort,
+      SwerveConstants.kFrontLeftTurningMotorPort,
+      SwerveConstants.kFrontLeftMagEncoderPort,
+      offset_FL);
+
+  m_rearLeft =
+    new SwerveModuleOffboard(
+      SwerveConstants.kRearLeftDriveMotorPort,
+      SwerveConstants.kRearLeftTurningMotorPort,
+      SwerveConstants.kRearLeftMagEncoderPort,
+      offset_RL);
+
+  m_frontRight =
+    new SwerveModuleOffboard(
+      SwerveConstants.kFrontRightDriveMotorPort,
+      SwerveConstants.kFrontRightTurningMotorPort,
+      SwerveConstants.kFrontRightMagEncoderPort,
+      offset_FR);
+
+  m_rearRight =
+    new SwerveModuleOffboard(
+      SwerveConstants.kRearRightDriveMotorPort,
+      SwerveConstants.kRearRightTurningMotorPort,
+      SwerveConstants.kRearRightMagEncoderPort,
+      offset_RR);
+
+  // Odometry class for tracking robot pose
+  m_odometry =
       new SwerveDriveOdometry(
           SwerveConstants.kDriveKinematics,
           m_imu.getHeading(),
@@ -92,12 +169,7 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
           });
 
-  // Create Field2d for robot and trajectory visualizations.
-  public Field2d m_field;
-  
-  /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {
-    // Create and push Field2d to SmartDashboard.
+          // Create and push Field2d to SmartDashboard.
     m_field = new Field2d();
     SmartDashboard.putData(m_field);
 
@@ -167,26 +239,28 @@ public class DriveSubsystem extends SubsystemBase {
 
   if (Constants.kDebugLevel >=3) {
 
-      SmartDashboard.putBoolean("DigitalInput", input.get());
-      SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
+      // SmartDashboard.putBoolean("DigitalInput", input.get());
+      // SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
 
       SmartDashboard.putNumber("FL Mag Enc", m_frontLeft.getCanCoder());
       SmartDashboard.putNumber("FR Mag Enc", m_frontRight.getCanCoder());
       SmartDashboard.putNumber("RL Mag Enc", m_rearLeft.getCanCoder());
       SmartDashboard.putNumber("RR Mag Enc", m_rearRight.getCanCoder());
 
-      SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
-      SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
-      SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
-      SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
+      // SmartDashboard.putNumber("FL Drive Enc", m_frontLeft.getPosition().distanceMeters);
+      // SmartDashboard.putNumber("FR Drive Enc", m_frontRight.getPosition().distanceMeters);
+      // SmartDashboard.putNumber("RL Drive Enc", m_rearLeft.getPosition().distanceMeters);
+      // SmartDashboard.putNumber("RR Drive Enc", m_rearRight.getPosition().distanceMeters);
 
-      SmartDashboard.putNumber("FL Disired Speed", m_frontLeft.getState().speedMetersPerSecond);
-      SmartDashboard.putNumber("FL Actual Speed", m_frontLeft.getVelocity());
-      SmartDashboard.putNumber("FL Drive Current", m_frontLeft.getCurrent());
+      // SmartDashboard.putNumber("FL Disired Speed", m_frontLeft.getState().speedMetersPerSecond);
+      // SmartDashboard.putNumber("FL Actual Speed", m_frontLeft.getVelocity());
+      // SmartDashboard.putNumber("FL Drive Current", m_frontLeft.getCurrent());
 
-      SmartDashboard.putNumber("FL Rot Speed", m_frontLeft.getState().angle.getDegrees());
-      SmartDashboard.putNumber("FL Actual Rot", m_frontLeft.getAngle().getDegrees());
-      SmartDashboard.putNumber("FL Drive Current",m_frontLeft.getTurnCurrent());
+      SmartDashboard.putNumber("FL Angle State", m_frontLeft.getState().angle.getDegrees());
+      SmartDashboard.putNumber("FL Angle SparkMax", m_frontLeft.getAngle().getDegrees());
+      SmartDashboard.putNumber("FL Angle CanCoder", m_frontLeft.getCanCoder());
+      SmartDashboard.putNumber("FL Angle Offset", m_frontLeft.getCanCoder() - m_frontLeft.getAngle().getDegrees());
+      SmartDashboard.putNumber("FL Angle Current",m_frontLeft.getTurnCurrent());
       
       SmartDashboard.putNumber("FL Turn Enc", m_frontLeft.getPosition().angle.getDegrees());
       SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
