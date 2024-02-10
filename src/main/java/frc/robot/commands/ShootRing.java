@@ -10,11 +10,13 @@ import frc.robot.subsystems.Shooter;
 
 public class ShootRing extends Command {
   private final Shooter m_shooter;
+  private final Intake m_intake;
 
-  public ShootRing(Shooter sh) {
+  public ShootRing(Shooter sh, Intake in) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = sh;
-    addRequirements(m_shooter);
+    m_intake = in;
+    addRequirements(m_intake);
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +31,9 @@ public class ShootRing extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_shooter.stopShooter();
+  }
 
   // Returns true when the command should end.
   @Override

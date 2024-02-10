@@ -28,6 +28,15 @@ public class Shooter extends SubsystemBase {
     topShooterSparkMax.set(.1);
     bottomShooterSparkMax.set(-.1);
   }
+
+  public void stopShooter() {
+    topShooterSparkMax.stopMotor();
+    bottomShooterSparkMax.stopMotor();
+  }
+
+  public void indexRun(double speed) {
+    indexSparkMax.set(speed);
+  }
 }
 
 // .32 maximum vert. .2 minimum vert.

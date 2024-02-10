@@ -13,6 +13,7 @@ import frc.robot.Constants.MechanismConstants;
 
 public class Intake extends SubsystemBase {
   public DigitalInput inputIR = new DigitalInput(0);
+  private final Shooter m_shooter = new Shooter();
   private CANSparkMax frontIntakeSparkMax = new CANSparkMax(MechanismConstants.kFrontIntakePort, MotorType.kBrushless);
   private CANSparkMax rearIntakeSparkMax = new CANSparkMax(MechanismConstants.kRearIntakePort, MotorType.kBrushless);
   /** Creates a new Intake. */
@@ -23,6 +24,7 @@ public class Intake extends SubsystemBase {
     double speedSetting = -.3;
     frontIntakeSparkMax.set(speedSetting * 3/2); //Ratio of wheel sizes
     rearIntakeSparkMax.set(speedSetting);
+    m_shooter.indexRun(speedSetting * 2/3);
   }
 
     public void donutRelease() {

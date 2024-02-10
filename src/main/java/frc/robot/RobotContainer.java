@@ -133,7 +133,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new OuttakeRun(m_intake));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter));
+    .whileTrue(new ShootRing(m_shooter, m_intake));
   //   new JoystickButton(m_driverController, Button.kB.values)
   //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
