@@ -17,16 +17,20 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax leftPivotSparkMax = new CANSparkMax(MechanismConstants.kPLeftPivotShooterPort, MotorType.kBrushless); 
   private CANSparkMax rightPivotSparkMax = new CANSparkMax(MechanismConstants.kRightPivotShooterPort, MotorType.kBrushless); 
   
-  public Shooter() {}
+  public Shooter() {
+    leftPivotSparkMax.setSmartCurrentLimit(10);
+    rightPivotSparkMax.setSmartCurrentLimit(10);
+    // rightPivotSparkMax.follow(leftPivotSparkMax);
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
-  public void testShoot() {
-    topShooterSparkMax.set(.1);
-    bottomShooterSparkMax.set(-.1);
+  public void testShoot(double speed) {
+    topShooterSparkMax.set(speed);
+    bottomShooterSparkMax.set(-speed);
   }
 
   public void stopShooter() {
@@ -36,6 +40,20 @@ public class Shooter extends SubsystemBase {
 
   public void indexRun(double speed) {
     indexSparkMax.set(speed);
+  }
+
+  public void indexStop() {
+    indexSparkMax.stopMotor();
+  }
+
+  public void testAngle(double speed) {
+    leftPivotSparkMax.set(speed);
+    rightPivotSparkMax.set(speed);
+  }
+
+  public void stopAngle() {
+    leftPivotSparkMax.stopMotor();
+    rightPivotSparkMax.stopMotor();
   }
 }
 

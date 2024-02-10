@@ -8,24 +8,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class ShootRing extends Command {
+public class TestPivot extends Command {
   private final Shooter m_shooter;
-  private final Intake m_intake;
-
-  public ShootRing(Shooter sh, Intake in) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  /** Creates a new IntakeRun. */
+  public TestPivot(Shooter sh) {
     m_shooter = sh;
-    m_intake = in;
-    addRequirements(m_intake);
     addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double speedSetting = .25;
-    m_shooter.testShoot(speedSetting);
-    m_shooter.indexRun(speedSetting * 3);
+    m_shooter.testAngle(.2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,12 +29,12 @@ public class ShootRing extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.stopShooter();
+    m_shooter.stopAngle();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return false; 
   }
 }

@@ -34,6 +34,7 @@ import frc.robot.subsystems.Vision;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.OuttakeRun;
 import frc.robot.commands.ShootRing;
+import frc.robot.commands.TestPivot;
 import frc.robot.commands.Wait;
 import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
@@ -58,9 +59,9 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final Intake m_intake = new Intake();
-  private final Shooter m_shooter = new Shooter();
+  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final Intake m_intake = new Intake();
+  public final Shooter m_shooter = new Shooter();
   public final Vision m_vision = new Vision();
   public final LEDS m_leds = new LEDS();
   // The driver's controller
@@ -81,7 +82,7 @@ public class RobotContainer {
     // exampleSubsystem = new ExampleSubsystem();
 
     // // Register Named Commands
-    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_leds).withTimeout(1.5));
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter).withTimeout(1.5));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
@@ -129,11 +130,13 @@ public class RobotContainer {
     //   //.onTrue(new auto_led())
     //   .onFalse( m_led());
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileTrue(new IntakeRun(m_intake, m_leds));
+    .whileTrue(new IntakeRun(m_intake, m_shooter));
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new OuttakeRun(m_intake));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
     .whileTrue(new ShootRing(m_shooter, m_intake));
+    new JoystickButton(m_driverController, Button.kB.value)
+    .whileTrue(new TestPivot(m_shooter));
   //   new JoystickButton(m_driverController, Button.kB.values)
   //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
