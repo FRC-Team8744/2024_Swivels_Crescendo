@@ -50,8 +50,8 @@ SmartDashboard.putData("PID", m_turnCtrl);
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    ControlButtonB = !ControlButtonB;
-    if (ControlButtonB){
+    // ControlButtonB = !ControlButtonB;
+    if (false) { //ControlButtonB){
     tv = SmartDashboard.getNumber("tv", 0);
     tx = SmartDashboard.getNumber("LimelightX", 0);
     } else  {
