@@ -23,8 +23,8 @@ public final class Constants {
     public static final int kTopShooterPort = 17; // Runs forward
     public static final int kBottomShooterPort = 19; // Runs backward
     public static final int kIndexShooterPort = 18;
-    public static final int kPLeftPivotShooterPort = 0;
-    public static final int kRightPivotShooterPort = 0;
+    public static final int kPLeftPivotShooterPort = 21;
+    public static final int kRightPivotShooterPort = 20;
   }
 
   public static final class SwerveConstants {

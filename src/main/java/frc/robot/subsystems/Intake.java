@@ -24,6 +24,13 @@ public class Intake extends SubsystemBase {
     frontIntakeSparkMax.set(speedSetting * 3/2); //Ratio of wheel sizes
     rearIntakeSparkMax.set(speedSetting);
   }
+
+    public void donutRelease() {
+    double speedSetting = .3;
+    frontIntakeSparkMax.set(speedSetting * 3/2); //Ratio of wheel sizes
+    rearIntakeSparkMax.set(speedSetting);
+  }
+
   public void motorOff() {
     frontIntakeSparkMax.stopMotor();
     rearIntakeSparkMax.stopMotor();

@@ -29,8 +29,11 @@ import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.IntakeRun;
+import frc.robot.commands.OuttakeRun;
+import frc.robot.commands.ShootRing;
 import frc.robot.commands.Wait;
 import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
@@ -57,6 +60,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final Intake m_intake = new Intake();
+  private final Shooter m_shooter = new Shooter();
   public final Vision m_vision = new Vision();
   public final LEDS m_leds = new LEDS();
   // The driver's controller
@@ -126,6 +130,10 @@ public class RobotContainer {
     //   .onFalse( m_led());
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeRun(m_intake, m_leds));
+    new JoystickButton(m_driverController, Button.kA.value)
+    .whileTrue(new OuttakeRun(m_intake));
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+    .whileTrue(new ShootRing(m_shooter));
   //   new JoystickButton(m_driverController, Button.kB.values)
   //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));

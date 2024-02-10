@@ -16,10 +16,18 @@ public class Shooter extends SubsystemBase {
   private CANSparkMax indexSparkMax = new CANSparkMax(MechanismConstants.kIndexShooterPort, MotorType.kBrushless);
   private CANSparkMax leftPivotSparkMax = new CANSparkMax(MechanismConstants.kPLeftPivotShooterPort, MotorType.kBrushless); 
   private CANSparkMax rightPivotSparkMax = new CANSparkMax(MechanismConstants.kRightPivotShooterPort, MotorType.kBrushless); 
+  
   public Shooter() {}
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  public void testShoot() {
+    topShooterSparkMax.set(.1);
+    bottomShooterSparkMax.set(-.1);
+  }
 }
+
+// .32 maximum vert. .2 minimum vert.
