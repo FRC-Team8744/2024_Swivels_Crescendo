@@ -26,6 +26,7 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
+import frc.robot.commands.tesst;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision;
@@ -34,6 +35,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 import java.util.List;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -102,7 +105,23 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() { }
+  private Boolean testss = false;
+  private void configureButtonBindings() {
+    new JoystickButton(m_driverController, Button.kY.value)
+    .whileTrue(new tesst(testss));
+    new JoystickButton(m_driverController, Button.kA.value)
+    .onTrue(new tesst(testss));
+    new JoystickButton(m_driverController, Button.kX.value)
+    .onTrue(new tesst(testss));
+    new JoystickButton(m_driverController, Button.kB.value)
+    .onTrue(new tesst(testss));
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    .onTrue(new tesst(testss));
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+    .onTrue(new tesst(testss));
+    new JoystickButton(m_driverController, Button.kBack.value)
+    .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
+   }
     // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
   public Command PathPlannerCommand(){
     return new PathPlannerAuto("AutoTest");

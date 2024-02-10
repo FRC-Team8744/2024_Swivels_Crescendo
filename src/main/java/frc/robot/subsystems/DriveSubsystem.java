@@ -30,7 +30,6 @@ import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,6 +47,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   DigitalInput input = new DigitalInput(0);
   public DigitalInput inputIR = new DigitalInput(1);
+   
+  
+  
 
   double offset_FL = 0;
   double offset_RL = 0;
@@ -373,9 +375,9 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /** Zeroes the heading of the robot. */
-  // public void zeroHeading() {
-  //   m_imu.setYaw(0);
-  // }
+  public void zeroIMU() {
+    m_imu.zeroHeading();;
+  }
 
   /**
    * Returns the heading of the robot.
