@@ -8,13 +8,14 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.MechanismConstants;
 
 public class Shooter extends SubsystemBase {
-  // private CANSparkMax rightFlywheelSparkMax = new CANSparkMax(Constants.kRightFlywheelShooterPort, MotorType.kBrushless);
-  // private CANSparkMax leftFlwheelSparkMax = new CANSparkMax(Constants.kLeftFlwheelShooterPort, MotorType.kBrushless);
-  // private CANSparkMax indexSparkMax = new CANSparkMax(Constants.kIndexShooterPort, MotorType.kBrushless);
-  // private CANSparkMax pivotSparkMax = new CANSparkMax(Constants.kPivotSparkMax, MotorType.kBrushless); 
+  private CANSparkMax topShooterSparkMax = new CANSparkMax(MechanismConstants.kTopShooterPort, MotorType.kBrushless);
+  private CANSparkMax bottomShooterSparkMax = new CANSparkMax(MechanismConstants.kBottomShooterPort, MotorType.kBrushless);
+  private CANSparkMax indexSparkMax = new CANSparkMax(MechanismConstants.kIndexShooterPort, MotorType.kBrushless);
+  private CANSparkMax leftPivotSparkMax = new CANSparkMax(MechanismConstants.kPLeftPivotShooterPort, MotorType.kBrushless); 
+  private CANSparkMax rightPivotSparkMax = new CANSparkMax(MechanismConstants.kRightPivotShooterPort, MotorType.kBrushless); 
   public Shooter() {}
 
   @Override

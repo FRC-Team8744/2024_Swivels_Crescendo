@@ -20,6 +20,11 @@ public final class Constants {
   public static final class MechanismConstants {
     public static final int kRearIntakePort = 16;
     public static final int kFrontIntakePort = 15;
+    public static final int kTopShooterPort = 17; // Runs forward
+    public static final int kBottomShooterPort = 19; // Runs backward
+    public static final int kIndexShooterPort = 18;
+    public static final int kPLeftPivotShooterPort = 0;
+    public static final int kRightPivotShooterPort = 0;
   }
 
   public static final class SwerveConstants {
