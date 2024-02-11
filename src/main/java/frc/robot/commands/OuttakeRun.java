@@ -6,19 +6,25 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 public class OuttakeRun extends Command {
   private final Intake m_intake;
+  private final Shooter m_shooter;
   /** Creates a new IntakeRun. */
-  public OuttakeRun(Intake in) {
+  public OuttakeRun(Intake in, Shooter sh) {
     m_intake = in;
+    m_shooter = sh;
     addRequirements(m_intake);
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    double speedSetting = 0.3;
     m_intake.donutRelease();
+    m_shooter.indexRun(speedSetting * 3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -29,6 +35,7 @@ public class OuttakeRun extends Command {
   @Override
   public void end(boolean interrupted) {
     m_intake.motorOff();
+    m_shooter.indexStop();
   }
 
   // Returns true when the command should end.

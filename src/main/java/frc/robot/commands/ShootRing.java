@@ -23,19 +23,24 @@ public class ShootRing extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double speedSetting = .25;
+    double speedSetting = .75;
     m_shooter.testShoot(speedSetting);
-    m_shooter.indexRun(speedSetting * 3);
+    m_shooter.testAngle(.2);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (m_shooter.atSpeed()) {
+      m_shooter.indexRun(-1);
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shooter.stopShooter();
+    m_shooter.indexStop();
   }
 
   // Returns true when the command should end.
