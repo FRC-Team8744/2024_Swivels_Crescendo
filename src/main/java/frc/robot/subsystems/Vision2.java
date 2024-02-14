@@ -50,6 +50,14 @@ if (result.hasTargets()){
   double Apriltagid = ID;
   SmartDashboard.putNumber("tx", tx);
   SmartDashboard.putNumber("ApriltagIDback", Apriltagid);
+  if (ID >= 11 && ID <= 16)
+  SmartDashboard.putNumber("Height",166);
+  else if (ID == 5 || ID == 6)
+  SmartDashboard.putNumber("Height",92);
+  else if (ID == 8 || ID == 7 || ID == 3 || ID == 4)
+  SmartDashboard.putNumber("Height", 207);
+  else SmartDashboard.putNumber("Height", -1);
+
 }
  
 SmartDashboard.putBoolean("RT", result.hasTargets());
