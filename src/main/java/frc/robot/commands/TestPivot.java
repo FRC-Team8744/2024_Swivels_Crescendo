@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 public class TestPivot extends Command {
@@ -19,7 +18,7 @@ public class TestPivot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooter.testAngle(.2);
+    m_shooter.testAngle(45);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

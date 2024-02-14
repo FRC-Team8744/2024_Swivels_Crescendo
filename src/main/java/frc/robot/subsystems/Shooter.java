@@ -16,6 +16,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MechanismConstants;
 
 public class Shooter extends SubsystemBase {
+  private static final double initialAngle = 9.0;
+  private static final double shooterGearRatio = 15.0;
+  private static final double minimumAngle = 9.0;
+  private static final double maximumAngle = 60.0;
+  public double shootingAngle = 45;
+  public double shootingVelocity = .5;
+
   private CANSparkMax topShooterSparkMax = new CANSparkMax(MechanismConstants.kTopShooterPort, MotorType.kBrushless);
   private CANSparkMax bottomShooterSparkMax = new CANSparkMax(MechanismConstants.kBottomShooterPort, MotorType.kBrushless);
   private CANSparkMax indexSparkMax = new CANSparkMax(MechanismConstants.kIndexShooterPort, MotorType.kBrushless);
@@ -51,10 +58,13 @@ public class Shooter extends SubsystemBase {
 
     // absoluteShooter.setPosition(0);
 
-    leftPivotPID.setP(0.8);
+    leftPivotPID.setP(0.05);
     leftPivotPID.setI(0);
     leftPivotPID.setD(0);
-    leftPivotPID.setFF(0.25);
+    leftPivotPID.setFF(0);
+
+    leftPivotEnc.setPositionConversionFactor(360 / shooterGearRatio);
+    leftPivotEnc.setPosition(initialAngle);
   }
 
   @Override
@@ -62,11 +72,13 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Top shooter", topShooterEnc.getPosition());
     SmartDashboard.putNumber("Bottom shooter", bottomShooterEnc.getPosition());
-    SmartDashboard.putNumber("Left pivot", leftPivotEnc.getPosition());
+    SmartDashboard.putNumber("Shooter degrees", leftPivotEnc.getPosition());
     SmartDashboard.putNumber("Right pivot", rightPivotEnc.getPosition());
     // SmartDashboard.putNumber("Abosulte encoder", absoluteShooter.getPosition());
     SmartDashboard.putNumber("Flywheel top RPM", topShooterEnc.getVelocity());
     SmartDashboard.putNumber("Flywheel bottom RPM", bottomShooterEnc.getVelocity());
+    SmartDashboard.putNumber("Current left", leftPivotSparkMax.getOutputCurrent());
+    SmartDashboard.putNumber("Current right", rightPivotSparkMax.getOutputCurrent());
   }
 
   public void testShoot(double speed) {
@@ -91,8 +103,10 @@ public class Shooter extends SubsystemBase {
     indexSparkMax.stopMotor();
   }
 
-  public void testAngle(double speed) {
-    leftPivotPID.setReference(1.0, CANSparkMax.ControlType.kPosition);
+  public void testAngle(double angle) {
+    if (angle < minimumAngle) angle = minimumAngle;
+    if (angle > maximumAngle) angle = maximumAngle;
+    leftPivotPID.setReference(angle, CANSparkMax.ControlType.kPosition);
     // leftPivotSparkMax.set(speed);
     // rightPivotSparkMax.set(speed);
   }
@@ -110,6 +124,12 @@ public class Shooter extends SubsystemBase {
       return false;
     }
   }
+
+  public void setShooterStuff(double angle, double velocity) {
+    shootingAngle = angle;
+    shootingVelocity = velocity;
+  }
+
 }
 
 // .32 maximum vert. .2 minimum vert.

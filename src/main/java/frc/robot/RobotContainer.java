@@ -18,6 +18,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -45,6 +46,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+
 import java.util.List;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -66,6 +69,7 @@ public class RobotContainer {
   public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  XboxController m_codriverController = new XboxController(OIConstants.kCodriverControllerPort);
 
   // A chooser for autonomous commands
 //   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -134,9 +138,13 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter, m_intake));
-    new JoystickButton(m_driverController, Button.kB.value)
-    .toggleOnTrue(new TestPivot(m_shooter));
+    .whileTrue(new ShootRing(m_shooter, m_intake, m_shooter.shootingAngle, m_shooter.shootingVelocity));
+    new JoystickButton(m_codriverController, Button.kY.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 0.5)));
+    // new JoystickButton(m_driverController, Button.kB.value)
+    // // .toggleOnTrue(new TestPivot(m_shooter));
+    // new JoystickButton(m_driverController, Button.kY.value)
+    // .whileTrue(new TestPivot(m_shooter));
   //   new JoystickButton(m_driverController, Button.kB.values)
   //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
