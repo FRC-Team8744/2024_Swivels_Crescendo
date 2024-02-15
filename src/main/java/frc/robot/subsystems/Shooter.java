@@ -19,9 +19,10 @@ public class Shooter extends SubsystemBase {
   private static final double initialAngle = 9.0;
   private static final double shooterGearRatio = 15.0;
   private static final double minimumAngle = 9.0;
-  private static final double maximumAngle = 60.0;
-  public double shootingAngle = 45;
+  private static final double maximumAngle = 85.0;
+  public double shootingAngle = 15;
   public double shootingVelocity = .5;
+  public String shootingPreset = "Nothing...";
 
   private CANSparkMax topShooterSparkMax = new CANSparkMax(MechanismConstants.kTopShooterPort, MotorType.kBrushless);
   private CANSparkMax bottomShooterSparkMax = new CANSparkMax(MechanismConstants.kBottomShooterPort, MotorType.kBrushless);
@@ -79,6 +80,10 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Flywheel bottom RPM", bottomShooterEnc.getVelocity());
     SmartDashboard.putNumber("Current left", leftPivotSparkMax.getOutputCurrent());
     SmartDashboard.putNumber("Current right", rightPivotSparkMax.getOutputCurrent());
+    SmartDashboard.putString("Shooting preset", shootingPreset);
+    SmartDashboard.putNumber("Shooting RPM average", (bottomShooterEnc.getVelocity() + bottomShooterEnc.getVelocity()) / 2);
+    SmartDashboard.putNumber("Shooting velocity", shootingVelocity);
+    SmartDashboard.putNumber("Shooting angle", shootingAngle);
   }
 
   public void testShoot(double speed) {
@@ -117,7 +122,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean atSpeed() {
-    if (topShooterEnc.getVelocity() >= 2500.0) {
+    if ((topShooterEnc.getVelocity()) >= (4500.0 * shootingVelocity)) {
+    // if ((Math.abs(topShooterEnc.getVelocity()) + Math.abs(bottomShooterEnc.getVelocity()) / 2) >= 1000.0) {
       return true;
     }
     else {
@@ -125,9 +131,10 @@ public class Shooter extends SubsystemBase {
     }
   }
 
-  public void setShooterStuff(double angle, double velocity) {
+  public void setShooterStuff(double angle, double velocity, String name) {
     shootingAngle = angle;
     shootingVelocity = velocity;
+    shootingPreset = name;
   }
 
 }

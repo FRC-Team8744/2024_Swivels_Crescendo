@@ -11,15 +11,11 @@ import frc.robot.subsystems.Shooter;
 public class ShootRing extends Command {
   private final Shooter m_shooter;
   private final Intake m_intake;
-  private final double shooterAngle;
-  private final double shooterVelocity;
 
-  public ShootRing(Shooter sh, Intake in, double angle, double velocity) {
+  public ShootRing(Shooter sh, Intake in) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = sh;
     m_intake = in;
-    shooterAngle = angle;
-    shooterVelocity = velocity;
     addRequirements(m_intake);
     addRequirements(m_shooter);
   }
@@ -27,8 +23,8 @@ public class ShootRing extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_shooter.testShoot(shooterVelocity);
-    m_shooter.testAngle(shooterAngle);
+    m_shooter.testShoot(m_shooter.shootingVelocity);
+    m_shooter.testAngle(m_shooter.shootingAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

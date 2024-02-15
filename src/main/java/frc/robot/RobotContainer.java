@@ -69,7 +69,7 @@ public class RobotContainer {
   public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  XboxController m_codriverController = new XboxController(OIConstants.kCodriverControllerPort);
+  // XboxController m_codriverController = new XboxController(OIConstants.kCodriverControllerPort);
 
   // A chooser for autonomous commands
 //   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -137,10 +137,16 @@ public class RobotContainer {
     .whileTrue(new IntakeRun(m_intake, m_shooter));
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter));
+    // new JoystickButton(m_driverController, Button.kX.value)
+    // .whileTrue(new TestPivot(m_shooter));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter, m_intake, m_shooter.shootingAngle, m_shooter.shootingVelocity));
-    new JoystickButton(m_codriverController, Button.kY.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 0.5)));
+    .whileTrue(new ShootRing(m_shooter, m_intake));
+    new JoystickButton(m_driverController, Button.kY.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.25, "Amp")));
+    new JoystickButton(m_driverController, Button.kB.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.45, "Trap")));
+    new JoystickButton(m_driverController, Button.kX.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(37, 0.5, "Podium")));
     // new JoystickButton(m_driverController, Button.kB.value)
     // // .toggleOnTrue(new TestPivot(m_shooter));
     // new JoystickButton(m_driverController, Button.kY.value)
