@@ -3,34 +3,52 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.249126788056797,
-        "y": 7.0050704681015805
+        "x": 2.909982492594682,
+        "y": 6.990384785778517
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.249126788056797,
-        "y": 7.019756150424644
+        "x": 2.909982492594682,
+        "y": 7.0050704681015805
       },
       "isLocked": false,
       "linkedName": "LeftBaseLine1"
     },
     {
       "anchor": {
-        "x": 0.7071301441350655,
-        "y": 6.726042503963363
+        "x": 1.4120428956421427,
+        "y": 5.53650223579517
       },
       "prevControl": {
-        "x": 1.5148426719035912,
-        "y": 7.445640937793504
+        "x": 2.2197554234106662,
+        "y": 6.256100669625311
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "StartingPoint1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ShootRing"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -39,7 +57,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 61.55707137563665,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,

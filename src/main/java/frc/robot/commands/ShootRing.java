@@ -5,18 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 public class ShootRing extends Command {
   private final Shooter m_shooter;
-  private final Intake m_intake;
 
-  public ShootRing(Shooter sh, Intake in) {
+  public ShootRing(Shooter sh) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = sh;
-    m_intake = in;
-    addRequirements(m_intake);
     addRequirements(m_shooter);
   }
 

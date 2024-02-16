@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.249126788056797,
-        "y": 7.0050704681015805
+        "x": 2.909982492594682,
+        "y": 6.990384785778517
       },
       "prevControl": {
-        "x": 2.1463270117953486,
-        "y": 7.115213085524561
+        "x": 2.8071827163332332,
+        "y": 7.100527403201498
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,16 +32,16 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "WaitTest",
-      "waypointRelativePos": 0.4,
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.85,
       "command": {
         "type": "sequential",
         "data": {
           "commands": [
             {
-              "type": "wait",
+              "type": "named",
               "data": {
-                "waitTime": 1.0
+                "name": "RunIntake"
               }
             }
           ]

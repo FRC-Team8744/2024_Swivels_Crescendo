@@ -20,8 +20,9 @@ public class Shooter extends SubsystemBase {
   private static final double shooterGearRatio = 15.0;
   private static final double minimumAngle = 9.0;
   private static final double maximumAngle = 85.0;
-  public double shootingAngle = 15;
-  public double shootingVelocity = .5;
+  public double shootingAngle = 30;
+  public double shootingVelocity = 0.1;
+  // Wing 26/.65 for old 16ft
   public String shootingPreset = "Nothing...";
 
   private CANSparkMax topShooterSparkMax = new CANSparkMax(MechanismConstants.kTopShooterPort, MotorType.kBrushless);
@@ -123,7 +124,6 @@ public class Shooter extends SubsystemBase {
 
   public boolean atSpeed() {
     if ((topShooterEnc.getVelocity()) >= (4500.0 * shootingVelocity)) {
-    // if ((Math.abs(topShooterEnc.getVelocity()) + Math.abs(bottomShooterEnc.getVelocity()) / 2) >= 1000.0) {
       return true;
     }
     else {

@@ -18,6 +18,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -69,7 +70,7 @@ public class RobotContainer {
   public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  // XboxController m_codriverController = new XboxController(OIConstants.kCodriverControllerPort);
+  XboxController m_codriverController = new XboxController(OIConstants.kCodriverControllerPort);
 
   // A chooser for autonomous commands
 //   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -88,6 +89,7 @@ public class RobotContainer {
     // // Register Named Commands
     NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter).withTimeout(1.5));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter)));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
     // Configure the button bindings
@@ -130,27 +132,27 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    // new JoystickButton(m_driverController, Button.kA.value)
-    //   //.onTrue(new auto_led())
-    //   .onFalse( m_led());
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeRun(m_intake, m_shooter));
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+    .whileTrue(new ShootRing(m_shooter));
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter));
     // new JoystickButton(m_driverController, Button.kX.value)
     // .whileTrue(new TestPivot(m_shooter));
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter, m_intake));
-    new JoystickButton(m_driverController, Button.kY.value)
+    // Codriver Bindings
+    new JoystickButton(m_codriverController, Button.kLeftBumper.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")));
+    new JoystickButton(m_codriverController, Button.kRightBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.25, "Amp")));
-    new JoystickButton(m_driverController, Button.kB.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.45, "Trap")));
-    new JoystickButton(m_driverController, Button.kX.value)
+    new JoystickButton(m_codriverController, Button.kA.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 0.7, "Wing")));
+    new JoystickButton(m_codriverController, Button.kB.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(37, 0.5, "Podium")));
-    // new JoystickButton(m_driverController, Button.kB.value)
-    // // .toggleOnTrue(new TestPivot(m_shooter));
-    // new JoystickButton(m_driverController, Button.kY.value)
-    // .whileTrue(new TestPivot(m_shooter));
+    new JoystickButton(m_codriverController, Button.kX.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.45, "Trap")));
+    new JoystickButton(m_codriverController, Button.kY.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(21, 0.85, "Center")));
   //   new JoystickButton(m_driverController, Button.kB.values)
   //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
