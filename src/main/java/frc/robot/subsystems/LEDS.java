@@ -64,12 +64,12 @@ public class LEDS extends SubsystemBase {
   }
 
 public void ledOn() {
-  // setRainbow(255, 0, 0);
-  setLed(18, 255, 1, 1);
+  rainbow();
+  // setLed(18, 255, 1, 1);
 }
 public void ledOff() {
-  // setRainbow(78, 178, 9);
-  setLed(18, 1, 255, 1);
+  setRainbow(0, 0, 0);
+  // setLed(18, 1, 255, 1);
 }
 
   private void setLed(int position, int r, int g, int b) {

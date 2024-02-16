@@ -22,7 +22,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
@@ -39,13 +39,12 @@ import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
-
   StructPublisher<Pose2d> pose_publisher = NetworkTableInstance.getDefault().getStructTopic("RobotPose", Pose2d.struct).publish();
   StructArrayPublisher<SwerveModuleState> swerve_publisher = NetworkTableInstance.getDefault().getStructArrayTopic("Swerve States", SwerveModuleState.struct).publish();
 
 
-  DigitalInput input = new DigitalInput(0);
-  DigitalInput inputIR = new DigitalInput(1);
+  // DigitalInput input = new DigitalInput(0);
+  // DigitalInput inputIR = new DigitalInput(1);
 
   double offset_FL = 0;
   double offset_RL = 0;
@@ -174,32 +173,31 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putData(m_field);
 
     // Configure the AutoBuilder last
-
     
-     AutoBuilder.configureHolonomic(
+      AutoBuilder.configureHolonomic(
       this::getPose, // Robot pose supplier
       this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
       this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
       this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
       new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-          new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+          new PIDConstants(7.0, 0.0, 0.0), // Translation PID constants
           new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-          ConstantsOffboard.DRIVE_RPM_TO_METERS_PER_SECOND * ConstantsOffboard.kMaximumSparkMaxRPM, // Max module speed, in m/s
-          Math.sqrt(SwerveConstants.kWheelBase*SwerveConstants.kWheelBase + SwerveConstants.kTrackWidth*SwerveConstants.kTrackWidth), // Drive base radius in meters. Distance from robot center to furthest module.
-          new ReplanningConfig() // Default path replanning config. See the API for the options here
-      ), // Reference to this subsystem to set requirements
-      ()->{
-        //Boolean Supplier that controls when the path will be mirrored for the red alliance
-        //This wil flip the path being followed to the red side of the feild
-        //THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-        
+          4.5, // Max module speed, in m/s
+          0.4, // Drive base radius in meters . Distance from robot center to furthest module.
+          new ReplanningConfig()), // Default path replanning config. See the API for the options here
+          ()->{
+        // Boolean supplier that controls when the path will be mirrored for the red alliance
+        // This will flip the path being followed to the red side of the field.
+        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
         var alliance = DriverStation.getAlliance();
         if (alliance.isPresent()) {
-         return alliance.get() == DriverStation.Alliance.Red; 
+            return alliance.get() == DriverStation.Alliance.Red;
         }
-        return false;       
+        return false;
       },
       this
+       // Reference to this subsystem to set requirements
     );
 
     // Reference: https://www.chiefdelphi.com/t/has-anyone-gotten-pathplanner-integrated-with-the-maxswerve-template/443646

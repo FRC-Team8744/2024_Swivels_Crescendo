@@ -16,10 +16,29 @@
           "data": {
             "pathName": "Test distance"
           }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Wait"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Test Distance 2"
+                }
+              }
+            ]
+          }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Bens",
   "choreoAuto": false
 }

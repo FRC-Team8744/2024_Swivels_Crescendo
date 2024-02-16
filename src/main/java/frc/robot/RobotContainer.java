@@ -4,8 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
+import static edu.wpi.first.wpilibj.XboxController.Button;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -15,7 +16,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,15 +29,29 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
+import frc.robot.commands.IntakeRun;
+import frc.robot.commands.OuttakeRun;
+import frc.robot.commands.ShootRing;
+import frc.robot.commands.TestPivot;
+import frc.robot.commands.Wait;
+import frc.robot.commands.auto_led;
+import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+
 import java.util.List;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -45,11 +63,14 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-    public final Vision m_Vision = new Vision();
-    public final LEDS m_leds = new LEDS();
+  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final Intake m_intake = new Intake();
+  public final Shooter m_shooter = new Shooter();
+  public final Vision m_vision = new Vision();
+  public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  XboxController m_codriverController = new XboxController(OIConstants.kCodriverControllerPort);
 
   // A chooser for autonomous commands
 //   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -61,9 +82,21 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // // Subsystem initialization
+    // swerve = new Swerve();
+    // exampleSubsystem = new ExampleSubsystem();
+
+    // // Register Named Commands
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter).withTimeout(1.5));
+    NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter)));
+    // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
+    
     // Configure the button bindings
     configureButtonBindings();
 
+
+     // ...
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -98,12 +131,36 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void configureButtonBindings() { }
-    // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
-  public Command PathPlannerCommand(){
-    return new PathPlannerAuto("AutoTest");
+  private void configureButtonBindings() {
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    .whileTrue(new IntakeRun(m_intake, m_shooter));
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+    .whileTrue(new ShootRing(m_shooter));
+    new JoystickButton(m_driverController, Button.kA.value)
+    .whileTrue(new OuttakeRun(m_intake, m_shooter));
+    // new JoystickButton(m_driverController, Button.kX.value)
+    // .whileTrue(new TestPivot(m_shooter));
+    // Codriver Bindings
+    new JoystickButton(m_codriverController, Button.kLeftBumper.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")));
+    new JoystickButton(m_codriverController, Button.kRightBumper.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.25, "Amp")));
+    new JoystickButton(m_codriverController, Button.kA.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 0.7, "Wing")));
+    new JoystickButton(m_codriverController, Button.kB.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(37, 0.5, "Podium")));
+    new JoystickButton(m_codriverController, Button.kX.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.45, "Trap")));
+    new JoystickButton(m_codriverController, Button.kY.value)
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(21, 0.85, "Center")));
+  //   new JoystickButton(m_driverController, Button.kB.values)
+  //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
+  //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
   }
-  
+
+  // public Command PathPlannerCommand(){
+  //   return new PathPlannerAuto("AutoTest");
+  // }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

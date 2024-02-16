@@ -11,11 +11,21 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-  public static final int kDebugLevel = 3; // 0 = None, 1 = Errors, 2 = Info, 3 = Debug and USB data log
+  public static final int kDebugLevel = 0; // 0 = None, 1 = Errors, 2 = Info, 3 = Debug and USB data log
   
   public static final int kMaxSpeedPercentAuto = 100;
-  public static final int kMaxSpeedPercentTeleop = 100;
+  public static final int kMaxSpeedPercentTeleop = 50;
   public static final int kMaxAccelerationPercent = 100;
+
+  public static final class MechanismConstants {
+    public static final int kRearIntakePort = 16;
+    public static final int kFrontIntakePort = 15;
+    public static final int kTopShooterPort = 17; // Runs forward
+    public static final int kBottomShooterPort = 19; // Runs backward
+    public static final int kIndexShooterPort = 18;
+    public static final int kPLeftPivotShooterPort = 21;
+    public static final int kRightPivotShooterPort = 20;
+  }
 
   public static final class SwerveConstants {
     public static final double kMaxSpeedMetersPerSecond = (4.4 * kMaxSpeedPercentAuto) / 100;
@@ -159,7 +169,8 @@ public final class Constants {
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double kDeadband=0.03;
+    public static final int kCodriverControllerPort = 1;
+    public static final double kDeadband = 0.03;
   }
 
   public static final class AutoConstants {
