@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8085563183648736,
-        "y": 0.7930268454454622
+        "x": 2.908198492453323,
+        "y": 4.133554182601324
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9530801650994687,
-        "y": 0.7976159507775192
+        "x": 1.838677480171862,
+        "y": 4.856203515223933
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "RightBaseLine1"
     },
     {
       "anchor": {
-        "x": 1.9260417769493865,
-        "y": 1.7475961964446294
+        "x": 0.7071301441350655,
+        "y": 6.726042503963363
       },
       "prevControl": {
-        "x": 1.8104226995573856,
-        "y": 1.7475961964446294
+        "x": 0.894114043009008,
+        "y": 6.0508889432201
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "StartingPoint1"
     }
   ],
   "rotationTargets": [],
@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 88.45184230102204,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Bens",
+  "folder": "RightBaseLine(2)",
   "previewStartingState": null,
   "useDefaultConstraints": false
 }
