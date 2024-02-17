@@ -13,9 +13,10 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static final int kDebugLevel = 0; // 0 = None, 1 = Errors, 2 = Info, 3 = Debug and USB data log
   
-  public static final int kMaxSpeedPercentAuto = 100;
-  public static final int kMaxSpeedPercentTeleop = 50;
+  public static final int kMaxSpeedPercentAuto = 70;
+  public static final int kMaxSpeedPercentTeleop = 100;
   public static final int kMaxAccelerationPercent = 100;
+  public static final int kSlewRateLimiter = 7; //0-8
 
   public static final class MechanismConstants {
     public static final int kRearIntakePort = 16;

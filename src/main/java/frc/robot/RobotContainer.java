@@ -27,6 +27,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.Constants;
 import frc.robot.commands.auto_led;
 import frc.robot.commands.tesst;
 import frc.robot.subsystems.DriveSubsystem;
@@ -77,9 +78,9 @@ public class RobotContainer {
 //   SendableChooser<Command> m_chooser = new SendableChooser<>();
   private final SendableChooser<Command> m_autoChooser;
     // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
-  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(Constants.kSlewRateLimiter);
+  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(Constants.kSlewRateLimiter);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(Constants.kSlewRateLimiter);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -147,13 +148,15 @@ public class RobotContainer {
     new JoystickButton(m_codriverController, Button.kRightBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.25, "Amp")));
     new JoystickButton(m_codriverController, Button.kA.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 0.7, "Wing")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(23, 0.7, "Wing")));
     new JoystickButton(m_codriverController, Button.kB.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(37, 0.5, "Podium")));
     new JoystickButton(m_codriverController, Button.kX.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.45, "Trap")));
     new JoystickButton(m_codriverController, Button.kY.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(21, 0.85, "Center")));
+    new JoystickButton(m_driverController, Button.kBack.value)
+    .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
   //   new JoystickButton(m_driverController, Button.kB.values)
   //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));

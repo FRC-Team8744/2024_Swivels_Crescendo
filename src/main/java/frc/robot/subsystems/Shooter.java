@@ -20,8 +20,8 @@ public class Shooter extends SubsystemBase {
   private static final double shooterGearRatio = 15.0;
   private static final double minimumAngle = 9.0;
   private static final double maximumAngle = 85.0;
-  public double shootingAngle = 30;
-  public double shootingVelocity = 0.1;
+  public double shootingAngle = 60;
+  public double shootingVelocity = 0.5;
   // Wing 26/.65 for old 16ft
   public String shootingPreset = "Nothing...";
 
