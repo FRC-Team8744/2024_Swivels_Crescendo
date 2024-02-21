@@ -14,7 +14,7 @@ public final class Constants {
   public static final int kDebugLevel = 0; // 0 = None, 1 = Errors, 2 = Info, 3 = Debug and USB data log
   
   public static final int kMaxSpeedPercentAuto = 100;
-  public static final int kMaxSpeedPercentTeleop = 50;
+  public static final int kMaxSpeedPercentTeleop = 80;
   public static final int kMaxAccelerationPercent = 100;
 
   public static final class MechanismConstants {

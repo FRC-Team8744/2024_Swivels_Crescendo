@@ -22,9 +22,8 @@ public class OuttakeRun extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double speedSetting = 0.3;
-    m_intake.donutRelease();
-    m_shooter.indexRun(speedSetting * 3);
+    m_intake.donutRelease(m_intake.intakeSpeed);
+    m_shooter.indexRun(0.9);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
