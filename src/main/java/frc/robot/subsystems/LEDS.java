@@ -71,7 +71,6 @@ public void ledOff() {
   setRainbow(0, 0, 0);
   // setLed(18, 1, 255, 1);
 }
-
   private void setLed(int position, int r, int g, int b) {
     if (position < m_ledBuffer.getLength()) {
       m_ledBuffer.setRGB(position, r, g, b);
