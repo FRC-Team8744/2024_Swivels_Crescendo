@@ -22,7 +22,7 @@ public class IntakeRun extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double speedSetting = -.3;
+    double speedSetting = -.5;
     m_intake.donutGrab(speedSetting);
     m_shooter.indexRun(speedSetting * 3);
   }

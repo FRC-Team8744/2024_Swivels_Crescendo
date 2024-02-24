@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7378464742657148,
+      "y": 4.471197393176075
+    },
+    "rotation": -58.80427860357025
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootRingWoofer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "bottom speaker 1 ring"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Comp autos ",
+  "choreoAuto": false
+}

@@ -26,6 +26,7 @@ public final class Constants {
     public static final int kIndexShooterPort = 18;
     public static final int kPLeftPivotShooterPort = 21;
     public static final int kRightPivotShooterPort = 20;
+    public static final int kUndertakerIntakePort = 22;
   }
 
   public static final class SwerveConstants {

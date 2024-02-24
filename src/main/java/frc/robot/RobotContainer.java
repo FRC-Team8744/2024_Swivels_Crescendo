@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.XboxController.Axis;
@@ -81,17 +82,24 @@ public class RobotContainer {
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(Constants.kSlewRateLimiter);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(Constants.kSlewRateLimiter);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(Constants.kSlewRateLimiter);
+  // private String m_whoami;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // m_whoami = Preferences.getString("RobotName", "Undefined");
+    //   if(m_whoami == "NoNo"){
+    //     m_intake = new Intake();
+    //     m_shooter = new Shooter();
+    //   }
     // // Subsystem initialization
     // swerve = new Swerve();
     // exampleSubsystem = new ExampleSubsystem();
 
-    // // Register Named Commands
-    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter).withTimeout(1.5));
+    // Register Named Commands
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter).withTimeout(5));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
-    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter)));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter).withTimeout(3.0)));
+    NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(37, 0.5, "Podium")).andThen(new ShootRing(m_shooter).withTimeout(5.0)));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
     // Configure the button bindings
@@ -151,6 +159,7 @@ public class RobotContainer {
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(23, 0.7, "Wing")));
     new JoystickButton(m_codriverController, Button.kB.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(37, 0.5, "Podium")));
+    // 10.3 off of 90 when shooting
     new JoystickButton(m_codriverController, Button.kX.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.45, "Trap")));
     new JoystickButton(m_codriverController, Button.kY.value)

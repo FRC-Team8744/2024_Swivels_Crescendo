@@ -3,14 +3,16 @@
   "robotLength": 0.8,
   "holonomicMode": true,
   "pathFolders": [
+    "Bens",
     "LeftBaseLine(2)",
     "MiddleBaseLine(2)",
-    "Bens",
+    "gaming folder",
     "RightBaseLine(2)"
   ],
   "autoFolders": [
+    "Autos",
     "Bens",
-    "Autos"
+    "Comp autos "
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
