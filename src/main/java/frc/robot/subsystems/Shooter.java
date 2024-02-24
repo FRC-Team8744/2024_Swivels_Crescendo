@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkBase.ControlType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.MechanismConstants;
 
 public class Shooter extends SubsystemBase {
@@ -67,6 +68,18 @@ public class Shooter extends SubsystemBase {
 
     leftPivotEnc.setPositionConversionFactor(360 / shooterGearRatio);
     leftPivotEnc.setPosition(initialAngle);
+
+    bottomShooterSparkMax.setInverted(true);
+
+    bottomShooterPID.setP(0);
+    bottomShooterPID.setI(0);
+    bottomShooterPID.setD(0);
+    bottomShooterPID.setFF(0);
+
+    topShooterPID.setP(0);
+    topShooterPID.setI(0);
+    topShooterPID.setD(0);
+    topShooterPID.setFF(0);
   }
 
   @Override
@@ -88,8 +101,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public void testShoot(double speed) {
-    topShooterSparkMax.set(speed);
-    bottomShooterSparkMax.set(-speed);
+    bottomShooterPID.setReference(speed, CANSparkMax.ControlType.kVelocity);
+    topShooterPID.setReference(speed, CANSparkMax.ControlType.kVelocity);
+    // topShooterSparkMax.set(speed);
+    // bottomShooterSparkMax.set(-speed);
   }
 
   public void stopShooter() {
@@ -132,6 +147,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setShooterStuff(double angle, double velocity, String name) {
+    // Velocity will be RPM
     shootingAngle = angle;
     shootingVelocity = velocity;
     shootingPreset = name;
