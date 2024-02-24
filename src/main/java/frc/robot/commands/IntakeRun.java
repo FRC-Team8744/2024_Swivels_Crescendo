@@ -44,6 +44,6 @@ public class IntakeRun extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !m_intake.inputIR.get(); 
+    return !m_index.inputIR.get();
   }
 }
