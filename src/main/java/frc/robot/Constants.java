@@ -24,7 +24,7 @@ public final class Constants {
     public static final int kIndexShooterPort = 18;
     public static final int kBottomShooterPort = 19; // Runs backward
     public static final int kRightPivotShooterPort = 20;
-    public static final int kPLeftPivotShooterPort = 21;
+    public static final int kLeftPivotShooterPort = 21; // Has absolute encoder
     public static final int kUndertakerIntakePort = 22;
   }
 

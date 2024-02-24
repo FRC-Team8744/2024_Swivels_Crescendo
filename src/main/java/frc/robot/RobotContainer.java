@@ -36,6 +36,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.OuttakeRun;
+import frc.robot.commands.SetLed;
 import frc.robot.commands.ShootRing;
 import frc.robot.commands.TestPivot;
 import frc.robot.commands.Wait;
@@ -50,6 +51,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
+import java.time.Instant;
 import java.util.List;
 
 import com.pathplanner.lib.auto.NamedCommands;
@@ -88,15 +90,16 @@ public class RobotContainer {
     // swerve = new Swerve();
     // exampleSubsystem = new ExampleSubsystem();
 
+    m_leds.ledOn(0, 0, 255);
+
     // // Register Named Commands
-    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter, m_index).withTimeout(1.5));
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter, m_index, m_leds).withTimeout(1.5));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
-    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter, m_index)));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds)));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
     // Configure the button bindings
     configureButtonBindings();
-
 
      // ...
     // Configure default commands
@@ -135,13 +138,15 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index));
+    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter, m_index));
+    .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
-    // new JoystickButton(m_driverController, Button.kX.value)
-    // .whileTrue(new TestPivot(m_shooter));
+    new JoystickButton(m_driverController, Button.kB.value)
+    .whileTrue(new SetLed(m_leds));
+    new JoystickButton(m_driverController, Button.kX.value)
+    .whileTrue(new TestPivot(m_shooter));
     // Codriver Bindings
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));

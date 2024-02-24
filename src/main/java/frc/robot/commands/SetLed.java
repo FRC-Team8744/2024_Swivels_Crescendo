@@ -5,30 +5,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.LEDS;
 
-public class TestPivot extends Command {
-  private final Shooter m_shooter;
-  /** Creates a new IntakeRun. */
-  public TestPivot(Shooter sh) {
-    m_shooter = sh;
-    addRequirements(m_shooter);
+public class SetLed extends Command {
+  /** Creates a new SetLed. */
+  private final LEDS m_led;
+  public SetLed(LEDS le) {
+    m_led = le;
+    addRequirements(m_led);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_shooter.testAngle(60);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_led.rainbow();
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.stopAngle();
+    m_led.ledOff();
   }
 
   // Returns true when the command should end.
