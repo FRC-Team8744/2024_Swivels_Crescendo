@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Shooter;
@@ -11,6 +12,7 @@ import frc.robot.subsystems.Shooter;
 public class ShootRing extends Command {
   private final Shooter m_shooter;
   private final Index m_index;
+  private int sensorState = 0;
 
   public ShootRing(Shooter sh, Index ind) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,6 +25,7 @@ public class ShootRing extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    sensorState = 0;
     m_shooter.testShoot(m_shooter.shootingVelocity);
     m_shooter.testAngle(m_shooter.shootingAngle);
   }
@@ -46,6 +49,11 @@ public class ShootRing extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !m_index.inputIR.get();
+    SmartDashboard.putNumber("Sensor State", sensorState);
+    if ((sensorState == 0) && (m_index.inputIR.get() == false)) sensorState = 1;
+    if ((sensorState == 1) && (m_index.inputIR.get() == true)) sensorState = 2;
+    if ((sensorState == 2) && (m_index.inputIR.get() == false)) sensorState = 3;
+    if ((sensorState == 3) && (m_index.inputIR.get() == true)) return true;
+    return false;
   }
 }

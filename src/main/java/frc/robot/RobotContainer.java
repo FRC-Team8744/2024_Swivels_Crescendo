@@ -144,17 +144,17 @@ public class RobotContainer {
     // .whileTrue(new TestPivot(m_shooter));
     // Codriver Bindings
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));
     new JoystickButton(m_codriverController, Button.kRightBumper.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.25, "Amp")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 1250, "Amp")));
     new JoystickButton(m_codriverController, Button.kA.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 0.7, "Wing")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 3500, "Wing")));
     new JoystickButton(m_codriverController, Button.kB.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(37, 0.5, "Podium")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(37, 2500, "Podium")));
     new JoystickButton(m_codriverController, Button.kX.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.45, "Trap")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 2250, "Trap")));
     new JoystickButton(m_codriverController, Button.kY.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(21, 0.85, "Center")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(21, 4250, "Center")));
   //   new JoystickButton(m_driverController, Button.kB.values)
   //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
