@@ -28,9 +28,8 @@ public class Shooter extends SubsystemBase {
 
   private CANSparkMax topShooterSparkMax = new CANSparkMax(MechanismConstants.kTopShooterPort, MotorType.kBrushless);
   private CANSparkMax bottomShooterSparkMax = new CANSparkMax(MechanismConstants.kBottomShooterPort, MotorType.kBrushless);
-  private CANSparkMax indexSparkMax = new CANSparkMax(MechanismConstants.kIndexShooterPort, MotorType.kBrushless);
   private CANSparkMax leftPivotSparkMax = new CANSparkMax(MechanismConstants.kPLeftPivotShooterPort, MotorType.kBrushless); 
-  private CANSparkMax rightPivotSparkMax = new CANSparkMax(MechanismConstants.kRightPivotShooterPort, MotorType.kBrushless); 
+  private CANSparkMax rightPivotSparkMax = new CANSparkMax(MechanismConstants.kRightPivotShooterPort, MotorType.kBrushless);
   
   private final RelativeEncoder topShooterEnc = topShooterSparkMax.getEncoder();
   private final RelativeEncoder bottomShooterEnc = bottomShooterSparkMax.getEncoder();
@@ -110,18 +109,6 @@ public class Shooter extends SubsystemBase {
   public void stopShooter() {
     topShooterSparkMax.stopMotor();
     bottomShooterSparkMax.stopMotor();
-  }
-
-  public void indexRun(double speed) {
-    indexSparkMax.set(speed);
-  }
-
-  public void indexOut(double speed) {
-    indexSparkMax.set(-speed);
-  }
-
-  public void indexStop() {
-    indexSparkMax.stopMotor();
   }
 
   public void testAngle(double angle) {

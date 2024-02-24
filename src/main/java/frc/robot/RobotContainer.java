@@ -29,6 +29,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
@@ -67,6 +68,7 @@ public class RobotContainer {
   public final Intake m_intake = new Intake();
   public final Shooter m_shooter = new Shooter();
   public final Vision m_vision = new Vision();
+  public final Index m_index = new Index();
   public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -87,9 +89,9 @@ public class RobotContainer {
     // exampleSubsystem = new ExampleSubsystem();
 
     // // Register Named Commands
-    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter).withTimeout(1.5));
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter, m_index).withTimeout(1.5));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
-    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter)));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter, m_index)));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
     // Configure the button bindings
@@ -133,11 +135,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileTrue(new IntakeRun(m_intake, m_shooter));
+    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter));
+    .whileTrue(new ShootRing(m_shooter, m_index));
     new JoystickButton(m_driverController, Button.kA.value)
-    .whileTrue(new OuttakeRun(m_intake, m_shooter));
+    .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
     // new JoystickButton(m_driverController, Button.kX.value)
     // .whileTrue(new TestPivot(m_shooter));
     // Codriver Bindings

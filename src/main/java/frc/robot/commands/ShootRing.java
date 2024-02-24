@@ -5,15 +5,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Shooter;
 
 public class ShootRing extends Command {
   private final Shooter m_shooter;
+  private final Index m_index;
 
-  public ShootRing(Shooter sh) {
+  public ShootRing(Shooter sh, Index ind) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = sh;
+    m_index = ind;
     addRequirements(m_shooter);
+    addRequirements(m_index);
   }
 
   // Called when the command is initially scheduled.
@@ -27,7 +31,7 @@ public class ShootRing extends Command {
   @Override
   public void execute() {
     if (m_shooter.atSpeed()) {
-      m_shooter.indexRun(-1);
+      m_index.indexRun(-m_index.indexSpeed);
     }
   }
 
@@ -35,7 +39,7 @@ public class ShootRing extends Command {
   @Override
   public void end(boolean interrupted) {
     m_shooter.stopShooter();
-    m_shooter.indexStop();
+    m_index.indexStop();
     m_shooter.stopAngle();
   }
 
