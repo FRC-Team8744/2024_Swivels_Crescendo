@@ -94,9 +94,10 @@ public class RobotContainer {
     m_leds.ledOn(0, 0, 255);
 
     // // Register Named Commands
-    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter, m_index, m_leds).withTimeout(1.5));
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
-    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds)));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(58, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
+    NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(37, 2500, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
     // Configure the button bindings

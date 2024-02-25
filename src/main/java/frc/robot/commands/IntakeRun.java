@@ -31,7 +31,7 @@ public class IntakeRun extends Command {
   @Override
   public void initialize() {
     m_intake.donutGrab(-m_intake.intakeSpeed);
-    m_index.indexRun(-m_index.indexSpeed);
+    m_index.indexRun(-.5);
     m_led.ledOn(255, 0, 0);
   }
 

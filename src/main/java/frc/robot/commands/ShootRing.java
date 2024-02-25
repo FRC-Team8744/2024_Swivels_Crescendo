@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Index;
@@ -56,6 +57,7 @@ public class ShootRing extends Command {
   @Override
   public boolean isFinished() {
     SmartDashboard.putNumber("Sensor State", sensorState);
+    SmartDashboard.putBoolean("Sensor", m_index.inputIR.get());
     if ((sensorState == 0) && (m_index.inputIR.get() == false)) sensorState = 1;
     if ((sensorState == 1) && (m_index.inputIR.get() == true)) sensorState = 2;
     if ((sensorState == 2) && (m_index.inputIR.get() == false)) sensorState = 3;

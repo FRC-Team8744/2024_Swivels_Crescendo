@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4339938539056636,
-        "y": 5.6511177811075655
+        "x": 1.44,
+        "y": 5.53
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2439938539056636,
-        "y": 5.6511177811075655
+        "x": 0.9861581082732835,
+        "y": 6.10924384639467
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.9226514791082376,
-        "y": 5.6511177811075655
+        "x": 3.130267727440643,
+        "y": 7.019756150424644
       },
       "prevControl": {
-        "x": 2.2716250416849757,
-        "y": 5.6511177811075655
+        "x": 2.2038725778522745,
+        "y": 7.218269396765008
       },
       "nextControl": {
-        "x": 3.5736779165314987,
-        "y": 5.6511177811075655
+        "x": 3.5414668324864382,
+        "y": 6.93164205648626
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.4339938539056636,
-        "y": 5.6511177811075655
+        "x": 1.44,
+        "y": 5.53
       },
       "prevControl": {
-        "x": 1.036857739994686,
-        "y": 5.694476741064922
+        "x": 2.5487690153913425,
+        "y": 6.16882718105329
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,25 +45,13 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.5,
-      "maxWaypointRelativePos": 0.9,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.5,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0
-      }
-    }
-  ],
+  "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
       "waypointRelativePos": 0.7,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -78,20 +66,20 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 12.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "4 piece middle",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": false
