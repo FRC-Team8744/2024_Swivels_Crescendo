@@ -5,13 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Index;
 import frc.robot.subsystems.LEDS;
 
 public class SetLed extends Command {
   /** Creates a new SetLed. */
   private final LEDS m_led;
-  public SetLed(LEDS le) {
+  private final Index m_index;
+  public SetLed(LEDS le, Index ind) {
     m_led = le;
+    m_index = ind;
+    addRequirements(m_led);
     addRequirements(m_led);
   }
 
@@ -28,7 +32,12 @@ public class SetLed extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_led.ledOff();
+    if (m_index.inputIR.get() == false) {
+      m_led.ledOn(0, 255, 0);
+    }
+    else {
+      m_led.ledOn(0, 0, 255);
+    }
   }
 
   // Returns true when the command should end.

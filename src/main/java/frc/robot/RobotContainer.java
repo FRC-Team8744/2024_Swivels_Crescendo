@@ -39,6 +39,7 @@ import frc.robot.commands.OuttakeRun;
 import frc.robot.commands.SetLed;
 import frc.robot.commands.ShootRing;
 import frc.robot.commands.TestPivot;
+import frc.robot.commands.UnDonut;
 import frc.robot.commands.Wait;
 import frc.robot.commands.auto_led;
 import frc.robot.subsystems.DriveSubsystem;
@@ -144,9 +145,11 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
     new JoystickButton(m_driverController, Button.kB.value)
-    .whileTrue(new SetLed(m_leds));
+    .whileTrue(new SetLed(m_leds, m_index));
     new JoystickButton(m_driverController, Button.kX.value)
     .whileTrue(new TestPivot(m_shooter));
+    new JoystickButton(m_driverController, Button.kY.value)
+    .whileTrue(new UnDonut(m_shooter, m_index, m_leds));
     // Codriver Bindings
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));
