@@ -6,17 +6,32 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 // import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.io.PipedInputStream;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.estimation.CameraTargetRelation;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class Vision2 extends SubsystemBase {
   PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
+
+Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(20), 0);
+Transform3d td = new Transform3d(-0.03, -0.315, -0.235, rd);
+Transform3d ampOffSet = new Transform3d(0, 0, -0.47, new Rotation3d());
+Transform3d speakerOffSet = new Transform3d(0, 0, 0.6, new Rotation3d());
+Transform3d stageOffSet = new Transform3d(0, 0, 0.4, new Rotation3d());
+
+
+
 
   // Translation2d translation = PhotonUtils.estimateCameratoTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
 
@@ -40,23 +55,53 @@ public class Vision2 extends SubsystemBase {
   @Override
   public void periodic() {
 
+    SmartDashboard.putNumber("speaker", speakerOffSet.getZ());
   PhotonPipelineResult result = camera.getLatestResult();
   // result.hasTargets();
   PhotonTrackedTarget target = result.getBestTarget();
 if (result.hasTargets()){
-  double yaw = target.getYaw();
+    Transform3d cameraToTarget = target.getBestCameraToTarget();
+    double ID = target.getFiducialId();
+    
+    if (ID >= 11 && ID <= 16){
+    cameraToTarget = cameraToTarget.plus(stageOffSet);
+  SmartDashboard.putNumber("Height",166);
+    }
+  else if (ID == 5 || ID == 6){
+  cameraToTarget = cameraToTarget.plus(ampOffSet);
+  SmartDashboard.putNumber("Height",92);
+  }
+  else if (ID == 8 || ID == 7 || ID == 3 || ID == 4){
+  cameraToTarget = cameraToTarget.plus(speakerOffSet);
+  SmartDashboard.putNumber("Height", 207);
+  }
+  else SmartDashboard.putNumber("Height", -1);
+  Translation3d ampOffSet;
+
+   
+
+      Transform3d targetTd = cameraToTarget.plus(td);
+
+      // Pose3d = new Pose3d(robotPose);
+
+      // Pose3d scoringPose3d = pose.plus(targetOffset);
+
+
+  double yaw = Units.radiansToDegrees( targetTd.getRotation().getZ());
+  // double pitch = Math.abs(Units.radiansToDegrees( targetTd.getRotation().getY()));
+  double pitch = Units.radiansToDegrees(Math.atan(targetTd.getZ() / targetTd.getX()));
   double tx = yaw;
-  double ID = target.getFiducialId();
+
   double Apriltagid = ID;
   SmartDashboard.putNumber("tx", tx);
   SmartDashboard.putNumber("ApriltagIDback", Apriltagid);
-  if (ID >= 11 && ID <= 16)
-  SmartDashboard.putNumber("Height",166);
-  else if (ID == 5 || ID == 6)
-  SmartDashboard.putNumber("Height",92);
-  else if (ID == 8 || ID == 7 || ID == 3 || ID == 4)
-  SmartDashboard.putNumber("Height", 207);
-  else SmartDashboard.putNumber("Height", -1);
+
+  SmartDashboard.putNumber("TTd", targetTd.getX());
+  SmartDashboard.putNumber("CT", Units.radiansToDegrees(cameraToTarget.getRotation().getY()));
+  SmartDashboard.putNumber("Tz", targetTd.getZ());
+  // SmartDashboard.putNumber("Ty", targetTd.getY());
+  SmartDashboard.putNumber("By", pitch);
+  
 
 }
  
