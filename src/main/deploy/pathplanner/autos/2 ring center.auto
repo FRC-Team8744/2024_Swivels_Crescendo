@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.45,
+      "y": 3.5366726368254713
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 ring center part 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 ring center part 2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Comp autos ",
+  "choreoAuto": false
+}
