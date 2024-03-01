@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.44,
-        "y": 5.53
+        "x": 5.612148040038478,
+        "y": 6.4176431751774645
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.49,
-        "y": 5.53
+        "x": 5.582776675392346,
+        "y": 7.4896979847595935
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "midlefttoleft"
     },
     {
       "anchor": {
-        "x": 3.056839315825323,
-        "y": 5.53
+        "x": 8.358370634451466,
+        "y": 7.475012302439632
       },
       "prevControl": {
-        "x": 3.006839315825323,
-        "y": 5.53
+        "x": 7.726886294559709,
+        "y": 7.533755031731888
       },
       "nextControl": {
-        "x": 3.1068393158253227,
-        "y": 5.53
+        "x": 8.503126511427652,
+        "y": 7.461546639465103
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.44,
-        "y": 5.53
+        "x": 5.612148040038478,
+        "y": 6.4176431751774645
       },
       "prevControl": {
-        "x": 1.4833508890399534,
-        "y": 5.505086140013124
+        "x": 7.22757309557553,
+        "y": 6.770099550932555
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "midlefttoleft"
     }
   ],
   "rotationTargets": [],
@@ -49,9 +49,9 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.5499999999999999,
+      "waypointRelativePos": 0.65,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -66,21 +66,21 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 12.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0,
+    "rotation": 5.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 piece middle",
+  "folder": "4 piece all left center",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 5.0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

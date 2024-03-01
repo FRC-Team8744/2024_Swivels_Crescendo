@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.44,
-      "y": 5.53
+      "x": 1.3826715309960145,
+      "y": 3.128050334812656
     },
     "rotation": 0
   },
@@ -12,50 +12,56 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "4palc preload"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "ShootRingWoofer"
+            "name": "4palc1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "4 piece close middle"
+            "pathName": "4palc middle"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootRingWoofer"
+            "name": "4palc2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "4 piece close left"
+            "pathName": "4palc midleft"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootRingWoofer"
+            "name": "4palc3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "4 piece close right"
+            "pathName": "4palc left"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootRingWoofer"
+            "name": "4palc3"
           }
         }
       ]
     }
   },
-  "folder": "Autos",
+  "folder": null,
   "choreoAuto": false
 }

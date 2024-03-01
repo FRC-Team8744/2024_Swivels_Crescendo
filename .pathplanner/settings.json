@@ -3,11 +3,12 @@
   "robotLength": 0.8,
   "holonomicMode": true,
   "pathFolders": [
+    "4 piece middle",
     "Bens",
     "LeftBaseLine(2)",
     "MiddleBaseLine(2)",
     "New Folder",
-    "4 piece middle"
+    "4 piece all left center"
   ],
   "autoFolders": [
     "Bens",

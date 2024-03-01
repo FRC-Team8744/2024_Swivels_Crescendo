@@ -100,6 +100,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(29, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("4palc1", new InstantCommand (() -> m_shooter.setShooterStuff(26, 3240, "4pacl1")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("4palc2", new InstantCommand (() -> m_shooter.setShooterStuff(25, 3510, "4pacl2")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("4palc3", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "4pacl3")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
     // Configure the button bindings
@@ -155,13 +158,13 @@ public class RobotContainer {
     .whileTrue(new UnDonut(m_shooter, m_index, m_leds));
     // Codriver Bindings
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 3510, "Woofer")));
     new JoystickButton(m_codriverController, Button.kRightBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(59, 1300, "Amp")));
     new JoystickButton(m_codriverController, Button.kA.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(22, 3780, "Wing")));
     new JoystickButton(m_codriverController, Button.kB.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(36, 3240, "Podium")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "Podium")));
     new JoystickButton(m_codriverController, Button.kX.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 2250, "Trap")));
     new JoystickButton(m_codriverController, Button.kY.value)
