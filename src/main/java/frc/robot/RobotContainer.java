@@ -96,8 +96,10 @@ public class RobotContainer {
     // // Register Named Commands
     NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
-    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(58, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
-    NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(37, 2500, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
+    NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(29, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
     // Configure the button bindings
@@ -155,11 +157,11 @@ public class RobotContainer {
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));
     new JoystickButton(m_codriverController, Button.kRightBumper.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 1250, "Amp")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(59, 1300, "Amp")));
     new JoystickButton(m_codriverController, Button.kA.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 3500, "Wing")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(22, 3780, "Wing")));
     new JoystickButton(m_codriverController, Button.kB.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(37, 2500, "Podium")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(36, 3240, "Podium")));
     new JoystickButton(m_codriverController, Button.kX.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 2250, "Trap")));
     new JoystickButton(m_codriverController, Button.kY.value)
