@@ -18,42 +18,9 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "wait",
-                      "data": {
-                        "waitTime": 0.5
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "RunIntake"
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Mid speaker 2 ring"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "pathName": "Mid speaker 2 ring"
           }
         },
         {
@@ -65,6 +32,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Comp Autos",
   "choreoAuto": false
 }

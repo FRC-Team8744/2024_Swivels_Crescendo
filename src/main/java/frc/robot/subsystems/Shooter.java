@@ -138,7 +138,10 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean atSpeed() {
-    if ((topShooterEnc.getVelocity()) >= (shootingVelocity * .95)) {
+    if ((topShooterEnc.getVelocity()) >= (shootingVelocity * .95) 
+    && (shootingAngle >= (absoluteEncoder.getPosition() * 0.95)) 
+    && (shootingAngle <= (absoluteEncoder.getPosition() * 1.05))) 
+    {
       return true;
     }
     else {

@@ -12,7 +12,8 @@
   ],
   "autoFolders": [
     "Bens",
-    "Autos"
+    "Comp Autos",
+    "Test Autos"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
