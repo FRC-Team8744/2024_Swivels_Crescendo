@@ -39,13 +39,13 @@ double AprilNumber = id.getDouble(0.0);
 double v = tv.getDouble(0.0);
 
 //post to smart dashboard periodically
-SmartDashboard.putNumber("LimelightX", x);
-SmartDashboard.putNumber("LimelightY", y);
-SmartDashboard.putNumber("LimelightArea", area);
-SmartDashboard.putNumber("id", AprilNumber);
-SmartDashboard.putNumber("tv", v);
-SmartDashboard.putNumber("pipeline", pipeline);
-SmartDashboard.putNumber("Pipe", spi);
+// SmartDashboard.putNumber("LimelightX", x);
+// SmartDashboard.putNumber("LimelightY", y);
+// SmartDashboard.putNumber("LimelightArea", area);
+// SmartDashboard.putNumber("id", AprilNumber);
+// SmartDashboard.putNumber("tv", v);
+// SmartDashboard.putNumber("pipeline", pipeline);
+// SmartDashboard.putNumber("Pipe", spi);
 // This method will be called once per scheduler run
   // }
   // public void setPipeline(int piepline){
