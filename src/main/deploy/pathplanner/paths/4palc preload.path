@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.302308795773082,
-        "y": 5.560882875372808
+        "x": 1.3826715309960145,
+        "y": 3.128050334812656
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.352308795773082,
-        "y": 5.560882875372808
+        "x": 2.1610126941184125,
+        "y": 2.5699944065362192
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.0,
-        "y": 5.560882875372808
+        "x": 3.482724103194182,
+        "y": 2.9811935115820147
       },
       "prevControl": {
-        "x": 2.95,
-        "y": 5.560882875372808
+        "x": 2.8659254456254892,
+        "y": 2.39376621865945
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4palc1"
     }
   ],
   "rotationTargets": [],
@@ -38,15 +38,15 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": -14.257255131055183,
+    "velocity": 0,
+    "rotation": -41.5,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Old autos",
+  "folder": "4 piece all left center",
   "previewStartingState": {
-    "rotation": 0.852409067150022,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

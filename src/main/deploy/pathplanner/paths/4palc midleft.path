@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.44,
-        "y": 5.53
+        "x": 4.584150277423991,
+        "y": 4.86096084893422
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9861581082732835,
-        "y": 6.10924384639467
+        "x": 7.244094488188977,
+        "y": 3.0640331703198624
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4palc2"
     },
     {
       "anchor": {
-        "x": 3.130267727440643,
-        "y": 7.019756150424644
+        "x": 8.079342670313249,
+        "y": 5.771473152964195
       },
       "prevControl": {
-        "x": 2.2038725778522745,
-        "y": 7.218269396765008
+        "x": 5.94332568946828,
+        "y": 6.258143220511793
       },
       "nextControl": {
-        "x": 3.5414668324864382,
-        "y": 6.93164205648626
+        "x": 9.05435585826183,
+        "y": 5.549326167105016
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.44,
-        "y": 5.53
+        "x": 5.612148040038478,
+        "y": 6.4176431751774645
       },
       "prevControl": {
-        "x": 2.5487690153913425,
-        "y": 6.16882718105329
+        "x": 7.375116719821992,
+        "y": 6.123929528716182
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4palc3"
     }
   ],
   "rotationTargets": [],
@@ -49,7 +49,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.7,
+      "waypointRelativePos": 0.65,
       "command": {
         "type": "sequential",
         "data": {
@@ -66,18 +66,18 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 12.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 5.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 piece middle",
+  "folder": "4 piece all left center",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
