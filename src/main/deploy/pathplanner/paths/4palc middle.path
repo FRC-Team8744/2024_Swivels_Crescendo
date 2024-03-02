@@ -1,0 +1,92 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.482724103194182,
+        "y": 2.9811935115820147
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.9379802552091694,
+        "y": 3.8035917216736044
+      },
+      "isLocked": false,
+      "linkedName": "4palc1"
+    },
+    {
+      "anchor": {
+        "x": 8.04997130566712,
+        "y": 4.111991050457951
+      },
+      "prevControl": {
+        "x": 7.049971305667119,
+        "y": 4.111991050457951
+      },
+      "nextControl": {
+        "x": 9.04997130566712,
+        "y": 4.111991050457951
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.584150277423991,
+        "y": 4.86096084893422
+      },
+      "prevControl": {
+        "x": 5.4799768991309,
+        "y": 3.9945055918734385
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "4palc2"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.75,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "RunIntake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -13.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "4 piece all left center",
+  "previewStartingState": {
+    "rotation": -49.89999999999998,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

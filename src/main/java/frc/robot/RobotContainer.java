@@ -24,6 +24,7 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
@@ -31,10 +32,11 @@ import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Vision2;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.OuttakeRun;
+import frc.robot.commands.SetLed;
 import frc.robot.commands.ShootRing;
+import frc.robot.commands.TestPivot;
+import frc.robot.commands.UnDonut;
 import frc.robot.commands.Wait;
-import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -43,7 +45,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
-// import java.util.List;
+import java.time.Instant;
+import java.util.List;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -62,6 +65,7 @@ public class RobotContainer {
   public final Intake m_intake = new Intake();
   public final Shooter m_shooter = new Shooter();
   public final Vision m_vision = new Vision();
+  public final Index m_index = new Index();
     public final Vision2 m_Vision2 = new Vision2();
   public final LEDS m_leds = new LEDS();
   // The driver's controller
@@ -71,17 +75,29 @@ public class RobotContainer {
   // A chooser for autonomous commands
   private final SendableChooser<Command> m_autoChooser;
     // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
-  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
+  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(5);
+  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(5);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(5);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // // Subsystem initialization
+    // swerve = new Swerve();
+    // exampleSubsystem = new ExampleSubsystem();
 
-   // Register Named Commands
-    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter).withTimeout(1.5));
+    m_leds.ledOn(0, 0, 255);
+
+    // // Register Named Commands
+    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
-    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")).andThen(new ShootRing(m_shooter)));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
+    NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(29, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("4palc1", new InstantCommand (() -> m_shooter.setShooterStuff(26, 3240, "4pacl1")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("4palc2", new InstantCommand (() -> m_shooter.setShooterStuff(25, 3510, "4pacl2")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("4palc3", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "4pacl3")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
     // Configure the button bindings
     configureButtonBindings();
@@ -122,24 +138,33 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileTrue(new IntakeRun(m_intake, m_shooter));
+    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter));
+    .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kA.value)
-    .whileTrue(new OuttakeRun(m_intake, m_shooter));
+    .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
+    new JoystickButton(m_driverController, Button.kB.value)
+    .whileTrue(new SetLed(m_leds, m_index));
+    new JoystickButton(m_driverController, Button.kX.value)
+    .whileTrue(new TestPivot(m_shooter));
+    new JoystickButton(m_driverController, Button.kY.value)
+    .whileTrue(new UnDonut(m_shooter, m_index, m_leds));
     // Codriver Bindings
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 0.5, "Woofer")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 3510, "Woofer")));
     new JoystickButton(m_codriverController, Button.kRightBumper.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.25, "Amp")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(59, 1300, "Amp")));
     new JoystickButton(m_codriverController, Button.kA.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 0.7, "Wing")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(22, 3780, "Wing")));
     new JoystickButton(m_codriverController, Button.kB.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(37, 0.5, "Podium")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "Podium")));
     new JoystickButton(m_codriverController, Button.kX.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 0.45, "Trap")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 2250, "Trap")));
     new JoystickButton(m_codriverController, Button.kY.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(21, 0.85, "Center")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(21, 4250, "Center")));
+  //   new JoystickButton(m_driverController, Button.kB.values)
+  //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
+  //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
   }
 
   /**
