@@ -10,14 +10,9 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-// import frc.robot.LimelightHelpers;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.io.PipedInputStream;
-
 import org.photonvision.PhotonCamera;
-import org.photonvision.estimation.CameraTargetRelation;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -33,24 +28,8 @@ Transform3d stageOffSet = new Transform3d(0, 0, 0.4, new Rotation3d());
 
 
 
-  // Translation2d translation = PhotonUtils.estimateCameratoTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
-
-  // NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  // NetworkTableEntry tx = table.getEntry("tx");
-  // NetworkTableEntry ty = table.getEntry("ty");
-  // NetworkTableEntry ta = table.getEntry("ta");
-  // NetworkTableEntry id = table.getEntry("tid");
-  // NetworkTableEntry tv = table.getEntry("tv");
-  // NetworkTableEntry tpi = table.getEntry("getpipe");
-  // NetworkTableEntry spi = table.getEntry("pipeline");
-
   public Vision2() {}
 
-//  @Override
-//    public void robotInit()
-//     for (int port = 5800; port <= 5807; port++) {
-// PortForwarder.add(port, "http://photonvision.local:5800/", port);
-//    };
 
   @Override
   public void periodic() {
@@ -108,37 +87,5 @@ if (result.hasTargets()){
 SmartDashboard.putBoolean("RT", result.hasTargets());
 
 
-//  //   double tax = LimelightHelpers.getTX("");
-//  int spi = (0);
-// double pipeline = tpi.getDouble(0.0);
-// double x = tx.getDouble(0.0);
-// double y = ty.getDouble(0.0);
-// double area = ta.getDouble(0.0);
-// double AprilNumber = id.getDouble(0.0);
-// double v = tv.getDouble(0.0);
-
-//post to smart dashboard periodically
-
-// SmartDashboard.putNumber("LimelightX", x);
-// SmartDashboard.putNumber("LimelightY", y);
-// SmartDashboard.putNumber("LimelightArea", area);
-// SmartDashboard.putNumber("id", AprilNumber);
-// SmartDashboard.putNumber("tv", v);
-// SmartDashboard.putNumber("pipeline", pipeline);
-// SmartDashboard.putNumber("Pipe", spi);
-// This method will be called once per scheduler run
-  // }
-  // public void setPipeline(int piepline){
-  //   NetworkTableEntry pipelineEntry = table.getEntry("pipeline");
-  //   pipelineEntry.setNumber(pipeline);
   }
-  //  @Override
-  //   public void robotInit()
-  //   {
-  //       // Make sure you only configure port forwarding once in your robot code.
-  //       // Do not place these function calls in any periodic functions
-  //       for (int port = 5800; port <= 5807; port++) {
-  //           PortForwarder.add(port, "http://limelight.local:5801/", port);
-  //       }
     }
-  // }
