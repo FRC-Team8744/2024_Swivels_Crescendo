@@ -12,7 +12,7 @@
         "y": 3.8035917216736044
       },
       "isLocked": false,
-      "linkedName": "preloadtomiddle"
+      "linkedName": "4palc1"
     },
     {
       "anchor": {
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "middletomidleft"
+      "linkedName": "4palc2"
     }
   ],
   "rotationTargets": [
@@ -88,5 +88,5 @@
     "rotation": -49.89999999999998,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

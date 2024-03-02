@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.640145802652965,
-        "y": 3.1133646524895915
+        "x": 7.244094488188977,
+        "y": 3.0640331703198624
       },
       "isLocked": false,
-      "linkedName": "middletomidleft"
+      "linkedName": "4palc2"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 5.771473152964195
       },
       "prevControl": {
-        "x": 5.993975780438144,
-        "y": 5.991758387810157
+        "x": 5.94332568946828,
+        "y": 6.258143220511793
       },
       "nextControl": {
-        "x": 9.07380968223213,
-        "y": 5.666423820719243
+        "x": 9.05435585826183,
+        "y": 5.549326167105016
       },
       "isLocked": false,
       "linkedName": null
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "midlefttoleft"
+      "linkedName": "4palc3"
     }
   ],
   "rotationTargets": [],
@@ -82,5 +82,5 @@
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }
