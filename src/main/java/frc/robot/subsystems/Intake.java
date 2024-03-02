@@ -16,7 +16,7 @@ public class Intake extends SubsystemBase {
   private CANSparkMax frontIntakeSparkMax = new CANSparkMax(MechanismConstants.kFrontIntakePort, MotorType.kBrushless);
   private CANSparkMax rearIntakeSparkMax = new CANSparkMax(MechanismConstants.kRearIntakePort, MotorType.kBrushless);
   private CANSparkMax undertakerSparkMax = new CANSparkMax(MechanismConstants.kUndertakerIntakePort, MotorType.kBrushless);
-  private CANSparkMax undertakerSparkMax = new CANSparkMax(MechanismConstants.kUndertakerIntakePort, MotorType.kBrushless);
+
   /** Creates a new Intake. */
   public Intake() {
 
