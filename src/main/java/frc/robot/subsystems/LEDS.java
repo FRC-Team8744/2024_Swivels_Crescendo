@@ -48,7 +48,7 @@ public class LEDS extends SubsystemBase {
   
   // }
 
-  private void rainbow() {
+  public void rainbow() {
     // For every pixel
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       // Calculate the hue - hue is easier for rainbows because the color
@@ -77,7 +77,7 @@ public void ledOff() {
       m_ledBuffer.setRGB(position, r, g, b);
     }
   }
-  private void setRainbow(int r, int g, int b) {
+  public void setRainbow(int r, int g, int b) {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       if (i < m_ledBuffer.getLength()) {
         m_ledBuffer.setRGB(i, r, g, b);
