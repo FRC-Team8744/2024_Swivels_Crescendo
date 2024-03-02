@@ -41,7 +41,7 @@ public class auto_led extends Command {
   public void initialize() {
 m_lightbarLeds.setLed(17,255,255,0);
 m_turnCtrl.enableContinuousInput(-180, 180);
-m_turnCtrl.setTolerance(3.0);
+m_turnCtrl.setTolerance(2.0);
 m_turnCtrl.setSetpoint(m_goalAngle);
 m_turnCtrl.reset();
      m_heading = m_drive.m_imu.getHeadingDegrees();
