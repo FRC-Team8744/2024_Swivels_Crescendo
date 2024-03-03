@@ -34,6 +34,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
+import frc.robot.commands.AmpShoot;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeSpinUp;
 import frc.robot.commands.OuttakeRun;
@@ -89,10 +90,11 @@ public class RobotContainer {
     // swerve = new Swerve();
     // exampleSubsystem = new ExampleSubsystem();
 
-    m_leds.ledOn(0, 0, 255);
+    m_leds.ledOn(0, 0, 128);
 
     // // Register Named Commands
-    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
+    NamedCommands.registerCommand("RunIntakeOld", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
+    NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
     NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
     NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
@@ -101,7 +103,7 @@ public class RobotContainer {
 
     // 4 piece all left center
     NamedCommands.registerCommand("4palc1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "4palc1")));
-    NamedCommands.registerCommand("4palc1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(25, 3510, "4palc2"))));
+    NamedCommands.registerCommand("4palc1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24.5, 3510, "4palc2"))));
     NamedCommands.registerCommand("4palc2", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "4palc3"))));
     NamedCommands.registerCommand("4palc3", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
@@ -146,21 +148,24 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
+    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
     .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
     new JoystickButton(m_driverController, Button.kB.value)
-    .whileTrue(new SetLed(m_leds, m_index));
+    .whileTrue(new AmpShoot(m_shooter, m_index, m_leds));
+    // .whileTrue(new SetLed(m_leds, m_index));
     new JoystickButton(m_driverController, Button.kX.value)
     .onTrue(new InstantCommand (() -> m_shooter.stopShooter()));
     new JoystickButton(m_driverController, Button.kY.value)
     .whileTrue(new SourceDonut(m_shooter, m_index, m_leds));
+    new JoystickButton(m_driverController, Button.kBack.value)
+    .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
     
     // Codriver Bindings
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(22, 3780, "4palc3")));
     new JoystickButton(m_codriverController, Button.kRightBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(59, 1300, "Amp")));
     new JoystickButton(m_codriverController, Button.kA.value)

@@ -33,10 +33,10 @@ public class SetLed extends Command {
   @Override
   public void end(boolean interrupted) {
     if (m_index.inputIR.get() == false) {
-      m_led.ledOn(0, 255, 0);
+      m_led.ledOn(0, 128, 0);
     }
     else {
-      m_led.ledOn(0, 0, 255);
+      m_led.ledOn(0, 0, 128);
     }
   }
 

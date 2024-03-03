@@ -15,6 +15,7 @@ public class ShootRing extends Command {
   private final Shooter m_shooter;
   private final Index m_index;
   private final LEDS m_led;
+  private final Timer m_timer = new Timer();
   private int sensorState = 0;
 
   public ShootRing(Shooter sh, Index ind, LEDS le) {
@@ -50,18 +51,18 @@ public class ShootRing extends Command {
     m_shooter.stopShooter();
     m_index.indexStop();
     m_shooter.stopAngle();
-    m_led.ledOn(0, 0, 255);
+    m_led.ledOn(0, 0, 128);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     SmartDashboard.putNumber("Sensor State", sensorState);
-    SmartDashboard.putBoolean("Sensor", m_index.inputIR.get());
     if ((sensorState == 0) && (m_index.inputIR.get() == false)) sensorState = 1;
-    if ((sensorState == 1) && (m_index.inputIR.get() == true)) sensorState = 2;
-    if ((sensorState == 2) && (m_index.inputIR.get() == false)) sensorState = 3;
-    if ((sensorState == 3) && (m_index.inputIR.get() == true)) return true;
+    if ((sensorState == 1) && (m_index.inputIR.get() == true)) {
+    sensorState = 2; 
+    m_timer.restart();}
+    if ((sensorState == 2) && (m_timer.get() >= 0.1)) return true;
     return false;
   }
 }
