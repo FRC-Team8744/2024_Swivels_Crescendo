@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.584150277423991,
-        "y": 4.86
+        "x": 4.58,
+        "y": 6.937433593177046
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.244094488188977,
-        "y": 3.0630723213856426
+        "x": 5.591709065678355,
+        "y": 7.240946312872446
       },
       "isLocked": false,
-      "linkedName": "4palc2"
+      "linkedName": "4pal2c1"
     },
     {
       "anchor": {
-        "x": 8.079342670313249,
-        "y": 5.771473152964195
+        "x": 8.299162513817985,
+        "y": 7.443288126012872
       },
       "prevControl": {
-        "x": 5.94332568946828,
-        "y": 6.258143220511793
+        "x": 7.229641501536524,
+        "y": 7.587817992537394
       },
       "nextControl": {
-        "x": 9.05435585826183,
-        "y": 5.549326167105016
+        "x": 8.98799838534724,
+        "y": 7.350202197427837
       },
       "isLocked": false,
       "linkedName": null
@@ -36,20 +36,26 @@
         "y": 6.4176431751774645
       },
       "prevControl": {
-        "x": 7.375116719821992,
-        "y": 6.123929528716182
+        "x": 7.384010865454269,
+        "y": 6.807873814793673
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "4palc3"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.65,
+      "waypointRelativePos": 0.6,
       "command": {
         "type": "sequential",
         "data": {
@@ -77,10 +83,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 piece all left center",
+  "folder": "4 piece all left 2 center",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 10.0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

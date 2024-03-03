@@ -3,53 +3,43 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.584150277423991,
-        "y": 4.86
+        "x": 0.8125154278477575,
+        "y": 6.778450740000072
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.244094488188977,
-        "y": 3.0630723213856426
-      },
-      "isLocked": false,
-      "linkedName": "4palc2"
-    },
-    {
-      "anchor": {
-        "x": 8.079342670313249,
-        "y": 5.771473152964195
-      },
-      "prevControl": {
-        "x": 5.94332568946828,
-        "y": 6.258143220511793
-      },
-      "nextControl": {
-        "x": 9.05435585826183,
-        "y": 5.549326167105016
+        "x": 1.2461050274213228,
+        "y": 7.154228392963828
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.612148040038478,
-        "y": 6.4176431751774645
+        "x": 4.58,
+        "y": 6.937433593177046
       },
       "prevControl": {
-        "x": 7.375116719821992,
-        "y": 6.123929528716182
+        "x": 3.9007099111900536,
+        "y": 6.951899914874308
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "4palc3"
+      "linkedName": "4pal2c1"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.65,
+      "waypointRelativePos": 0.5,
       "command": {
         "type": "sequential",
         "data": {
@@ -73,14 +63,14 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 5.0,
+    "rotation": 10.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 piece all left center",
+  "folder": "4 piece all left 2 center",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 59.62,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

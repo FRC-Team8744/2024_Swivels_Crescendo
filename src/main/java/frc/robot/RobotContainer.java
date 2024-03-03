@@ -103,6 +103,7 @@ public class RobotContainer {
 
     // 4 piece all left center
     NamedCommands.registerCommand("4palc1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "4palc1")));
+    NamedCommands.registerCommand("4palc2Preset", new InstantCommand(() -> m_shooter.setShooterStuff(24.5, 3510, "4palc2")));
     NamedCommands.registerCommand("4palc1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24.5, 3510, "4palc2"))));
     NamedCommands.registerCommand("4palc2", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "4palc3"))));
     NamedCommands.registerCommand("4palc3", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3));
@@ -148,7 +149,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
+    .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
     .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kA.value)
@@ -165,7 +166,7 @@ public class RobotContainer {
     
     // Codriver Bindings
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(22, 3780, "4palc3")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));
     new JoystickButton(m_codriverController, Button.kRightBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(59, 1300, "Amp")));
     new JoystickButton(m_codriverController, Button.kA.value)
