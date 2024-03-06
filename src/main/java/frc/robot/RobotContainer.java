@@ -155,18 +155,30 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+    // new JoystickButton(m_driverController, Button.kA.value)
+    //   //.onTrue(new auto_led())
+    //   .onFalse( m_led());
+    // new JoystickButton(m_driverController, Button.kY.value)
+    // .onTrue(new InstantCommand(() -> m_leds.ledOn()))
+    // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
+
+new JoystickButton(m_driverController, Button.kB.value)
+    .onTrue(new auto_led(m_Vision2, m_leds, m_robotDrive));
+    // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
+    // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
+
+    new JoystickButton(m_driverController, Button.kA.value)
+    .onTrue(new Trings(m_leds, m_robotDrive));
+
     m_driver.leftTrigger().whileTrue(new AmpShoot(m_shooter, m_index, m_leds));
     m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
     .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
-    new JoystickButton(m_driverController, Button.kA.value)
-    .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
+    // new JoystickButton(m_driverController, Button.kA.value)
+    // .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
     // new JoystickButton(m_driverController, Button.kB.value)
-    // .whileTrue(new AmpShoot(m_shooter, m_index, m_leds));
-    new JoystickButton(m_driverController, Button.kB.value)
-    .onTrue(new auto_led(m_leds, m_robotDrive));
     // .whileTrue(new SetLed(m_leds, m_index));
     new JoystickButton(m_driverController, Button.kX.value)
     .onTrue(new InstantCommand (() -> m_shooter.stopShooter()));
@@ -191,6 +203,7 @@ public class RobotContainer {
   //   new JoystickButton(m_driverController, Button.kB.values)
   //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
   //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
+    // .onFalse(new Trings(m_leds, m_robotDrive));
   }
 
   // public Command PathPlannerCommand(){
