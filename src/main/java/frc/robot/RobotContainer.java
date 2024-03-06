@@ -48,6 +48,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -75,6 +76,7 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_codriverController = new XboxController(OIConstants.kCodriverControllerPort);
+  CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   // A chooser for autonomous commands
 //   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -148,6 +150,8 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+    m_driver.leftTrigger().whileTrue(new AmpShoot(m_shooter, m_index, m_leds));
+    m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
