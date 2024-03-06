@@ -22,7 +22,7 @@ public class auto_led extends Command {
   private double m_output;
   private double m_heading;
   // private double m_goalAngle = 0.0;
-  private double tv;
+  // private boolean tv;
   private int x; // x tracks angle.
   private double tx;
   private boolean Done;
@@ -49,19 +49,19 @@ public class auto_led extends Command {
   public void initialize() {
     m_lightbarLeds.setLed(17,255,255,0);
     m_turnCtrl.enableContinuousInput(-180, 180);
-    m_turnCtrl.setTolerance(2.0);
+    m_turnCtrl.setTolerance(5.0);
     // m_turnCtrl.setSetpoint(m_goalAngle);
     m_turnCtrl.reset();
     m_heading = m_drive.m_imu.getHeadingDegrees();
 
     NoTargetAtInit = m_vision.isSpeakerInView();
   
-    // if (NoTargetAtInit) {
-      tx = SmartDashboard.getNumber("tx",0);
-      goAngle = (m_heading - tx);
-    // } else {
-      // goAngle = m_heading;
-    // }
+    if (NoTargetAtInit) {
+      // tx = SmartDashboard.getNumber("tx",0);
+      goAngle = (m_heading - m_vision.getTargetHorzAngle());
+    } else {
+      goAngle = m_heading;
+    }
     
     m_turnCtrl.setSetpoint(goAngle);
   }
@@ -70,17 +70,18 @@ public class auto_led extends Command {
   @Override
   public void execute() {
     // ControlButtonB = !ControlButtonB;
-    if (false) { //ControlButtonB){
-      tv = SmartDashboard.getNumber("tv", 0);
-      tx = SmartDashboard.getNumber("LimelightX", 0);
-    } else  {
-      tv = SmartDashboard.getBoolean("RT", false)?1:0;
+    // if (false) { //ControlButtonB){
+    //   tv = SmartDashboard.getNumber("tv", 0);
+    //   tx = SmartDashboard.getNumber("LimelightX", 0);
+    // } else  {
+      // tv = SmartDashboard.getBoolean("RT", false)?1:0;
+      // tv = m_vision.isSpeakerInView();
     // tx = SmartDashboard.getNumber("tx", 0);
     // goAngle = (-tx * (36.0/30.0) + 17.0);
     // m_turnCtrl.setSetpoint(goAngle);
-    }
+    // }
     // x = (int) (-tx * (36.0/30.0) + 17.0);//LED conversion.
-    if (tv == 1){
+    if (m_vision.isSpeakerInView()){
       m_lightbarLeds.allOff();
       m_lightbarLeds.setLed(x,1,255,1); //green
     } else {
@@ -89,7 +90,7 @@ public class auto_led extends Command {
     }
     m_heading = m_drive.m_imu.getHeadingDegrees();
 
-  SmartDashboard.putBoolean("NoTargetATInit", NoTargetAtInit);
+  // SmartDashboard.putBoolean("NoTargetATInit", NoTargetAtInit);
 
         // if (tx >= 0){
         //   m_goalAngle = m_heading + tx;
@@ -120,7 +121,7 @@ public class auto_led extends Command {
     SmartDashboard.putNumber("PID setpoint error", m_turnCtrl.getPositionError());
     SmartDashboard.putNumber("PID velocity error", m_turnCtrl.getVelocityError());
     SmartDashboard.putNumber("PID measurement", m_heading);
-    // SmartDashboard.putBoolean("Done", m_turnCtrl.atSetpoint());
+    SmartDashboard.putBoolean("Done", m_turnCtrl.atSetpoint());
     } 
 
   // Called once the command ends or is interrupted.
@@ -133,7 +134,7 @@ public class auto_led extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (NoTargetAtInit) return true;
+    // if (NoTargetAtInit) return true;
     
     Done = false;
     SmartDashboard.putBoolean("Done", m_turnCtrl.atSetpoint());

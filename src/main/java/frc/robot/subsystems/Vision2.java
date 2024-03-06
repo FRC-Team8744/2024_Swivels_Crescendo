@@ -28,21 +28,29 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class Vision2 extends SubsystemBase {
-  PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
+  private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
 
-  Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-23.7), Units.degreesToRadians(180));
-  Transform3d td = new Transform3d(-0.04, 0.25, 0, rd);
+  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-23.7), Units.degreesToRadians(180));
+  private Transform3d td = new Transform3d(-0.04, 0.25, 0, rd);
+  private Pose3d targetTd;
 // Transform3d ampOffSet = new Transform3d(0, 0, -0.47, new Rotation3d());
 // Transform3d speakerOffSet = new Transform3d(0, 0, 0.6, new Rotation3d());
 // Transform3d stageOffSet = new Transform3d(0, 0, 0.4, new Rotation3d());
 
-  AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
-  public PhotonPipelineResult result;
+  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  private PhotonPipelineResult result;
+  private PhotonTrackedTarget target;
 
   private double ID = 0;
+  private Debouncer m_filterSpeakerInView = new Debouncer (0.1, Debouncer.DebounceType.kBoth );
+  private boolean speakerInView;
+  private boolean speakerInView_filtered;
+
   private Debouncer m_debouncer = new Debouncer (0.1, Debouncer.DebounceType.kBoth );
   private MedianFilter m_lowpass = new MedianFilter(100);
   private double tx_out;
+//**heightMatters is the height of the object based on the april tags and the camera used for cacluations in shooting**//
+  private double heightMatters;
 
   // Translation2d translation = PhotonUtils.estimateCameratoTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
 
@@ -67,29 +75,42 @@ public class Vision2 extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-    // SmartDashboard.putNumber("speaker", speakerOffSet.getZ());
     PhotonPipelineResult result = camera.getLatestResult();
-  // result.hasTargets();
     PhotonTrackedTarget target = result.getBestTarget();
-if (result.hasTargets()){
-    Transform3d cameraToTarget = target.getBestCameraToTarget();
-    ID = target.getFiducialId();
 
+    if (result.hasTargets()){
+      Transform3d cameraToTarget = target.getBestCameraToTarget();
+      ID = target.getFiducialId();
+
+      if ((ID == 4) || (ID == 7)) {   //blue-7 red-4
+        speakerInView = true;
+      } else {
+        speakerInView = false;
+      }
+      speakerInView_filtered = m_filterSpeakerInView.calculate(speakerInView);
+      SmartDashboard.putBoolean("SpeakerInView", speakerInView_filtered);
+//they have -31 for height of camera
     if (ID >= 11 && ID <= 16){
-    // cameraToTarget = cameraToTarget.plus(stageOffSet);
-  SmartDashboard.putNumber("Height",135);
+    //this is chian thingy
+      heightMatters = 1.35;
+   // cameraToTarget = cameraToTarget.plus(stageOffSet);
+  // SmartDashboard.putNumber("Height",135);
     }
   else if (ID == 5 || ID == 6){
+    //this is amp
+    heightMatters = .61;
   // cameraToTarget = cameraToTarget.plus(ampOffSet);
-  SmartDashboard.putNumber("Height",61);
+  // SmartDashboard.putNumber("Height",61);
   }
   else if (ID == 8 || ID == 7 || ID == 3 || ID == 4){
+    heightMatters = 1.76;
+    //this is speaker
   // cameraToTarget = cameraToTarget.plus(speakerOffSet);
-  SmartDashboard.putNumber("Height", 176);
+  // SmartDashboard.putNumber("Height", 176);
   }
-  else SmartDashboard.putNumber("Height", -1);
+  else heightMatters = -1;
   // Translation3d ampOffSet;
+  SmartDashboard.putNumber("Height",heightMatters);
 
    Pose3d targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), td);
 
@@ -123,7 +144,7 @@ if (result.hasTargets()){
 SmartDashboard.putNumber("Id", ID); 
 SmartDashboard.putBoolean("RT", m_debouncer.calculate(result.hasTargets()));
 
-SmartDashboard.putBoolean("isSpeakerInView", isSpeakerInView());
+// SmartDashboard.putBoolean("isSpeakerInView", isSpeakerInView());
 
 //  //   double tax = LimelightHelpers.getTX("");
 //  int spi = (0);
@@ -159,12 +180,18 @@ SmartDashboard.putBoolean("isSpeakerInView", isSpeakerInView());
   //       }
 
   public boolean isSpeakerInView() {
-    if ((ID == 4) || (ID == 7)) {   //blue-7 red-4
-      return true;
-    } else {
-      return false;
-    }
-  
+    return speakerInView_filtered;
   }
 
+  public double getTargetHorzAngle() {
+    return tx_out;
+  }
+
+  public double getTargetVertAngle(){
+    return heightMatters;
+  }
+
+    public double getTargetDistance() {
+    return targetTd.getX();
+  }
 }
