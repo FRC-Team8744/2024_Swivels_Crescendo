@@ -86,7 +86,7 @@ public class DriveSubsystem extends SubsystemBase {
   //     SwerveConstants.kRearRightMagEncoderOffsetDegrees);
 
   // The imu sensor
-  private final Multi_IMU m_imu = new Multi_IMU();
+  public final Multi_IMU m_imu = new Multi_IMU();
   // private final PigeonIMU m_imu = new PigeonIMU(SwerveConstants.kIMU_ID);
   
   // Odometry class for tracking robot pose

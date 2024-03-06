@@ -28,12 +28,14 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
+import frc.robot.commands.Trings;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
+import frc.robot.subsystems.Vision2;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeSpinUp;
@@ -45,6 +47,7 @@ import frc.robot.commands.TestPivot;
 import frc.robot.commands.Wait;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+// import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -59,6 +62,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -71,6 +75,7 @@ public class RobotContainer {
   public final Intake m_intake = new Intake();
   public final Shooter m_shooter = new Shooter();
   public final Vision m_vision = new Vision();
+    public final Vision2 m_Vision2 = new Vision2();
   public final Index m_index = new Index();
   public final LEDS m_leds = new LEDS();
   // The driver's controller
@@ -158,8 +163,10 @@ public class RobotContainer {
     .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
+    // new JoystickButton(m_driverController, Button.kB.value)
+    // .whileTrue(new AmpShoot(m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kB.value)
-    .whileTrue(new AmpShoot(m_shooter, m_index, m_leds));
+    .onTrue(new auto_led(m_leds, m_robotDrive));
     // .whileTrue(new SetLed(m_leds, m_index));
     new JoystickButton(m_driverController, Button.kX.value)
     .onTrue(new InstantCommand (() -> m_shooter.stopShooter()));
