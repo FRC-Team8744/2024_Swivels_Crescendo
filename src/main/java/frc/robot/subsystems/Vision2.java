@@ -187,7 +187,7 @@ SmartDashboard.putBoolean("RT", m_debouncer.calculate(result.hasTargets()));
     return tx_out;
   }
 
-  public double getTargetVertAngle(){
+  public double getTargetVertAngle() {
     return heightMatters;
   }
 
