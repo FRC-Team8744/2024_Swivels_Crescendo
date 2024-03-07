@@ -112,7 +112,7 @@ public class Vision2 extends SubsystemBase {
   // Translation3d ampOffSet;
   SmartDashboard.putNumber("Height",heightMatters);
 
-   Pose3d targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), td);
+   targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), td);
 
       // Transform3d targetTd = cameraToTarget.plus(td);
 

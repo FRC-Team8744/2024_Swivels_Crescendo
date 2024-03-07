@@ -29,6 +29,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
 import frc.robot.commands.Trings;
+import frc.robot.commands.VisionShoot;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
@@ -75,7 +76,7 @@ public class RobotContainer {
   public final Intake m_intake = new Intake();
   public final Shooter m_shooter = new Shooter();
   public final Vision m_vision = new Vision();
-    public final Vision2 m_Vision2 = new Vision2();
+  public final Vision2 m_Vision2 = new Vision2();
   public final Index m_index = new Index();
   public final LEDS m_leds = new LEDS();
   // The driver's controller
@@ -175,7 +176,7 @@ new JoystickButton(m_driverController, Button.kB.value)
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
+    .whileTrue(new VisionShoot(m_shooter, m_index, m_leds, m_Vision2));
     // new JoystickButton(m_driverController, Button.kA.value)
     // .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
     // new JoystickButton(m_driverController, Button.kB.value)

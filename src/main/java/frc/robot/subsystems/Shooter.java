@@ -32,6 +32,8 @@ public class Shooter extends SubsystemBase {
   public double shootingVelocity = 2500;
   public double ampShootingAngle = 66.5;
   public double ampShootingVelocity = 2350;
+  public double visionShootAngle = 60;
+  public double visionShootVelocity = 3780;
   public double ampTopShootingVelocity = ampShootingVelocity / 6;
   public String shootingPreset = "Woofer";
 
@@ -157,6 +159,18 @@ public class Shooter extends SubsystemBase {
     if ((topShooterEnc.getVelocity()) >= (shootingVelocity * .95)
     && (shootingAngle >= (absoluteEncoder.getPosition() * 0.9))
     && (shootingAngle <= (absoluteEncoder.getPosition() * 1.1))) 
+    {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  public boolean visionAtSpeed() {
+    if ((topShooterEnc.getVelocity()) >= (visionShootVelocity * .95)
+    && (visionShootAngle >= (absoluteEncoder.getPosition() * 0.9))
+    && (visionShootAngle <= (absoluteEncoder.getPosition() * 1.1))) 
     {
       return true;
     }
