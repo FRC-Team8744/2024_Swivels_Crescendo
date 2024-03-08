@@ -6,39 +6,37 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Index;
-import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.Shooter;
 
-public class SetLed extends Command {
-  /** Creates a new SetLed. */
-  private final LEDS m_led;
+public class RevShooter extends Command {
+  /** Creates a new RevShooter. */
+  private final Shooter m_shooter;
   private final Index m_index;
-  public SetLed(LEDS le, Index ind) {
-    m_led = le;
+  private double wantedSpeed;
+  public RevShooter(Shooter sh, Index ind) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    m_shooter = sh;
     m_index = ind;
-    addRequirements(m_led);
-    addRequirements(m_led);
+    addRequirements(m_shooter);
+    addRequirements(m_index);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    wantedSpeed = m_shooter.shootingVelocity;
+    if (m_index.inputIR.get() == false) {
+      m_shooter.testShoot(2500);
+    }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_led.rainbow();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    if (m_index.inputIR.get() == false) {
-      m_led.ledOn(0, 128, 0);
-    }
-    else {
-      m_led.ledOn(0, 0, 128);
-    }
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

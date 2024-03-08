@@ -61,7 +61,7 @@ public class LEDS extends SubsystemBase {
       // shape is a circle so only one value needs to precess
       final var hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
       // Set the value
-      m_ledBuffer.setHSV(i, hue, 255, 128);
+      m_ledBuffer.setHSV(i, hue, 255, 64);
     }
     // Increase by to make the rainbow "move"
     m_rainbowFirstPixelHue += 3;

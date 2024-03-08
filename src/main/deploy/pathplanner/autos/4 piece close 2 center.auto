@@ -2,31 +2,31 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3826715309960145,
-      "y": 3.128050334812656
+      "x": 0.8125154278477575,
+      "y": 6.778450740000072
     },
-    "rotation": 0
+    "rotation": 59.62
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "4palc preload"
+            "name": "ShootRingWoofer"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "4palc1"
+            "name": "4palc2Preset"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "4palc middle"
+            "pathName": "4pal2c1"
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4palc midleft"
+            "pathName": "4pal2c2"
           }
         },
         {
@@ -50,7 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4palc left"
+            "pathName": "4pal2c3"
           }
         },
         {

@@ -23,6 +23,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.commands.auto_led;
+import frc.robot.commands.Trings;
+import frc.robot.commands.VisionShoot;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
@@ -30,18 +33,21 @@ import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Vision2;
+import frc.robot.commands.AmpShoot;
 import frc.robot.commands.IntakeRun;
+import frc.robot.commands.IntakeSpinUp;
 import frc.robot.commands.OuttakeRun;
 import frc.robot.commands.SetLed;
 import frc.robot.commands.ShootRing;
+import frc.robot.commands.SourceDonut;
 import frc.robot.commands.TestPivot;
-import frc.robot.commands.UnDonut;
 import frc.robot.commands.Wait;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -65,12 +71,13 @@ public class RobotContainer {
   public final Intake m_intake = new Intake();
   public final Shooter m_shooter = new Shooter();
   public final Vision m_vision = new Vision();
+  public final Vision2 m_Vision2 = new Vision2();
   public final Index m_index = new Index();
-    public final Vision2 m_Vision2 = new Vision2();
   public final LEDS m_leds = new LEDS();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_codriverController = new XboxController(OIConstants.kCodriverControllerPort);
+  CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
 
   // A chooser for autonomous commands
   private final SendableChooser<Command> m_autoChooser;
@@ -85,20 +92,25 @@ public class RobotContainer {
     // swerve = new Swerve();
     // exampleSubsystem = new ExampleSubsystem();
 
-    m_leds.ledOn(0, 0, 255);
+    m_leds.ledOn(0, 0, 128);
 
     // // Register Named Commands
-    NamedCommands.registerCommand("RunIntake", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
+    NamedCommands.registerCommand("RunIntakeOld", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
+    NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
     NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
     NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(29, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
-    NamedCommands.registerCommand("4palc1", new InstantCommand (() -> m_shooter.setShooterStuff(26, 3240, "4pacl1")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
-    NamedCommands.registerCommand("4palc2", new InstantCommand (() -> m_shooter.setShooterStuff(25, 3510, "4pacl2")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
-    NamedCommands.registerCommand("4palc3", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "4pacl3")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+
+    // 4 piece all left center
+    NamedCommands.registerCommand("4palc1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "4palc1")));
+    NamedCommands.registerCommand("4palc2Preset", new InstantCommand(() -> m_shooter.setShooterStuff(24.5, 3510, "4palc2")));
+    NamedCommands.registerCommand("4palc1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24.5, 3510, "4palc2"))));
+    NamedCommands.registerCommand("4palc2", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "4palc3"))));
+    NamedCommands.registerCommand("4palc3", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3));
     // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
-    
+    // 26 3240 4palc1
     // Configure the button bindings
     configureButtonBindings();
 
@@ -137,21 +149,41 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
+    // new JoystickButton(m_driverController, Button.kA.value)
+    //   //.onTrue(new auto_led())
+    //   .onFalse( m_led());
+    // new JoystickButton(m_driverController, Button.kY.value)
+    // .onTrue(new InstantCommand(() -> m_leds.ledOn()))
+    // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
+
+new JoystickButton(m_driverController, Button.kB.value)
+    .onTrue(new auto_led(m_Vision2, m_leds, m_robotDrive));
+    // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
+    // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
+
     new JoystickButton(m_driverController, Button.kA.value)
-    .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
-    new JoystickButton(m_driverController, Button.kB.value)
-    .whileTrue(new SetLed(m_leds, m_index));
+    .onTrue(new Trings(m_leds, m_robotDrive));
+
+    m_driver.leftTrigger().whileTrue(new AmpShoot(m_shooter, m_index, m_leds));
+    m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
+    new JoystickButton(m_driverController, Button.kLeftBumper.value)
+    .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
+    new JoystickButton(m_driverController, Button.kRightBumper.value)
+    .whileTrue(new VisionShoot(m_shooter, m_index, m_leds, m_Vision2));
+    // new JoystickButton(m_driverController, Button.kA.value)
+    // .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
+    // new JoystickButton(m_driverController, Button.kB.value)
+    // .whileTrue(new SetLed(m_leds, m_index));
     new JoystickButton(m_driverController, Button.kX.value)
-    .whileTrue(new TestPivot(m_shooter));
+    .onTrue(new InstantCommand (() -> m_shooter.stopShooter()));
     new JoystickButton(m_driverController, Button.kY.value)
-    .whileTrue(new UnDonut(m_shooter, m_index, m_leds));
+    .whileTrue(new SourceDonut(m_shooter, m_index, m_leds));
+    new JoystickButton(m_driverController, Button.kBack.value)
+    .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
+    
     // Codriver Bindings
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 3510, "Woofer")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));
     new JoystickButton(m_codriverController, Button.kRightBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(59, 1300, "Amp")));
     new JoystickButton(m_codriverController, Button.kA.value)

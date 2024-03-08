@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.302308795773082,
-      "y": 5.560882875372808
+      "x": 1.44,
+      "y": 5.53
     },
     "rotation": 0
   },
@@ -12,26 +12,20 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "4 piece close middle"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "ShootRingWoofer"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Mid speaker 2 ring"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootRingPodium"
           }
         }
       ]
     }
   },
-  "folder": "Comp Autos",
+  "folder": "Test Autos",
   "choreoAuto": false
 }

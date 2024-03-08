@@ -5,18 +5,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Index;
-import frc.robot.subsystems.LEDS;
 
-public class SetLed extends Command {
-  /** Creates a new SetLed. */
-  private final LEDS m_led;
-  private final Index m_index;
-  public SetLed(LEDS le, Index ind) {
-    m_led = le;
-    m_index = ind;
-    addRequirements(m_led);
-    addRequirements(m_led);
+public class offset extends Command {
+  /** Creates a new offset. */
+  public offset() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -25,20 +18,11 @@ public class SetLed extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_led.rainbow();
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    if (m_index.inputIR.get() == false) {
-      m_led.ledOn(0, 128, 0);
-    }
-    else {
-      m_led.ledOn(0, 0, 128);
-    }
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

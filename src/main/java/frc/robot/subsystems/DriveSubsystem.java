@@ -234,6 +234,10 @@ public class DriveSubsystem extends SubsystemBase {
     return m_odometry.getPoseMeters();
   }
 
+  public void zeroIMU() {
+    m_imu.zeroHeading();
+  }
+
   /**
    * Resets the odometry to the specified pose.
    *

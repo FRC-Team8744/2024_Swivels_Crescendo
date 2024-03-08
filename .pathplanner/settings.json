@@ -8,11 +8,13 @@
     "Bens",
     "LeftBaseLine(2)",
     "MiddleBaseLine(2)",
+    "4 piece all left 2 center",
     "Old autos"
   ],
   "autoFolders": [
     "Bens",
-    "Autos"
+    "Comp Autos",
+    "Test Autos"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

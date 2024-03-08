@@ -32,7 +32,7 @@ public class IntakeRun extends Command {
   public void initialize() {
     m_intake.donutGrab(-m_intake.intakeSpeed);
     m_index.indexRun(-.5);
-    m_led.ledOn(255, 0, 0);
+    m_led.ledOn(128, 0, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,10 +45,10 @@ public class IntakeRun extends Command {
     m_intake.motorOff();
     m_index.indexStop();
     if (m_index.inputIR.get() == false) {
-      m_led.ledOn(0, 255, 0);
+      m_led.ledOn(0, 128, 0);
     }
     else {
-      m_led.ledOn(0, 0, 255);
+      m_led.ledOn(0, 0, 128);
     }
   }
 

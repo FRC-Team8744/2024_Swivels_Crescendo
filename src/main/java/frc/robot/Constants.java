@@ -26,6 +26,8 @@ public final class Constants {
     public static final int kRightPivotShooterPort = 20;
     public static final int kLeftPivotShooterPort = 21; // Has absolute encoder
     public static final int kUndertakerIntakePort = 22;
+    public static final int kLeftClimberPort = 23;
+    public static final int kRightClimberPort = 24;
   }
 
   public static final class SwerveConstants {

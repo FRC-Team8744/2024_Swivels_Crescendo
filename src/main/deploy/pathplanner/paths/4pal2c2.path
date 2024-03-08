@@ -3,53 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.44,
-        "y": 5.53
+        "x": 4.58,
+        "y": 6.937433593177046
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9260417769493865,
-        "y": 3.5245637575353865
+        "x": 5.591709065678355,
+        "y": 7.240946312872446
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4pal2c1"
     },
     {
       "anchor": {
-        "x": 2.8365540809793615,
-        "y": 4.126676732781015
+        "x": 8.299162513817985,
+        "y": 7.443288126012872
       },
       "prevControl": {
-        "x": 2.8365540809793615,
-        "y": 4.159514916751354
+        "x": 7.229641501536524,
+        "y": 7.587817992537394
       },
       "nextControl": {
-        "x": 2.8365540809793615,
-        "y": 4.11199105045795
+        "x": 8.98799838534724,
+        "y": 7.350202197427837
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.44,
-        "y": 5.53
+        "x": 5.612148040038478,
+        "y": 6.4176431751774645
       },
       "prevControl": {
-        "x": 1.4267285779652068,
-        "y": 5.492445188825977
+        "x": 7.384010865454269,
+        "y": 6.807873814793673
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4palc3"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.65,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.6,
       "command": {
         "type": "sequential",
         "data": {
@@ -66,21 +72,21 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 12.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 5.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 piece middle",
+  "folder": "4 piece all left 2 center",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 10.0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

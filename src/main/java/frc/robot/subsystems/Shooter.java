@@ -30,7 +30,11 @@ public class Shooter extends SubsystemBase {
   private static final double maximumAngle = 70.0;
   public double shootingAngle = 60;
   public double shootingVelocity = 2500;
-  // Wing 26/.65 for old 16ft
+  public double ampShootingAngle = 66.5;
+  public double ampShootingVelocity = 2350;
+  public double visionShootAngle = 60;
+  public double visionShootVelocity = 3780;
+  public double ampTopShootingVelocity = ampShootingVelocity / 6;
   public String shootingPreset = "Woofer";
 
   private CANSparkMax topShooterSparkMax = new CANSparkMax(MechanismConstants.kTopShooterPort, MotorType.kBrushless);
@@ -96,16 +100,16 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Top shooter", topShooterEnc.getPosition());
-    SmartDashboard.putNumber("Bottom shooter", bottomShooterEnc.getPosition());
-    SmartDashboard.putNumber("Shooter degrees", leftPivotEnc.getPosition());
-    SmartDashboard.putNumber("Right pivot", rightPivotEnc.getPosition());
-    SmartDashboard.putNumber("Left pivot", leftPivotEnc.getPosition());
+    // SmartDashboard.putNumber("Top shooter", topShooterEnc.getPosition());
+    // SmartDashboard.putNumber("Bottom shooter", bottomShooterEnc.getPosition());
+    // SmartDashboard.putNumber("Shooter degrees", leftPivotEnc.getPosition());
+    // SmartDashboard.putNumber("Right pivot", rightPivotEnc.getPosition());
+    // SmartDashboard.putNumber("Left pivot", leftPivotEnc.getPosition());
     SmartDashboard.putNumber("Abosulte encoder", absoluteEncoder.getPosition());
     SmartDashboard.putNumber("Flywheel top RPM", topShooterEnc.getVelocity());
     SmartDashboard.putNumber("Flywheel bottom RPM", bottomShooterEnc.getVelocity());
-    SmartDashboard.putNumber("Current left", leftPivotSparkMax.getOutputCurrent());
-    SmartDashboard.putNumber("Current right", rightPivotSparkMax.getOutputCurrent());
+    // SmartDashboard.putNumber("Current left", leftPivotSparkMax.getOutputCurrent());
+    // SmartDashboard.putNumber("Current right", rightPivotSparkMax.getOutputCurrent());
     SmartDashboard.putString("Shooting preset", shootingPreset);
     SmartDashboard.putNumber("Shooting RPM average", (bottomShooterEnc.getVelocity() + bottomShooterEnc.getVelocity()) / 2);
     SmartDashboard.putNumber("Shooting velocity", shootingVelocity);
@@ -117,6 +121,11 @@ public class Shooter extends SubsystemBase {
     topShooterPID.setReference(speed, CANSparkMax.ControlType.kVelocity);
     // topShooterSparkMax.set(speed);
     // bottomShooterSparkMax.set(-speed);
+  }
+
+  public void ampShoot(double topSpeed, double bottomSpeed) {
+    topShooterPID.setReference(topSpeed, CANSparkMax.ControlType.kVelocity);
+    bottomShooterPID.setReference(bottomSpeed, CANSparkMax.ControlType.kVelocity);
   }
 
   public void stopShooter() {
@@ -132,13 +141,49 @@ public class Shooter extends SubsystemBase {
     // rightPivotSparkMax.set(speed);
   }
 
+  public void testAngleAmp(double angle) {
+    angle -= 3.5;
+    if (angle < minimumAngle) angle = minimumAngle;
+    if (angle > maximumAngle) angle = maximumAngle;
+    leftPivotPID.setReference(angle, CANSparkMax.ControlType.kPosition);
+    // leftPivotSparkMax.set(speed);
+    // rightPivotSparkMax.set(speed);
+  }
+
   public void stopAngle() {
     leftPivotSparkMax.stopMotor();
     rightPivotSparkMax.stopMotor();
   }
 
   public boolean atSpeed() {
-    if ((topShooterEnc.getVelocity()) >= (shootingVelocity * .95)) {
+    if ((topShooterEnc.getVelocity()) >= (shootingVelocity * .95)
+    && (shootingAngle >= (absoluteEncoder.getPosition() * 0.9))
+    && (shootingAngle <= (absoluteEncoder.getPosition() * 1.1))) 
+    {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  public boolean visionAtSpeed() {
+    if ((topShooterEnc.getVelocity()) >= (visionShootVelocity * .95)
+    && (visionShootAngle >= (absoluteEncoder.getPosition() * 0.9))
+    && (visionShootAngle <= (absoluteEncoder.getPosition() * 1.1))) 
+    {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  public boolean ampAtSpeed() {
+    if ((bottomShooterEnc.getVelocity()) >= (ampShootingVelocity * 0.9)
+    && (ampShootingAngle >= ((absoluteEncoder.getPosition()) * 0.95))
+    && (ampShootingAngle <= ((absoluteEncoder.getPosition()) * 1.05)))
+    {
       return true;
     }
     else {

@@ -4,43 +4,51 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision2;
 
-public class ShootRing extends Command {
+public class VisionShoot extends Command {
   private final Shooter m_shooter;
   private final Index m_index;
   private final LEDS m_led;
+  private final Vision2 m_vis;
   private final Timer m_timer = new Timer();
   private int sensorState = 0;
 
-  public ShootRing(Shooter sh, Index ind, LEDS le) {
+  public VisionShoot(Shooter sh, Index ind, LEDS le, Vision2 vi) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = sh;
     m_index = ind;
     m_led = le;
+    m_vis = vi;
     addRequirements(m_shooter);
     addRequirements(m_index);
     addRequirements(m_led);
+    addRequirements(m_vis);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     sensorState = 0;
-    m_shooter.testShoot(m_shooter.shootingVelocity);
-    m_shooter.testAngle(m_shooter.shootingAngle);
+    // visShootAngle = (Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance()) * 180) / Math.PI;
+    m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance())) + (m_vis.getTargetDistance() * 2/3);
+    SmartDashboard.putNumber("Shooter Angle", m_shooter.visionShootAngle);
+    m_shooter.testShoot(m_shooter.visionShootVelocity);
+    m_shooter.testAngle(m_shooter.visionShootAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_led.rainbow();
-    if (m_shooter.atSpeed()) {
+    if (m_shooter.visionAtSpeed()) {
       m_index.indexRun(-m_index.indexSpeed);
     }
   }
