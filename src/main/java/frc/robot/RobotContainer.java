@@ -178,6 +178,8 @@ new JoystickButton(m_driverController, Button.kB.value)
     .onTrue(new InstantCommand (() -> m_shooter.stopShooter()));
     new JoystickButton(m_driverController, Button.kY.value)
     .whileTrue(new SourceDonut(m_shooter, m_index, m_leds));
+    new POVButton(m_driverController ,0)
+    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kBack.value)
     .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
     
