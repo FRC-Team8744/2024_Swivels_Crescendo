@@ -149,6 +149,8 @@ public class RobotContainer {
     .whileTrue(new TestPivot(m_shooter));
     new JoystickButton(m_driverController, Button.kY.value)
     .whileTrue(new UnDonut(m_shooter, m_index, m_leds));
+    new POVButton(m_driverController ,0)
+    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     // Codriver Bindings
     new JoystickButton(m_codriverController, Button.kLeftBumper.value)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 3510, "Woofer")));
