@@ -177,7 +177,7 @@ new JoystickButton(m_driverController, Button.kB.value)
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
+    .whileTrue(new auto_led(m_Vision2, m_leds, m_robotDrive));
     new JoystickButton(m_driverController, Button.kX.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
     new POVButton(m_driverController, 0)
