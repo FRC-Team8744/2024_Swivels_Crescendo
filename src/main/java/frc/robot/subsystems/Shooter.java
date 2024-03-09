@@ -111,9 +111,11 @@ public class Shooter extends SubsystemBase {
     // SmartDashboard.putNumber("Current left", leftPivotSparkMax.getOutputCurrent());
     // SmartDashboard.putNumber("Current right", rightPivotSparkMax.getOutputCurrent());
     SmartDashboard.putString("Shooting preset", shootingPreset);
-    SmartDashboard.putNumber("Shooting RPM average", (bottomShooterEnc.getVelocity() + bottomShooterEnc.getVelocity()) / 2);
+    // SmartDashboard.putNumber("Shooting RPM average", (bottomShooterEnc.getVelocity() + bottomShooterEnc.getVelocity()) / 2);
     SmartDashboard.putNumber("Shooting velocity", shootingVelocity);
     SmartDashboard.putNumber("Shooting angle", shootingAngle);
+    SmartDashboard.putNumber("Vision velocity", visionShootVelocity);
+    SmartDashboard.putNumber("Vision angle", visionShootAngle);
   }
 
   public void testShoot(double speed) {

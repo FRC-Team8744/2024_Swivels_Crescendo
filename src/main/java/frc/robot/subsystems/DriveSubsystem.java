@@ -192,7 +192,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Diagnostics
 
-  if (Constants.kDebugLevel >=3) {
+  if (Constants.kDebugLevel >=3) { 
 
       // SmartDashboard.putBoolean("DigitalInput", input.get());
       // SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
