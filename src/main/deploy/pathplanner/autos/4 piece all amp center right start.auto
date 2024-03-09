@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "Start"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "4palc preload"

@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MechanismConstants;
 
@@ -22,14 +21,14 @@ public class Intake extends SubsystemBase {
   }
   
   public void donutGrab(double speed) {
-    frontIntakeSparkMax.set(speed); //Ratio of wheel sizes
-    rearIntakeSparkMax.set(speed * 2/3);
-    undertakerSparkMax.set(-speed);
+    frontIntakeSparkMax.set(-speed); 
+    rearIntakeSparkMax.set(-speed * 2/3); //Ratio of wheel sizes
+    undertakerSparkMax.set(speed);
   }
  
     public void donutRelease(double speed) {
-    frontIntakeSparkMax.set(speed); //Ratio of wheel sizes
-    rearIntakeSparkMax.set(speed * 2/3);
+    frontIntakeSparkMax.set(speed); 
+    rearIntakeSparkMax.set(speed * 2/3); //Ratio of wheel sizes
     undertakerSparkMax.set(-speed);
   }
 

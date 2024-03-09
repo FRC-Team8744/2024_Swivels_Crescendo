@@ -4,65 +4,29 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 
-public class AmpShoot extends Command {
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class AmpShoot extends SequentialCommandGroup {
+  private final Climber m_climber;
   private final Shooter m_shooter;
   private final Index m_index;
   private final LEDS m_led;
-  private final Timer m_timer = new Timer();
-  private int sensorState = 0;
-
-  public AmpShoot(Shooter sh, Index ind, LEDS le) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public AmpShoot(Climber cl, Shooter sh, Index ind, LEDS le) {
+    m_climber = cl;
     m_shooter = sh;
     m_index = ind;
     m_led = le;
-    addRequirements(m_shooter);
-    addRequirements(m_index);
-    addRequirements(m_led);
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    m_timer.restart();
-    sensorState = 0;
-    m_shooter.ampShoot(m_shooter.ampTopShootingVelocity, m_shooter.ampShootingVelocity);
-    m_shooter.testAngleAmp(m_shooter.ampShootingAngle);
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    m_led.rainbow();
-    if (m_shooter.ampAtSpeed() && m_timer.get() >= 0.5) {
-      m_index.indexRun(-m_index.indexSpeed);
-    }
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    m_shooter.stopShooter();
-    m_index.indexStop();
-    m_shooter.stopAngle();
-    m_led.ledOn(0, 0, 128);
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    if ((sensorState == 0) && (m_index.inputIR.get() == false)) sensorState = 1;
-    if ((sensorState == 1) && (m_index.inputIR.get() == true)) {
-    sensorState = 2; 
-    m_timer.restart();}
-    if ((sensorState == 2) && (m_timer.get() >= 1)) return true;
-    return false;
+    // Add your commands in the addCommands() call, e.g.
+    // addCommands(new FooCommand(), new BarCommand());
+    addCommands(new ClimbUp(m_climber).withTimeout(.2),
+    new ShootA(m_shooter, m_index, m_led),
+    new ClimbDown(m_climber).withTimeout(.2));
   }
 }

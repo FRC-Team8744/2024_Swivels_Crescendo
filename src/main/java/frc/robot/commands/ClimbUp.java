@@ -5,29 +5,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Index;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 
-public class OuttakeRun extends Command {
-  private final Intake m_intake;
-  private final Shooter m_shooter;
-  private final Index m_index;
-  /** Creates a new IntakeRun. */
-  public OuttakeRun(Intake in, Shooter sh, Index ind) {
-    m_intake = in;
-    m_shooter = sh;
-    m_index = ind;
-    addRequirements(m_intake);
-    addRequirements(m_shooter);
-    addRequirements(m_index);
+public class ClimbUp extends Command {
+  private final Climber m_climber;
+  private int sensorState;
+  /** Creates a new ClimbUp. */
+  public ClimbUp(Climber cl) {
+    m_climber = cl;
+    addRequirements(m_climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.donutRelease(m_intake.intakeSpeed);
-    m_index.indexRun(m_index.indexSpeed);
+    m_climber.climberUp(m_climber.climbSpeed);
+    sensorState = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,13 +30,14 @@ public class OuttakeRun extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_intake.motorOff();
-    m_index.indexStop();
+    m_climber.stopClimber();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; 
+    if (sensorState == 0 && Math.abs(m_climber.climberVelocity()) > 0.5) sensorState = 1;
+    if (sensorState == 1 && Math.abs(m_climber.climberVelocity()) < 0.5) return true;
+    return false;
   }
 }

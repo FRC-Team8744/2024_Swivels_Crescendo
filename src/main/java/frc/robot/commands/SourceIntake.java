@@ -9,13 +9,13 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 
-public class SourceDonut extends Command {
+public class SourceIntake extends Command {
   private final Shooter m_shooter;
   private final Index m_index;
   private final LEDS m_led;
   private int sensorState = 0;
   /** Creates a new UnDonut. */
-  public SourceDonut(Shooter sh, Index ind, LEDS le) {
+  public SourceIntake(Shooter sh, Index ind, LEDS le) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = sh;
     m_index = ind;
