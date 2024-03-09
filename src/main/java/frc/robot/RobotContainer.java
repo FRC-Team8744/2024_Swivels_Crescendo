@@ -169,22 +169,22 @@ new JoystickButton(m_driverController, Button.kB.value)
     // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
 
     new JoystickButton(m_driverController, Button.kA.value)
-    .onTrue(new Trings(m_leds, m_robotDrive));
-
+    .whileTrue(new ClimbDown(m_climber));
+    new JoystickButton(m_driverController, Button.kY.value)
+    .whileTrue(new ClimbUp(m_climber));
     m_driver.leftTrigger().whileTrue(new AmpShoot(m_climber, m_shooter, m_index, m_leds));
     m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
-   
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
     .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kX.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
-    new POVButton(m_driverController ,0)
+    new POVButton(m_driverController, 0)
    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 3510, "Woofer")));
-   new POVButton(m_driverController ,90)
+   new POVButton(m_driverController, 90)
   .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "Podium")));
-  new POVButton(m_driverController ,270)
+  new POVButton(m_driverController, 270)
   .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(22, 3780, "Wing")));
   new JoystickButton(m_driverController, Button.kBack.value)
     .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
