@@ -24,8 +24,8 @@ public class Climber extends SubsystemBase {
   public Climber() {
     rightClimberSparkMax.follow(leftClimberSparkMax, true);
  
-    leftClimberSparkMax.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    rightClimberSparkMax.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    leftClimberSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    rightClimberSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 
   public void climberUp(double speed) {
@@ -36,8 +36,8 @@ public class Climber extends SubsystemBase {
   }
 
   public void climberDown(double speed) {
-    leftClimberSparkMax.setSmartCurrentLimit(30);
-    rightClimberSparkMax.setSmartCurrentLimit(30);
+    leftClimberSparkMax.setSmartCurrentLimit(40);
+    rightClimberSparkMax.setSmartCurrentLimit(40);
     leftClimberSparkMax.set(-speed);
   }
 
