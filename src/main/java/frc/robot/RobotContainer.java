@@ -164,7 +164,7 @@ public class RobotContainer {
     // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
 
 new JoystickButton(m_driverController, Button.kB.value)
-    .onTrue(new auto_led(m_Vision2, m_leds, m_robotDrive));
+    .onTrue(new auto_led(m_Vision2, m_leds, m_robotDrive).withTimeout(2.0));
     // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
     // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
 

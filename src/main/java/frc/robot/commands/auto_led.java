@@ -9,16 +9,17 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Vision2;
 
 public class auto_led extends Command {
   private final Vision2 m_vision;
-  private final LEDS m_lightbarLeds;
+  // private final LEDS m_lightbarLeds;
   private final DriveSubsystem m_drive;
-    PIDController m_turnCtrl = new PIDController(5, 0, 0);
-  private static final double kTurnFF = 0.0;
+    PIDController m_turnCtrl = new PIDController(0.02, 0, 0);
+  // private static final double kTurnFF = 0.0;
   private double m_output;
   private double m_heading;
   // private double m_goalAngle = 0.0;
@@ -37,8 +38,8 @@ public class auto_led extends Command {
   public auto_led(Vision2 vision, LEDS light, DriveSubsystem drive) {
     m_vision = vision;
     addRequirements(m_vision);
-    m_lightbarLeds = light;
-    addRequirements(m_lightbarLeds);
+    // m_lightbarLeds = light;
+    // addRequirements(m_lightbarLeds);
     m_drive = drive;
     addRequirements(m_drive);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -47,9 +48,9 @@ public class auto_led extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_lightbarLeds.setLed(17,255,255,0);
+    // m_lightbarLeds.setLed(17,255,255,0);
     m_turnCtrl.enableContinuousInput(-180, 180);
-    m_turnCtrl.setTolerance(5.0);
+    m_turnCtrl.setTolerance(1.0);
     // m_turnCtrl.setSetpoint(m_goalAngle);
     m_turnCtrl.reset();
     m_heading = m_drive.m_imu.getHeadingDegrees();
@@ -58,7 +59,7 @@ public class auto_led extends Command {
   
     if (NoTargetAtInit) {
       // tx = SmartDashboard.getNumber("tx",0);
-      goAngle = (m_heading - m_vision.getTargetHorzAngle());
+      goAngle = (m_heading + m_vision.getTargetHorzAngle());
     } else {
       goAngle = m_heading;
     }
@@ -81,13 +82,13 @@ public class auto_led extends Command {
     // m_turnCtrl.setSetpoint(goAngle);
     // }
     // x = (int) (-tx * (36.0/30.0) + 17.0);//LED conversion.
-    if (m_vision.isSpeakerInView()){
-      m_lightbarLeds.allOff();
-      m_lightbarLeds.setLed(x,1,255,1); //green
-    } else {
-      m_lightbarLeds.allOff(); // after it's done it will be red
-      m_lightbarLeds.setLed(17, 255, 1, 1); // red
-    }
+    // if (m_vision.isSpeakerInView()){
+      // m_lightbarLeds.allOff();
+      // m_lightbarLeds.setLed(x,1,255,1); //green
+    // } else {
+      // m_lightbarLeds.allOff(); // after it's done it will be red
+      // m_lightbarLeds.setLed(17, 255, 1, 1); // red
+    // }
     m_heading = m_drive.m_imu.getHeadingDegrees();
 
   // SmartDashboard.putBoolean("NoTargetATInit", NoTargetAtInit);
@@ -102,7 +103,7 @@ public class auto_led extends Command {
         // m_turnCtrl.setSetpoint(m_goalAngle);
         // goAngle = (-tx * (36.0/30.0) + 17.0);
         // m_turnCtrl.setSetpoint(goAngle);
-    m_output = MathUtil.clamp(m_turnCtrl.calculate(m_heading) + kTurnFF, -1.0, 1.0);
+    m_output = MathUtil.clamp(m_turnCtrl.calculate(m_heading), -1.0, 1.0);
     // Send PID output to drivebase
     // if (tx >= 0){
     //   m_drive.drive(0.0, 0.0, -m_output, false);
@@ -110,7 +111,7 @@ public class auto_led extends Command {
     // if (tx <= 0){
     //   m_drive.drive(0.0, 0.0, -m_output, false);
     // }
-    m_drive.drive(0.0, 0.0, m_output, false);
+    m_drive.drive(0.0, 0.0, m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND, false);
 
     // Debug information
     SmartDashboard.putNumber("heading", m_heading);
@@ -127,7 +128,7 @@ public class auto_led extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-   m_lightbarLeds.allOff();
+  //  m_lightbarLeds.allOff();
    m_drive.drive(0.0, 0.0, 0.0, false);
   }
 
