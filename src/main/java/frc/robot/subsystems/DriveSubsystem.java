@@ -186,13 +186,13 @@ public class DriveSubsystem extends SubsystemBase {
             m_frontLeft.getState(),
             m_frontRight.getState(),
             m_rearLeft.getState(),
-            m_rearRight.getState() } );
+            m_rearRight.getState() } ); // :3
 
     
 
     // Diagnostics
 
-  if (Constants.kDebugLevel >=3) { 
+  if (Constants.kDebugLevel >=3) {
 
       // SmartDashboard.putBoolean("DigitalInput", input.get());
       // SmartDashboard.putBoolean("DigitalInputI", inputIR.get());

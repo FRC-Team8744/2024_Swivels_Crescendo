@@ -101,7 +101,7 @@ public class RobotContainer {
 
     // // Register Named Commands
     NamedCommands.registerCommand("RunIntakeOld", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
-    NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
+    //NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("Climb Down", new ClimbDown(m_climber));
     NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
     NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
@@ -173,7 +173,7 @@ new JoystickButton(m_driverController, Button.kB.value)
 
     m_driver.leftTrigger().whileTrue(new AmpShoot(m_climber, m_shooter, m_index, m_leds));
     m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
-    m_driver.leftTrigger().whileTrue(new AmpShoot (m_shooter, m_index, m_leds));
+   
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
