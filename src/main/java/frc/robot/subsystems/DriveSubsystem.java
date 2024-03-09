@@ -45,6 +45,8 @@ public class DriveSubsystem extends SubsystemBase {
   double offset_FR = 0;
   double offset_RR = 0;
   
+  private double m_DriverSpeedScale = 1.0;
+
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft;
   private final SwerveModuleOffboard m_rearLeft;
@@ -277,6 +279,11 @@ public class DriveSubsystem extends SubsystemBase {
     ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
     rot = MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
 
+    // Apply speed scaling
+    xSpeed = xSpeed * m_DriverSpeedScale;
+    ySpeed = ySpeed * m_DriverSpeedScale;
+    rot = rot * m_DriverSpeedScale;
+
     var swerveModuleStates =
         SwerveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -324,6 +331,19 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearLeft.resetEncoders();
     m_frontRight.resetEncoders();
     m_rearRight.resetEncoders();
+  }
+
+  /* sets how fast the human driver can drive */
+  public void setMaxOutput(double val) {
+    m_DriverSpeedScale = val;
+  }
+
+  public void toggleMaxOutput() {
+    if (m_DriverSpeedScale == 1.0){
+      m_DriverSpeedScale = Constants.kDriverSpeedLimit;
+    } else {
+      m_DriverSpeedScale = 1.0;
+    }
   }
 
 }

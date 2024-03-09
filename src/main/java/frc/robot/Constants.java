@@ -16,6 +16,9 @@ public final class Constants {
   public static final int kMaxSpeedPercentAuto = 100;
   public static final int kMaxSpeedPercentTeleop = 100;
   public static final int kMaxAccelerationPercent = 100;
+  public static final double kDriverSpeedLimit = 0.1; // sets how much the max speed is modified by when you press down on the left stick basicly make go slower the default is 1 btw 
+
+
 
   public static final class MechanismConstants {
     public static final int kFrontIntakePort = 15;
