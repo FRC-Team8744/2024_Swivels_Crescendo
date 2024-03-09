@@ -12,8 +12,10 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -27,7 +29,7 @@ public class Vision2 extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
 
   private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-23.7), Units.degreesToRadians(180));
-  private Transform3d td = new Transform3d(-0.04, 0.25, 0, rd);
+  private Transform3d td = new Transform3d(0.04, 0.25, 0, rd);
   private Pose3d targetTd;
 // Transform3d ampOffSet = new Transform3d(0, 0, -0.47, new Rotation3d());
 // Transform3d speakerOffSet = new Transform3d(0, 0, 0.6, new Rotation3d());
@@ -43,7 +45,7 @@ public class Vision2 extends SubsystemBase {
   private boolean speakerInView_filtered;
 
   private Debouncer m_debouncer = new Debouncer (0.1, Debouncer.DebounceType.kBoth );
-  private MedianFilter m_lowpass = new MedianFilter(100);
+  private LinearFilter m_lowpass = LinearFilter.movingAverage(100);
   private double tx_out;
 //**heightMatters is the height of the object based on the april tags and the camera used for cacluations in shooting**//
   private double heightMatters;
@@ -68,18 +70,36 @@ public class Vision2 extends SubsystemBase {
   public void periodic() {
     PhotonPipelineResult result = camera.getLatestResult();
     PhotonTrackedTarget target = result.getBestTarget();
+    
 
     if (result.hasTargets()){
       Transform3d cameraToTarget = target.getBestCameraToTarget();
+
+      Pose3d aprilTagPose3d = aprilTagFieldLayout.getTagPose(target.getFiducialId()).get();
+
+      targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagPose3d, td);
+
       ID = target.getFiducialId();
 
       if ((ID == 4) || (ID == 7)) {   //blue-7 red-4
         speakerInView = true;
+
+        double yaw = ( PhotonUtils.getYawToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d()).minus(Rotation2d.fromDegrees(180)).getDegrees());
+        SmartDashboard.putNumber("yaw", yaw);
+
+        tx_out = yaw; //m_lowpass.calculate(yaw);
+
+        SmartDashboard.putNumber("Filtered Tx", tx_out);
+
+
       } else {
         speakerInView = false;
+        // m_lowpass.reset();
       }
       speakerInView_filtered = m_filterSpeakerInView.calculate(speakerInView);
       SmartDashboard.putBoolean("SpeakerInView", speakerInView_filtered);
+
+
 //they have -31 for height of camera
     if (ID >= 11 && ID <= 16){
     //this is chian thingy
@@ -99,11 +119,9 @@ public class Vision2 extends SubsystemBase {
   // cameraToTarget = cameraToTarget.plus(speakerOffSet);
   // SmartDashboard.putNumber("Height", 176);
   }
-  else heightMatters = -1;
+  else {heightMatters = -1;}
   // Translation3d ampOffSet;
   SmartDashboard.putNumber("Height",heightMatters);
-
-   targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), td);
 
       // Transform3d targetTd = cameraToTarget.plus(td);
 
@@ -111,22 +129,15 @@ public class Vision2 extends SubsystemBase {
 
       // Pose3d scoringPose3d = pose.plus(targetOffset);
 
-
-  double yaw = Units.radiansToDegrees( targetTd.getRotation().getZ());
-  tx_out = m_lowpass.calculate(yaw);
-  SmartDashboard.putNumber("Filtered Tx", tx_out);
-
   // double pitch = Math.abs(Units.radiansToDegrees( targetTd.getRotation().getY()));
   double pitch = Units.radiansToDegrees(Math.atan(1.76 / targetTd.getX()));
-  double tx = yaw;
+  // double tx = yaw;
 
   double Apriltagid = ID;
-  SmartDashboard.putNumber("tx", tx);
+  // SmartDashboard.putNumber("tx", tx);
   SmartDashboard.putNumber("ApriltagIDback", Apriltagid);
-
-  SmartDashboard.putNumber("TTd", targetTd.getX());
-  SmartDashboard.putNumber("CT", Units.radiansToDegrees(cameraToTarget.getRotation().getY()));
-  SmartDashboard.putNumber("Tz", yaw);
+  SmartDashboard.putNumber("X", targetTd.getX());
+  SmartDashboard.putNumber("Y", Units.radiansToDegrees(cameraToTarget.getRotation().getY()));
   // SmartDashboard.putNumber("Ty", targetTd.getY());
   SmartDashboard.putNumber("By", pitch);
 } else {
