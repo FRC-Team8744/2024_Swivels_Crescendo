@@ -3,20 +3,14 @@
   "startingPose": {
     "position": {
       "x": 1.3826715309960145,
-      "y": 3.128050334812656
+      "y": 2.83
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
-        {
-          "type": "named",
-          "data": {
-            "name": "Start"
-          }
-        },
         {
           "type": "path",
           "data": {

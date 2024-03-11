@@ -24,6 +24,7 @@ import java.io.PipedInputStream;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.estimation.CameraTargetRelation;
+import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -76,6 +77,10 @@ public class Vision2 extends SubsystemBase {
   @Override
   public void periodic() {
     PhotonPipelineResult result = camera.getLatestResult();
+    if (result.getMultiTagResult().estimatedPose.isPresent) {
+      MultiTargetPNPResult multiTag = result.getMultiTagResult();
+    }
+    result.getTargets();
     PhotonTrackedTarget target = result.getBestTarget();
 
     if (result.hasTargets()){

@@ -4,40 +4,40 @@
     {
       "anchor": {
         "x": 4.584150277423991,
-        "y": 4.86
+        "y": 4.86096084893422
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.244094488188977,
-        "y": 3.0630723213856426
+        "x": 7.609400835975197,
+        "y": 2.599365771182348
       },
       "isLocked": false,
       "linkedName": "4palc2"
     },
     {
       "anchor": {
-        "x": 8.079342670313249,
-        "y": 5.771473152964195
+        "x": 8.29962790515921,
+        "y": 6.123929528717735
       },
       "prevControl": {
-        "x": 5.94332568946828,
-        "y": 6.258143220511793
+        "x": 6.445825890966063,
+        "y": 6.741863533448785
       },
       "nextControl": {
-        "x": 9.05435585826183,
-        "y": 5.549326167105016
+        "x": 9.136711797573865,
+        "y": 5.844901564579517
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.612148040038478,
-        "y": 6.4176431751774645
+        "x": 5.553405310746221,
+        "y": 6.858213644870939
       },
       "prevControl": {
-        "x": 7.375116719821992,
-        "y": 6.123929528716182
+        "x": 7.316373990529735,
+        "y": 6.564499998409657
       },
       "nextControl": null,
       "isLocked": false,
@@ -66,14 +66,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 8.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 5.0,
+    "rotation": 20.0,
     "rotateFast": false
   },
   "reversed": false,
