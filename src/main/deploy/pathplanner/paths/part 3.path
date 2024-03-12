@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.10630482886534,
+        "y": 0.7729152120265088
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.056908433360374,
+        "y": 1.6043846067720653
+      },
+      "isLocked": false,
+      "linkedName": "part 3"
+    },
+    {
+      "anchor": {
+        "x": 4.2206492629818335,
+        "y": 2.4639600092324283
+      },
+      "prevControl": {
+        "x": 5.038065653877384,
+        "y": 2.0376855589659812
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "E"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -37.65877418863582,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "gaming folder",
+  "previewStartingState": {
+    "rotation": 0.9548412534609757,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}
