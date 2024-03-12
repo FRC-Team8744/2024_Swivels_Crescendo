@@ -29,6 +29,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
 import frc.robot.commands.Trings;
+import frc.robot.commands.TringsTest;
 import frc.robot.commands.VisionShoot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
@@ -62,6 +63,8 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import java.time.Instant;
 import java.util.List;
+
+import javax.security.auth.callback.TextInputCallback;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -193,6 +196,8 @@ new JoystickButton(m_driverController, Button.kB.value)
     .whileTrue(new ClimbDown(m_climber));
     new POVButton(m_driverController, 180)
     .whileTrue(new InstantCommand(() -> m_shooter.stopShooter()));
+    new POVButton(m_driverController, 0)
+    .whileTrue(new TringsTest(m_leds, m_robotDrive, m_Vision2));
     // new JoystickButton(m_driverController, Button.kA.value)
     // .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
     // new JoystickButton(m_driverController, Button.kB.value)

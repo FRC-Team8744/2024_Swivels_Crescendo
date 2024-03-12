@@ -55,10 +55,10 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
     // SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getAppliedOutput());
-    SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
-    SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getOutputCurrent());
-    SmartDashboard.putNumber("Left Climber Position", leftClimberEncoder.getPosition());
-    SmartDashboard.putNumber("Right Climber Position", rightClimberEncoder.getPosition());
-    SmartDashboard.putNumber("Left Climber Velocity", leftClimberEncoder.getVelocity());
+    // SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
+    // SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getOutputCurrent());
+    // SmartDashboard.putNumber("Left Climber Position", leftClimberEncoder.getPosition());
+    // SmartDashboard.putNumber("Right Climber Position", rightClimberEncoder.getPosition());
+    // SmartDashboard.putNumber("Left Climber Velocity", leftClimberEncoder.getVelocity());
   }
 }

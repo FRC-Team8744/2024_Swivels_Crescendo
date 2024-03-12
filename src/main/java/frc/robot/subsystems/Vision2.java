@@ -52,6 +52,7 @@ public class Vision2 extends SubsystemBase {
   private double tx_out;
 //**heightMatters is the height of the object based on the april tags and the camera used for cacluations in shooting**//
   private double heightMatters;
+  public double m_goalAngle;
 
   // Translation2d translation = PhotonUtils.estimateCameratoTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
 
@@ -126,7 +127,7 @@ public class Vision2 extends SubsystemBase {
       // Pose3d scoringPose3d = pose.plus(targetOffset);
 
 
-  double yaw = Units.radiansToDegrees( targetTd.getRotation().getZ());
+  double yaw = Units.radiansToDegrees(targetTd.getRotation().getZ());
   tx_out = m_lowpass.calculate(yaw);
   SmartDashboard.putNumber("Filtered Tx", tx_out);
 
@@ -196,7 +197,11 @@ SmartDashboard.putBoolean("RT", m_debouncer.calculate(result.hasTargets()));
     return heightMatters;
   }
 
-    public double getTargetDistance() {
+  public double getTargetDistance() {
     return targetTd.getX();
+  }
+
+  public double getTargetYDistance() {
+    return targetTd.getY();
   }
 }
