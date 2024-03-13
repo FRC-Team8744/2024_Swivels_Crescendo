@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.056908433360374,
-        "y": 1.6043846067720653
+        "x": 5.939800067902559,
+        "y": 1.4170112220395616
       },
       "isLocked": false,
       "linkedName": "part 3"
@@ -20,8 +20,8 @@
         "y": 2.4639600092324283
       },
       "prevControl": {
-        "x": 5.038065653877384,
-        "y": 2.0376855589659812
+        "x": 4.862403105690661,
+        "y": 1.885444683870822
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "gaming folder",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0.9548412534609757,
     "velocity": 0

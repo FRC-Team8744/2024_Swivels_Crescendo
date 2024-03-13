@@ -181,7 +181,7 @@ new JoystickButton(m_driverController, Button.kB.value)
     new JoystickButton(m_driverController, Button.kX.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
     new POVButton(m_driverController, 0)
-   .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(25, 3510, "Woofer")));
+   .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(55, 2500, "Woofer")));
    new POVButton(m_driverController, 90)
   .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "Podium")));
   new POVButton(m_driverController, 270)

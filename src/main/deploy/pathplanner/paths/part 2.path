@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.939800067895761,
-        "y": 1.452143731681836
+        "x": 5.401101586796611,
+        "y": 1.4989870778600332
       },
       "isLocked": false,
       "linkedName": "2 ring center part 1 (trueely)"
@@ -61,7 +61,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "gaming folder",
+  "folder": null,
   "previewStartingState": {
     "rotation": -52.5234079220152,
     "velocity": 0
