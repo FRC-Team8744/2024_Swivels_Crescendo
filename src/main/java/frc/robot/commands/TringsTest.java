@@ -38,8 +38,8 @@ public class TringsTest extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (m_vision2.getTargetYDistance() < 5.54)  m_vision2.m_goalAngle = (Math.toDegrees(Math.atan2(Math.abs(m_vision2.getTargetYDistance() - 5.54), m_vision2.getTargetDistance())));
-    else m_vision2.m_goalAngle = -1 * Math.toDegrees(Math.atan2(Math.abs(5.54 - m_vision2.getTargetYDistance()), m_vision2.getTargetDistance()));
+    if (m_vision2.getTargetYDistance() < 5.54)  m_vision2.m_goalAngle = (Math.toDegrees(Math.atan2(m_vision2.getTargetYDistance(), m_vision2.getTargetDistance())));
+    else m_vision2.m_goalAngle = -1 * Math.toDegrees(Math.atan2(Math.abs(m_vision2.getTargetYDistance() - 5.54), m_vision2.getTargetDistance()));
     m_lightbarLeds.setLed(17,255,255,0);
     m_turnCtrl.enableContinuousInput(-180, 180);
     m_turnCtrl.setTolerance(3.0);

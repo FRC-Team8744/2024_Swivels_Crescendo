@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.Debouncer;
@@ -34,8 +36,10 @@ public class auto_led extends Command {
 
  private Debouncer m_debouncer = new Debouncer (0.1, Debouncer.DebounceType.kBoth );
 
+ private double angleOffset;
+
   /** Creates a new auto_led. */
-  public auto_led(Vision2 vision, LEDS light, DriveSubsystem drive) {
+  public auto_led(Vision2 vision, DriveSubsystem drive) {
     m_vision = vision;
     addRequirements(m_vision);
     // m_lightbarLeds = light;
@@ -56,10 +60,18 @@ public class auto_led extends Command {
     m_heading = m_drive.m_imu.getHeadingDegrees();
 
     NoTargetAtInit = m_vision.isSpeakerInView();
-  
-    if (NoTargetAtInit) {
-      // tx = SmartDashboard.getNumber("tx",0);
-      goAngle = (m_heading + m_vision.getTargetHorzAngle());
+    PhotonTrackedTarget target = m_vision.getTarget();
+    if (NoTargetAtInit || target != null) {
+      angleOffset = target.getYaw()-6.0+(2*m_vision.getTargetDistance()/3);
+      // goAngle = 60;
+      tx = SmartDashboard.getNumber("tx",0);
+      // if (m_vision.getTargetYDistance() < 5.54)  
+      //   goAngle = Math.toDegrees(Math.atan2(m_vision.getTargetYDistance(), m_vision.getTargetDistance()));
+      // else 
+      //   goAngle = -1 * (Math.toDegrees(Math.atan2(Math.abs(m_vision.getTargetYDistance() - 5.54), m_vision.getTargetDistance())));
+      // goAngle = ((m_vision.getTargetHorzAngle()));
+      goAngle = m_heading - angleOffset;
+      // goAngle += m_heading;
     } else {
       goAngle = m_heading;
     }
@@ -90,7 +102,6 @@ public class auto_led extends Command {
       // m_lightbarLeds.setLed(17, 255, 1, 1); // red
     // }
     m_heading = m_drive.m_imu.getHeadingDegrees();
-
   // SmartDashboard.putBoolean("NoTargetATInit", NoTargetAtInit);
 
         // if (tx >= 0){
