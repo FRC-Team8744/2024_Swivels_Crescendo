@@ -166,8 +166,8 @@ public class RobotContainer {
     // .onTrue(new InstantCommand(() -> m_leds.ledOn()))
     // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
 
-new JoystickButton(m_driverController, Button.kB.value)
-    .onTrue(new auto_led(m_Vision2, m_robotDrive).withTimeout(2.0));
+    new JoystickButton(m_driverController, Button.kB.value)
+    .onTrue(new auto_led(m_Vision2, m_robotDrive, m_leds).withTimeout(2.0));
     // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
     // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
 
@@ -179,13 +179,13 @@ new JoystickButton(m_driverController, Button.kB.value)
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(Commands.sequence(new auto_led(m_Vision2, m_robotDrive).withTimeout(1.0), new VisionShoot(m_shooter, m_index, m_leds, m_Vision2)));
+    .whileTrue(Commands.sequence(new auto_led(m_Vision2, m_robotDrive, m_leds).withTimeout(1.0), new VisionShoot(m_shooter, m_index, m_leds, m_Vision2)));
     new JoystickButton(m_driverController, Button.kX.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
     new JoystickButton(m_driverController, Button.kY.value)
     .whileTrue(new ClimbUp(m_climber));
     new JoystickButton(m_driverController, Button.kB.value)
-    .whileTrue(new auto_led(m_Vision2, m_robotDrive));
+    .whileTrue(new auto_led(m_Vision2, m_robotDrive, m_leds));
     new JoystickButton(m_driverController, Button.kA.value)
     .whileTrue(new ClimbDown(m_climber));
     new POVButton(m_driverController, 180)
