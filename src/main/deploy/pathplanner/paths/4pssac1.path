@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.44,
-        "y": 5.53
+        "x": 1.4267285779652068,
+        "y": 2.83
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9260417769493865,
-        "y": 3.5245637575353865
+        "x": 2.4400406582566303,
+        "y": 2.7902796413821807
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4palcstart"
     },
     {
       "anchor": {
-        "x": 2.9,
-        "y": 4.25
+        "x": 3.482724103194182,
+        "y": 2.9811935115820147
       },
       "prevControl": {
-        "x": 2.9,
-        "y": 4.282838183970338
-      },
-      "nextControl": {
-        "x": 2.9,
-        "y": 4.235314317676935
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 1.44,
-        "y": 5.53
-      },
-      "prevControl": {
-        "x": 1.4267285779652068,
-        "y": 5.492445188825977
+        "x": 2.865896544740568,
+        "y": 2.3937965660834637
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4palc1"
     }
   ],
   "rotationTargets": [],
@@ -49,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0,
       "command": {
         "type": "sequential",
         "data": {
@@ -57,7 +41,24 @@
             {
               "type": "named",
               "data": {
-                "name": "RunIntake"
+                "name": "4palc1Preset"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Start"
               }
             }
           ]
@@ -66,18 +67,18 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 12.0,
+    "maxVelocity": 8.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -41.5,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 piece middle",
+  "folder": "4 piece source side all center",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

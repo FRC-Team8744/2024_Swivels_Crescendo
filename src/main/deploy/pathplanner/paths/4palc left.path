@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.612148040038478,
-        "y": 6.4176431751774645
+        "x": 5.553405310746221,
+        "y": 6.858213644870939
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.582776675392346,
-        "y": 7.4896979847595935
+        "x": 5.524033946100089,
+        "y": 7.930268454453068
       },
       "isLocked": false,
       "linkedName": "4palc3"
     },
     {
       "anchor": {
-        "x": 8.358370634451466,
-        "y": 7.475012302439632
+        "x": 8.549284504651299,
+        "y": 7.651240490316401
       },
       "prevControl": {
-        "x": 7.726886294559709,
-        "y": 7.533755031731888
+        "x": 7.917800164759541,
+        "y": 7.709983219608658
       },
       "nextControl": {
-        "x": 8.503126511427652,
-        "y": 7.461546639465103
+        "x": 8.694040381627484,
+        "y": 7.637774827341873
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.612148040038478,
-        "y": 6.4176431751774645
+        "x": 5.553405310746221,
+        "y": 6.858213644870939
       },
       "prevControl": {
-        "x": 7.22757309557553,
-        "y": 6.770099550932555
+        "x": 7.16881815956777,
+        "y": 7.210725963421018
       },
       "nextControl": null,
       "isLocked": false,
@@ -66,14 +66,14 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 8.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 5.0,
+    "rotation": 20.0,
     "rotateFast": false
   },
   "reversed": false,

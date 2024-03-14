@@ -14,6 +14,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
 import org.photonvision.estimation.CameraTargetRelation;
+import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -31,6 +33,7 @@ public class Vision2 extends SubsystemBase {
   private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-23.7), Units.degreesToRadians(180));
   private Transform3d td = new Transform3d(0.04, 0.25, 0, rd);
   private Pose3d targetTd;
+  public double distanceToApriltag = 0;
 // Transform3d ampOffSet = new Transform3d(0, 0, -0.47, new Rotation3d());
 // Transform3d speakerOffSet = new Transform3d(0, 0, 0.6, new Rotation3d());
 // Transform3d stageOffSet = new Transform3d(0, 0, 0.4, new Rotation3d());
@@ -49,6 +52,7 @@ public class Vision2 extends SubsystemBase {
   private double tx_out;
 //**heightMatters is the height of the object based on the april tags and the camera used for cacluations in shooting**//
   private double heightMatters;
+  public double m_goalAngle;
 
   // Translation2d translation = PhotonUtils.estimateCameratoTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
 
@@ -68,23 +72,30 @@ public class Vision2 extends SubsystemBase {
 
   @Override
   public void periodic() {
-    PhotonPipelineResult result = camera.getLatestResult();
-    PhotonTrackedTarget target = result.getBestTarget();
+    result = camera.getLatestResult();
+    if (result.getMultiTagResult().estimatedPose.isPresent) {
+      MultiTargetPNPResult multiTag = result.getMultiTagResult();
+    }
+    result.getTargets();
     
 
     if (result.hasTargets()){
-      Transform3d cameraToTarget = target.getBestCameraToTarget();
+      PhotonTrackedTarget localTarget = result.getBestTarget();
+      Transform3d cameraToTarget = localTarget.getBestCameraToTarget();
 
-      Pose3d aprilTagPose3d = aprilTagFieldLayout.getTagPose(target.getFiducialId()).get();
+      Pose3d aprilTagPose3d = aprilTagFieldLayout.getTagPose(localTarget.getFiducialId()).get();
 
       targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagPose3d, td);
 
-      ID = target.getFiducialId();
+      ID = localTarget.getFiducialId();
 
-      if ((ID == 4) || (ID == 7)) {   //blue-7 red-4
+      if ((ID == 4) || (ID == 7)) { //blue-7 red-4
         speakerInView = true;
-
-        double yaw = ( PhotonUtils.getYawToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d()).minus(Rotation2d.fromDegrees(180)).getDegrees());
+        target = localTarget;
+        double angleMultiplier = ID == 7 ? 180 : 180;
+        double yaw = (PhotonUtils.getYawToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d()).getDegrees());
+        yaw *= ID == 7 ? 1 : -1;
+        distanceToApriltag = PhotonUtils.getDistanceToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d());
         SmartDashboard.putNumber("yaw", yaw);
 
         tx_out = yaw; //m_lowpass.calculate(yaw);
@@ -93,6 +104,7 @@ public class Vision2 extends SubsystemBase {
 
 
       } else {
+        target = null;
         speakerInView = false;
         // m_lowpass.reset();
       }
@@ -129,6 +141,11 @@ public class Vision2 extends SubsystemBase {
 
       // Pose3d scoringPose3d = pose.plus(targetOffset);
 
+
+  double yaw = Units.radiansToDegrees(targetTd.getRotation().getZ());
+  tx_out = m_lowpass.calculate(yaw);
+  SmartDashboard.putNumber("Filtered Tx", tx_out);
+
   // double pitch = Math.abs(Units.radiansToDegrees( targetTd.getRotation().getY()));
   double pitch = Units.radiansToDegrees(Math.atan(1.76 / targetTd.getX()));
   // double tx = yaw;
@@ -136,7 +153,8 @@ public class Vision2 extends SubsystemBase {
   double Apriltagid = ID;
   // SmartDashboard.putNumber("tx", tx);
   SmartDashboard.putNumber("ApriltagIDback", Apriltagid);
-  SmartDashboard.putNumber("X", targetTd.getX());
+  SmartDashboard.putNumber("X", distanceToApriltag);
+  SmartDashboard.putNumber("Y distance", targetTd.getY());
   SmartDashboard.putNumber("Y", Units.radiansToDegrees(cameraToTarget.getRotation().getY()));
   // SmartDashboard.putNumber("Ty", targetTd.getY());
   SmartDashboard.putNumber("By", pitch);
@@ -145,6 +163,7 @@ public class Vision2 extends SubsystemBase {
 }
 SmartDashboard.putNumber("Id", ID); 
 SmartDashboard.putBoolean("RT", m_debouncer.calculate(result.hasTargets()));
+SmartDashboard.putNumber("Angle", tx_out);
 
 // SmartDashboard.putBoolean("isSpeakerInView", isSpeakerInView());
 
@@ -193,7 +212,15 @@ SmartDashboard.putBoolean("RT", m_debouncer.calculate(result.hasTargets()));
     return heightMatters;
   }
 
-    public double getTargetDistance() {
-    return targetTd.getX();
+  public double getTargetDistance() {
+    return distanceToApriltag;
+  }
+
+  public double getTargetYDistance() {
+    return targetTd.getY();
+  }
+
+  public PhotonTrackedTarget getTarget() {
+    return target;
   }
 }

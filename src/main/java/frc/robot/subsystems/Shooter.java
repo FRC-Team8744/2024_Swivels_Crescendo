@@ -28,8 +28,8 @@ public class Shooter extends SubsystemBase {
   private static final double shooterGearRatio = 15.0;
   private static final double minimumAngle = 9.0;
   private static final double maximumAngle = 70.0;
-  public double shootingAngle = 60;
-  public double shootingVelocity = 2500;
+  public double shootingAngle = 58;
+  public double shootingVelocity = 2430;
   public double ampShootingAngle = 66.5;
   public double ampShootingVelocity = 2350;
   public double visionShootAngle = 60;

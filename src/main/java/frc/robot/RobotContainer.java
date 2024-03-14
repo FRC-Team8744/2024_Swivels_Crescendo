@@ -25,6 +25,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
 import frc.robot.commands.Trings;
+import frc.robot.commands.TringsTest;
 import frc.robot.commands.VisionShoot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
@@ -47,6 +48,7 @@ import frc.robot.commands.TestPivot;
 import frc.robot.commands.Wait;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -57,6 +59,8 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 import java.time.Instant;
 import java.util.List;
+
+import javax.security.auth.callback.TextInputCallback;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -104,8 +108,7 @@ public class RobotContainer {
     //NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("Climb Down", new ClimbDown(m_climber));
     NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
-    NamedCommands.registerCommand("Wait", new Wait().withTimeout(.5));
-    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(60, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(55, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
     NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(29, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
@@ -163,8 +166,8 @@ public class RobotContainer {
     // .onTrue(new InstantCommand(() -> m_leds.ledOn()))
     // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
 
-new JoystickButton(m_driverController, Button.kB.value)
-    .onTrue(new auto_led(m_Vision2, m_leds, m_robotDrive).withTimeout(2.0));
+    new JoystickButton(m_driverController, Button.kB.value)
+    .onTrue(new auto_led(m_Vision2, m_robotDrive, m_leds).withTimeout(2.0));
     // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
     // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
 
@@ -177,6 +180,7 @@ new JoystickButton(m_driverController, Button.kB.value)
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
     .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
+    .whileTrue(Commands.sequence(new auto_led(m_Vision2, m_robotDrive, m_leds).withTimeout(1.0), new VisionShoot(m_shooter, m_index, m_leds, m_Vision2)));
     .whileTrue(new auto_led(m_Vision2, m_leds, m_robotDrive));
     new JoystickButton(m_driverController, Button.kX.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));

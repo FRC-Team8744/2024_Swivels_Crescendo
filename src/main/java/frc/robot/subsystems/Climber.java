@@ -24,8 +24,8 @@ public class Climber extends SubsystemBase {
   public Climber() {
     rightClimberSparkMax.follow(leftClimberSparkMax, true);
  
-    leftClimberSparkMax.setIdleMode(CANSparkMax.IdleMode.kCoast);
-    rightClimberSparkMax.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    leftClimberSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    rightClimberSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 
   public void climberUp(double speed) {
@@ -36,8 +36,8 @@ public class Climber extends SubsystemBase {
   }
 
   public void climberDown(double speed) {
-    leftClimberSparkMax.setSmartCurrentLimit(30);
-    rightClimberSparkMax.setSmartCurrentLimit(30);
+    leftClimberSparkMax.setSmartCurrentLimit(40);
+    rightClimberSparkMax.setSmartCurrentLimit(40);
     leftClimberSparkMax.set(-speed);
   }
 
@@ -55,10 +55,10 @@ public class Climber extends SubsystemBase {
     // This method will be called once per scheduler run
     // SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
     // SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getAppliedOutput());
-    SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
-    SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getOutputCurrent());
-    SmartDashboard.putNumber("Left Climber Position", leftClimberEncoder.getPosition());
-    SmartDashboard.putNumber("Right Climber Position", rightClimberEncoder.getPosition());
-    SmartDashboard.putNumber("Left Climber Velocity", leftClimberEncoder.getVelocity());
+    // SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
+    // SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getOutputCurrent());
+    // SmartDashboard.putNumber("Left Climber Position", leftClimberEncoder.getPosition());
+    // SmartDashboard.putNumber("Right Climber Position", rightClimberEncoder.getPosition());
+    // SmartDashboard.putNumber("Left Climber Velocity", leftClimberEncoder.getVelocity());
   }
 }

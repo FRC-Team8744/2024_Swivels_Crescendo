@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3826715309960145,
-        "y": 3.128050334812656
+        "x": 1.4267285779652068,
+        "y": 2.83
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1610126941184125,
-        "y": 2.5699944065362192
+        "x": 2.4400406582566303,
+        "y": 2.7902796413821807
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4palcstart"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 2.9811935115820147
       },
       "prevControl": {
-        "x": 2.8659254456254892,
-        "y": 2.39376621865945
+        "x": 2.865896544740568,
+        "y": 2.3937965660834637
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,10 +47,27 @@
           ]
         }
       }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Start"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 8.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0

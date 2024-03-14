@@ -161,6 +161,7 @@ public final class Constants {
     public static final double MAX_SPEED_IN_PERCENT = 100.0;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = 0.0442 * MAX_SPEED_IN_PERCENT;
     public static final double MAX_ANGULAR_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND * 4/3;
+    public static final double MAX_ANGULAR_DEGREES_PER_SECOND = Math.toDegrees(MAX_ANGULAR_RADIANS_PER_SECOND);
 
     /** Inversions. */
     public static final boolean DRIVE_MOTOR_INVERSION = true;

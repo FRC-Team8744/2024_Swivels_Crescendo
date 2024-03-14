@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.482724103194182,
-        "y": 2.9811935115820147
+        "x": 4.584150277423991,
+        "y": 4.86096084893422
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.877863923885272,
-        "y": 4.86096084893422
+        "x": 5.303748711254131,
+        "y": 4.156048097427144
       },
       "isLocked": false,
-      "linkedName": "4palc1"
+      "linkedName": "4palc2"
     },
     {
       "anchor": {
-        "x": 8.314313587482273,
-        "y": 4.435076061565361
+        "x": 8.461170410712915,
+        "y": 4.097305368134887
       },
       "prevControl": {
-        "x": 7.227573095575528,
-        "y": 4.214790826719399
+        "x": 6.540308036438188,
+        "y": 3.990590791786293
       },
       "nextControl": {
-        "x": 9.29438156460554,
-        "y": 4.633738489360621
+        "x": 8.725512692528069,
+        "y": 4.111991050457951
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 4.86096084893422
       },
       "prevControl": {
-        "x": 5.876490321853631,
-        "y": 3.054621923197335
+        "x": 6.831059672852799,
+        "y": 4.038562638842631
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,7 +46,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.65,
+      "waypointRelativePos": 0.85,
       "rotationDegrees": 0,
       "rotateFast": false
     }
@@ -54,8 +54,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.75,
+      "name": "Intake",
+      "waypointRelativePos": 0.8,
       "command": {
         "type": "sequential",
         "data": {
@@ -72,7 +72,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 8.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -83,10 +83,10 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 piece all left center",
+  "folder": "4 piece source side all center",
   "previewStartingState": {
-    "rotation": -49.89999999999998,
+    "rotation": -13.0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

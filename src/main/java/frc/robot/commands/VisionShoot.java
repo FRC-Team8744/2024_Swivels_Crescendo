@@ -38,7 +38,8 @@ public class VisionShoot extends Command {
   public void initialize() {
     sensorState = 0;
     // visShootAngle = (Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance()) * 180) / Math.PI;
-    m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance())) + (m_vis.getTargetDistance() * 2/3);
+    if (m_vis.getTargetDistance() > 8.23) {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / Math.abs(m_vis.getTargetDistance() - 16.459))); }
+    else {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance())) + (m_vis.getTargetDistance() * 2/3);}
     SmartDashboard.putNumber("Shooter Angle", m_shooter.visionShootAngle);
     m_shooter.testShoot(m_shooter.visionShootVelocity);
     m_shooter.testAngle(m_shooter.visionShootAngle);
