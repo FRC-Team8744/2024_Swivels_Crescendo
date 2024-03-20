@@ -40,6 +40,7 @@ import frc.robot.commands.AmpShoot;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.IntakeRun;
+import frc.robot.commands.IntakeSpinUp;
 import frc.robot.commands.OuttakeRun;
 import frc.robot.commands.SetLed;
 import frc.robot.commands.ShootRing;
@@ -80,7 +81,7 @@ public class RobotContainer {
   public final Shooter m_shooter = new Shooter();
   public final Vision m_vision = new Vision();
   public final Index m_index = new Index();
-    public final Vision2 m_Vision2 = new Vision2();
+  public final Vision2 m_Vision2 = new Vision2();
   public final LEDS m_leds = new LEDS();
   public final Climber m_climber = new Climber();
   // The driver's controller
@@ -91,9 +92,9 @@ public class RobotContainer {
   // A chooser for autonomous commands
   private final SendableChooser<Command> m_autoChooser;
     // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
-  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(5);
-  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(5);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(5);
+  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(6);
+  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(6);
+  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(6);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -105,22 +106,26 @@ public class RobotContainer {
 
     // // Register Named Commands
     NamedCommands.registerCommand("RunIntakeOld", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
-    //NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
+    NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("Climb Down", new ClimbDown(m_climber));
     NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
-    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(55, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(58, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
     NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(29, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
 
     // 4 piece all amp center
-    NamedCommands.registerCommand("4palc1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "4palc1")));
-    NamedCommands.registerCommand("4palc2Preset", new InstantCommand(() -> m_shooter.setShooterStuff(24.5, 3510, "4palc2")));
-    NamedCommands.registerCommand("4palc1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24.5, 3510, "4palc2"))));
-    NamedCommands.registerCommand("4palc2", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "4palc3"))));
+    NamedCommands.registerCommand("4palc1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(25.5, 3240, "4palc1"))); // First shot
+    NamedCommands.registerCommand("4palc1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24, 3510, "4palc2")))); // Second shot
+    NamedCommands.registerCommand("4palc2", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(22.5, 3780, "4palc3")))); // Third shot
     NamedCommands.registerCommand("4palc3", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3));
-    // NamedCommands.registerCommand("someOtherCommand", new SomeOtherCommand());
     
+    // 4 piece source side all center
+    NamedCommands.registerCommand("4pssac1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(25.5, 3240, "4pssac1"))); // First shot
+    NamedCommands.registerCommand("4pssac1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24.5, 3510, "4pssac2")))); // Second shot
+    NamedCommands.registerCommand("4pssac2", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(23, 3780, "4pssac3")))); // Third shot
+    NamedCommands.registerCommand("4pssac3", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3));
+
     // Configure the button bindings
     configureButtonBindings();
 
@@ -171,9 +176,9 @@ public class RobotContainer {
     m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
 
     new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
+    .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(Commands.sequence(new auto_led(m_Vision2, m_robotDrive, m_leds).withTimeout(1.0), new VisionShoot(m_shooter, m_index, m_leds, m_Vision2)));
+    .whileTrue(Commands.sequence(new auto_led(m_Vision2, m_robotDrive, m_leds, m_shooter).withTimeout(1.0), new VisionShoot(m_shooter, m_index, m_leds, m_Vision2)));
 
     new JoystickButton(m_driverController, Button.kX.value)
     .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
@@ -185,13 +190,13 @@ public class RobotContainer {
     .whileTrue(new ClimbDown(m_climber));
 
     new POVButton(m_driverController, 0)
-   .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(55, 2500, "Woofer")));
+   .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 2500, "Woofer")));
     new POVButton(m_driverController, 90)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "Podium")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(30, 3240, "Podium")));
     new POVButton(m_driverController, 180)
     .whileTrue(new InstantCommand(() -> m_shooter.stopShooter()));
     new POVButton(m_driverController, 270)
-    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(22, 3780, "Wing")));
+    .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(45, 2630, "Shuffle")));
     
     new JoystickButton(m_driverController, Button.kBack.value)
     .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));

@@ -18,7 +18,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -54,6 +58,8 @@ public class Vision2 extends SubsystemBase {
   private double heightMatters;
   public double m_goalAngle;
 
+  // private Optional<Alliance> alliance = DriverStation.getAlliance();
+  // private boolean isRed = false;
   // Translation2d translation = PhotonUtils.estimateCameratoTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
 
   // NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -78,6 +84,9 @@ public class Vision2 extends SubsystemBase {
     }
     result.getTargets();
     
+    // if (alliance.isPresent()) {
+      // isRed = alliance.get() == DriverStation.Alliance.Red;
+    // }
 
     if (result.hasTargets()){
       PhotonTrackedTarget localTarget = result.getBestTarget();
@@ -101,7 +110,11 @@ public class Vision2 extends SubsystemBase {
         tx_out = yaw; //m_lowpass.calculate(yaw);
 
         SmartDashboard.putNumber("Filtered Tx", tx_out);
-
+        
+        double visionShootAngleTEST = 36;
+        if (getTargetDistance() > 8.23) {visionShootAngleTEST = Math.toDegrees(Math.atan(getTargetVertAngle() / Math.abs(getTargetDistance() - 16.459))) + Math.abs(getTargetDistance() - 16.459) * 2/3 -1; }
+        else {visionShootAngleTEST = Math.toDegrees(Math.atan(getTargetVertAngle() / getTargetDistance())) + (getTargetDistance() * 2/3 -1);}
+        SmartDashboard.putNumber("TEST Vision angle", visionShootAngleTEST);
 
       } else {
         target = null;

@@ -172,7 +172,7 @@ public class Multi_IMU extends SubsystemBase {
   /**
    * Returns human readable heading of the robot.
    *
-   * @return the robot's heading in degrees, from -180 to 180
+   * @return The robot's current heading in degrees.
    */
   public double getHeadingDegrees() {
     switch (m_imuSelected){

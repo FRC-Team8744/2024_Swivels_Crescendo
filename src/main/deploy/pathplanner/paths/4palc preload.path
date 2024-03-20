@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.482724103194182,
-        "y": 2.9811935115820147
+        "x": 3.386119849162777,
+        "y": 2.83
       },
       "prevControl": {
-        "x": 2.865896544740568,
-        "y": 2.3937965660834637
+        "x": 2.769292290709163,
+        "y": 2.242603054501449
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
+      "name": "Preset",
       "waypointRelativePos": 0,
       "command": {
         "type": "sequential",
@@ -49,7 +49,7 @@
       }
     },
     {
-      "name": "New Event Marker",
+      "name": "Start",
       "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
@@ -78,7 +78,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 piece all left center",
+  "folder": "4 piece all amp center right start",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

@@ -29,13 +29,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // // if (Constants.kDebugLevel == 3) {
-    //   DataLogManager.start();
-    //   URCL.start();
+    if (Constants.kDebugLevel == 3) {
+      DataLogManager.start();
+      URCL.start();
 
-    //   // Record both DS control and joystick data
-    //   DriverStation.startDataLog(DataLogManager.getLog());
-    // }
+      // Record both DS control and joystick data
+      DriverStation.startDataLog(DataLogManager.getLog());
+    }
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
