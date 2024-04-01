@@ -10,19 +10,28 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Who;
 import frc.robot.Constants.MechanismConstants;
 
 public class Index extends SubsystemBase {
   public double indexSpeed = 1;
-    public DigitalInput inputIR = new DigitalInput(0);
-  private CANSparkMax indexSparkMax = new CANSparkMax(MechanismConstants.kIndexShooterPort, MotorType.kBrushless);
+  public DigitalInput inputIR;
+  private CANSparkMax indexSparkMax;
   
-  public Index() {
+  private Who iAm;
 
+  public Index() {
+    iAm = Who.iAm();
+    if (iAm == Who.NO_NO) {
+      inputIR = new DigitalInput(0);
+      indexSparkMax = new CANSparkMax(MechanismConstants.kIndexShooterPort, MotorType.kBrushless);
+    }
   }
 
   public void indexRun(double speed) {
-    indexSparkMax.set(speed);
+    if (iAm == Who.NO_NO) {
+      indexSparkMax.set(speed);
+    }
   }
 
   public void indexOut(double speed) {

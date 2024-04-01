@@ -10,18 +10,25 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.MechanismConstants;
 
 public class Climber extends SubsystemBase {
-  private CANSparkMax leftClimberSparkMax = new CANSparkMax(MechanismConstants.kLeftClimberPort, MotorType.kBrushless);
-  private CANSparkMax rightClimberSparkMax = new CANSparkMax(MechanismConstants.kRightClimberPort, MotorType.kBrushless);
+  private CANSparkMax leftClimberSparkMax;
+  private CANSparkMax rightClimberSparkMax;
 
-  private final RelativeEncoder leftClimberEncoder = leftClimberSparkMax.getEncoder();
-  private final RelativeEncoder rightClimberEncoder = rightClimberSparkMax.getEncoder();
+  private final RelativeEncoder leftClimberEncoder;
+  private final RelativeEncoder rightClimberEncoder;
 
   public double climbSpeed = .6;
   /** Creates a new Climber. */
   public Climber() {
+    leftClimberSparkMax = new CANSparkMax(MechanismConstants.kLeftClimberPort, MotorType.kBrushless);
+    rightClimberSparkMax = new CANSparkMax(MechanismConstants.kRightClimberPort, MotorType.kBrushless);
+
+    leftClimberEncoder = leftClimberSparkMax.getEncoder();
+    rightClimberEncoder = rightClimberSparkMax.getEncoder();
+
     rightClimberSparkMax.follow(leftClimberSparkMax, true);
  
     leftClimberSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
@@ -53,12 +60,14 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
-    // SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getAppliedOutput());
-    // SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
-    // SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getOutputCurrent());
-    // SmartDashboard.putNumber("Left Climber Position", leftClimberEncoder.getPosition());
-    // SmartDashboard.putNumber("Right Climber Position", rightClimberEncoder.getPosition());
-    // SmartDashboard.putNumber("Left Climber Velocity", leftClimberEncoder.getVelocity());
+    if (Constants.kDebugLevel >=3) {
+      SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
+      SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getAppliedOutput());
+      SmartDashboard.putNumber("Left Climber Output", leftClimberSparkMax.getAppliedOutput());
+      SmartDashboard.putNumber("Right Climber Output", rightClimberSparkMax.getOutputCurrent());
+      SmartDashboard.putNumber("Left Climber Position", leftClimberEncoder.getPosition());
+      SmartDashboard.putNumber("Right Climber Position", rightClimberEncoder.getPosition());
+      SmartDashboard.putNumber("Left Climber Velocity", leftClimberEncoder.getVelocity());
+    }
   }
 }

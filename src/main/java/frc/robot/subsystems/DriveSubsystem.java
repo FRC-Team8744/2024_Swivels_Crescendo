@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-// import java.util.function.BooleanSupplier;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -14,7 +12,6 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -24,14 +21,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
-// import edu.wpi.first.wpilibj.BuiltInAccelerometer;
-// import edu.wpi.first.wpilibj.DigitalInput;
-// import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-// import frc.robot.Constants.ConstantsOffboard;
+import frc.robot.Who;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -62,20 +55,20 @@ public class DriveSubsystem extends SubsystemBase {
   // Create Field2d for robot and trajectory visualizations.
   public Field2d m_field;
 
-  private String MyName;
+  private Who MyName;
   
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    MyName = Preferences.getString("RobotName", "NoDefault");
+    MyName = Who.iAm();
     System.out.println("Robot ID: " + MyName);
     switch(MyName) {
-      case "Swivels":
+      case SWIVELS:
         offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_Swivels;
         offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_Swivels;
         offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_Swivels;
         offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_Swivels;
       break;
-      case "NoNo":
+      case NO_NO:
         offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_NoNo;
         offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_NoNo;
         offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_NoNo;
