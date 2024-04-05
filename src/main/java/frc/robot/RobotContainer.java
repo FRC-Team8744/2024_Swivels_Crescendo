@@ -109,7 +109,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("Climb Down", new ClimbDown(m_climber));
     NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
-    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(58, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
+    NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(56, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
     NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(29, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
@@ -121,9 +121,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("4palc3", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3));
     
     // 4 piece source side all center
-    NamedCommands.registerCommand("4pssac1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(25.5, 3240, "4pssac1"))); // First shot
-    NamedCommands.registerCommand("4pssac1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24.5, 3510, "4pssac2")))); // Second shot
-    NamedCommands.registerCommand("4pssac2", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(23, 3780, "4pssac3")))); // Third shot
+    NamedCommands.registerCommand("4pssac1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "4pssac1"))); // First shot
+    NamedCommands.registerCommand("4pssac1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(25.5, 3510, "4pssac2")))); // Second shot
+    NamedCommands.registerCommand("4pssac2", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24, 3780, "4pssac3")))); // Third shot
     NamedCommands.registerCommand("4pssac3", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3));
 
     // Configure the button bindings
@@ -190,7 +190,7 @@ public class RobotContainer {
     .whileTrue(new ClimbDown(m_climber));
 
     new POVButton(m_driverController, 0)
-   .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 2500, "Woofer")));
+   .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(56, 2500, "Woofer")));
     new POVButton(m_driverController, 90)
     .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(30, 3240, "Podium")));
     new POVButton(m_driverController, 180)

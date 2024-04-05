@@ -30,7 +30,7 @@ public class Shooter extends SubsystemBase {
   private static final double maximumAngle = 70.0;
   public double shootingAngle = 58;
   public double shootingVelocity = 2430;
-  public double ampShootingAngle = 63.5;
+  public double ampShootingAngle = 65.5;
   public double ampShootingVelocity = 2150;
   public double visionShootAngle = 26;
   public double visionShootVelocity = 3780;
