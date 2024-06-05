@@ -16,6 +16,7 @@ public final class Constants {
   public static final int kMaxSpeedPercentAuto = 100;
   public static final int kMaxSpeedPercentTeleop = 100;
   public static final int kMaxAccelerationPercent = 100;
+  public static final double kDriverSpeedLimit = 0.1;
 
   public static final class MechanismConstants {
     public static final int kFrontIntakePort = 15;

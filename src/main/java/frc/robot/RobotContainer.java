@@ -14,6 +14,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 // import edu.wpi.first.math.trajectory.TrajectoryConfig;
 // import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Joystick;
 // import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 // import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -85,6 +86,7 @@ public class RobotContainer {
   public final Climber m_climber = new Climber();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
   // XboxController m_codriverController = new XboxController(OIConstants.kCodriverControllerPort);
   CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
 
@@ -94,6 +96,8 @@ public class RobotContainer {
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(5);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(5);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(5);
+
+  private final String controllerMode = "x";
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -125,17 +129,30 @@ public class RobotContainer {
     configureButtonBindings();
 
   // Configure default commands
+  if (controllerMode == "x") {
+      m_robotDrive.setDefaultCommand(
+          // The left stick controls translation of the robot.
+          // Turning is controlled by the X axis of the right stick.
+          new RunCommand(
+              () ->
+                  m_robotDrive.drive(
+                      m_xspeedLimiter.calculate( -m_driverController.getLeftY() )*SwerveConstants.kMaxSpeedTeleop,
+                      m_yspeedLimiter.calculate( -m_driverController.getLeftX() )*SwerveConstants.kMaxSpeedTeleop,
+                      m_rotLimiter.calculate( -m_driverController.getRightX() )*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                      true),
+              m_robotDrive));
+  }
+  else if(controllerMode == "j") {
     m_robotDrive.setDefaultCommand(
-        // The left stick controls translation of the robot.
-        // Turning is controlled by the X axis of the right stick.
-        new RunCommand(
-            () ->
-                m_robotDrive.drive(
-                    m_xspeedLimiter.calculate( -m_driverController.getLeftY() )*SwerveConstants.kMaxSpeedTeleop,
-                    m_yspeedLimiter.calculate( -m_driverController.getLeftX() )*SwerveConstants.kMaxSpeedTeleop,
-                    m_rotLimiter.calculate( -m_driverController.getRightX() )*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
-                    true),
-            m_robotDrive));
+      new RunCommand(
+        () ->
+          m_robotDrive.drive(
+                m_xspeedLimiter.calculate( -m_Joystick.getRawAxis(1) )*SwerveConstants.kMaxSpeedTeleop,
+                m_yspeedLimiter.calculate( -m_Joystick.getRawAxis(0) )*SwerveConstants.kMaxSpeedTeleop,
+                m_rotLimiter.calculate( -m_Joystick.getRawAxis(2) )*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                true),
+        m_robotDrive));
+  }
 
     // Add commands to the autonomous command chooser
     // m_chooser.setDefaultOption("SwerveCommand", SwerveCommand());
@@ -158,69 +175,82 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
+  
   private void configureButtonBindings() {
-    // new JoystickButton(m_driverController, Button.kA.value)
-    //   //.onTrue(new auto_led())
-    //   .onFalse( m_led());
-    // new JoystickButton(m_driverController, Button.kY.value)
-    // .onTrue(new InstantCommand(() -> m_leds.ledOn()))
-    // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
+    if (controllerMode == "x") {
+      // new JoystickButton(m_driverController, Button.kA.value)
+      //   //.onTrue(new auto_led())
+      //   .onFalse( m_led());
+      // new JoystickButton(m_driverController, Button.kY.value)
+      // .onTrue(new InstantCommand(() -> m_leds.ledOn()))
+      // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
 
-    new JoystickButton(m_driverController, Button.kB.value)
-    .onTrue(new auto_led(m_Vision2, m_robotDrive, m_leds).withTimeout(2.0));
-    // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
-    // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
+      new JoystickButton(m_driverController, Button.kB.value)
+      .onTrue(new auto_led(m_Vision2, m_robotDrive, m_leds).withTimeout(2.0));
+      // .onFalse(new InstantCommand(() -> m_leds.ledOff()));
+      // SmartDashboard.putData("SwerveCommand", new PathPlannerAuto("SwerveCommand"));
 
-    new JoystickButton(m_driverController, Button.kA.value)
-    .onTrue(new Trings(m_leds, m_robotDrive));
+      new JoystickButton(m_driverController, Button.kA.value)
+      .onTrue(new Trings(m_leds, m_robotDrive));
 
-    m_driver.leftTrigger().whileTrue(new AmpShoot(m_climber, m_shooter, m_index, m_leds));
-    m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
-    new JoystickButton(m_driverController, Button.kLeftBumper.value)
-    .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
-    new JoystickButton(m_driverController, Button.kRightBumper.value)
-    .whileTrue(Commands.sequence(new auto_led(m_Vision2, m_robotDrive, m_leds).withTimeout(1.0), new VisionShoot(m_shooter, m_index, m_leds, m_Vision2)));
-    new JoystickButton(m_driverController, Button.kX.value)
-    .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
-    new JoystickButton(m_driverController, Button.kY.value)
-    .whileTrue(new ClimbUp(m_climber));
-    new JoystickButton(m_driverController, Button.kB.value)
-    .whileTrue(new auto_led(m_Vision2, m_robotDrive, m_leds));
-    new JoystickButton(m_driverController, Button.kA.value)
-    .whileTrue(new ClimbDown(m_climber));
-    new POVButton(m_driverController, 180)
-    .whileTrue(new InstantCommand(() -> m_shooter.stopShooter()));
-    new POVButton(m_driverController, 0)
-    .whileTrue(new TringsTest(m_leds, m_robotDrive, m_Vision2));
-    // new JoystickButton(m_driverController, Button.kA.value)
-    // .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
-    // new JoystickButton(m_driverController, Button.kB.value)
-    // .whileTrue(new SetLed(m_leds, m_index));
-    // new JoystickButton(m_driverController, Button.kX.value)
-    // .onTrue(new InstantCommand (() -> m_shooter.stopShooter()));
-    // new JoystickButton(m_driverController, Button.kY.value)
-    // .whileTrue(new SourceIntake(m_shooter, m_index, m_leds));
-    new POVButton(m_driverController ,0)
-    .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
-    new JoystickButton(m_driverController, Button.kBack.value)
-    .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
-    
-    // Codriver Bindings
-    // new JoystickButton(m_codriverController, Button.kLeftBumper.value)
-    // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));
-    // new JoystickButton(m_codriverController, Button.kRightBumper.value)
-    // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(59, 1300, "Amp")));
-    // new JoystickButton(m_codriverController, Button.kA.value)
-    // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(22, 3780, "Wing")));
-    // new JoystickButton(m_codriverController, Button.kB.value)
-    // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "Podium")));
-    // new JoystickButton(m_codriverController, Button.kX.value)
-    // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 2250, "Trap")));
-    // new JoystickButton(m_codriverController, Button.kY.value)
-    // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(21, 4250, "Center")));
-  //   new JoystickButton(m_driverController, Button.kB.values)
-  //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
-  //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
+      m_driver.leftTrigger().whileTrue(new AmpShoot(m_climber, m_shooter, m_index, m_leds));
+      m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
+      new JoystickButton(m_driverController, Button.kLeftBumper.value)
+      .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
+      new JoystickButton(m_driverController, Button.kRightBumper.value)
+      .whileTrue(Commands.sequence(new auto_led(m_Vision2, m_robotDrive, m_leds).withTimeout(1.0), new VisionShoot(m_shooter, m_index, m_leds, m_Vision2)));
+      new JoystickButton(m_driverController, Button.kX.value)
+      .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
+      new JoystickButton(m_driverController, Button.kY.value)
+      .whileTrue(new ClimbUp(m_climber));
+      new JoystickButton(m_driverController, Button.kB.value)
+      .whileTrue(new auto_led(m_Vision2, m_robotDrive, m_leds));
+      new JoystickButton(m_driverController, Button.kA.value)
+      .whileTrue(new ClimbDown(m_climber));
+      new POVButton(m_driverController, 180)
+      .whileTrue(new InstantCommand(() -> m_shooter.stopShooter()));
+      new POVButton(m_driverController, 0)
+      .whileTrue(new TringsTest(m_leds, m_robotDrive, m_Vision2));
+      // new JoystickButton(m_driverController, Button.kA.value)
+      // .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
+      // new JoystickButton(m_driverController, Button.kB.value)
+      // .whileTrue(new SetLed(m_leds, m_index));
+      // new JoystickButton(m_driverController, Button.kX.value)
+      // .onTrue(new InstantCommand (() -> m_shooter.stopShooter()));
+      // new JoystickButton(m_driverController, Button.kY.value)
+      // .whileTrue(new SourceIntake(m_shooter, m_index, m_leds));
+      new POVButton(m_driverController ,0)
+      .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
+      new JoystickButton(m_driverController, Button.kBack.value)
+      .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
+      
+      // Codriver Bindings
+      // new JoystickButton(m_codriverController, Button.kLeftBumper.value)
+      // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(60, 2500, "Woofer")));
+      // new JoystickButton(m_codriverController, Button.kRightBumper.value)
+      // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(59, 1300, "Amp")));
+      // new JoystickButton(m_codriverController, Button.kA.value)
+      // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(22, 3780, "Wing")));
+      // new JoystickButton(m_codriverController, Button.kB.value)
+      // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(26, 3240, "Podium")));
+      // new JoystickButton(m_codriverController, Button.kX.value)
+      // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(58, 2250, "Trap")));
+      // new JoystickButton(m_codriverController, Button.kY.value)
+      // .onTrue(new InstantCommand(() -> m_shooter.setShooterStuff(21, 4250, "Center")));
+    //   new JoystickButton(m_driverController, Button.kB.values)
+    //   .onTrue(new InstantCommand(() -> m_intake.donutGrab()))
+    //   .onFalse(new InstantCommand(() -> m_intake.motorOff()));
+    }
+    else if(controllerMode == "j") {
+      new JoystickButton(m_Joystick, 1)
+      .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
+      new JoystickButton(m_Joystick, 2)
+      .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
+      new JoystickButton(m_Joystick, 6)
+      .whileTrue(new ClimbUp(m_climber));
+      new JoystickButton(m_Joystick, 4)
+      .whileTrue(new ClimbDown(m_climber));
+    }
   }
 
   /**

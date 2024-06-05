@@ -21,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
@@ -45,11 +46,15 @@ public class DriveSubsystem extends SubsystemBase {
   double offset_FR = 0;
   double offset_RR = 0;
   
+  private double m_DriverSpeedScale = 1.0;
+
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft;
   private final SwerveModuleOffboard m_rearLeft;
   private final SwerveModuleOffboard m_frontRight;
   private final SwerveModuleOffboard m_rearRight;
+
+  Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
 
   // The imu sensor
   public final Multi_IMU m_imu = new Multi_IMU();
@@ -178,6 +183,13 @@ public class DriveSubsystem extends SubsystemBase {
     
     // Update robot position on Field2d.
     m_field.setRobotPose(getPose());
+
+    if (m_Joystick.getRawAxis(3) < 0) {
+      m_DriverSpeedScale = 1.0;
+    }
+    else {
+      m_DriverSpeedScale = Constants.kDriverSpeedLimit;
+    }
 
     pose_publisher.set(getPose());
     swerve_publisher.set(new SwerveModuleState[] {
@@ -326,4 +338,11 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
 
-}
+  public void toggleMaxInput() {
+    if (m_DriverSpeedScale == 1.0) {
+      m_DriverSpeedScale = Constants.kDriverSpeedLimit;
+    } else {
+      m_DriverSpeedScale = 1.0;
+    }
+    }
+  }
