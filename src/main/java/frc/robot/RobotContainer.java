@@ -4,23 +4,12 @@
 
 package frc.robot;
 
-// import edu.wpi.first.math.controller.PIDController;
-// import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
-// import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.math.trajectory.Trajectory;
-// import edu.wpi.first.math.trajectory.TrajectoryConfig;
-// import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Joystick;
-// import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-// import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
@@ -36,33 +25,20 @@ import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Vision2;
-import frc.robot.commands.ShootA;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeSpinUp;
 import frc.robot.commands.OuttakeRun;
-import frc.robot.commands.SetLed;
 import frc.robot.commands.ShootRing;
-import frc.robot.commands.SourceIntake;
-import frc.robot.commands.TestPivot;
-import frc.robot.commands.Wait;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-
-import java.time.Instant;
-import java.util.List;
-
-import javax.security.auth.callback.TextInputCallback;
-
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.auto.AutoBuilder;
 // import com.pathplanner.lib.commands.PathPlannerAuto;
