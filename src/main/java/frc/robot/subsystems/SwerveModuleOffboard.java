@@ -92,10 +92,7 @@ public class SwerveModuleOffboard {
 
     // Set the PID reference states
     m_drivePID.setReference(state.speedMetersPerSecond, (ConstantsOffboard.DRIVE_MOTOR_PROFILED_MODE) ? CANSparkMax.ControlType.kSmartVelocity : CANSparkMax.ControlType.kVelocity);
-    // m_drivePID.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity);
     m_turningPID.setReference(state.angle.getRadians(), (ConstantsOffboard.ANGLE_MOTOR_PROFILED_MODE) ? CANSparkMax.ControlType.kSmartMotion : CANSparkMax.ControlType.kPosition);
-    // m_turningPID.setReference(state.angle.getRadians(), CANSparkMax.ControlType.kPosition);
-    // m_turningPID.setReference(state.angle.getRadians(), CANSparkMax.ControlType.kSmartMotion);
   }
 
   /** Zeroes all the SwerveModule encoders. */
@@ -103,27 +100,6 @@ public class SwerveModuleOffboard {
     m_driveEncoder.setPosition(0.0);
     m_turningEncoder.setPosition(0.0);
   }
-
-  // public void setState(SwerveModuleState state, boolean isOpenLoop) {
-  //   // Prevents angle motor from turning further than it needs to. 
-  //   // E.G. rotating from 10 to 270 degrees CW vs CCW.
-  //   state = SwerveModuleState.optimize(state, getState().angle);
-
-  //   if (isOpenLoop) {
-  //     double speed = state.speedMetersPerSecond / ConstantsOffboard.MAX_VELOCITY_METERS_PER_SECOND;
-  //     m_drivePID.setReference(speed, CANSparkMax.ControlType.kDutyCycle);
-  //   } else {
-  //     m_drivePID.setReference(state.speedMetersPerSecond, CANSparkMax.ControlType.kVelocity, 0);
-  //   }
-
-  //   double angle = Math.abs(state.speedMetersPerSecond) <= ConstantsOffboard.MAX_VELOCITY_METERS_PER_SECOND * 0.01
-  //     ? lastAngle
-  //     : state.angle.getRadians();
-
-  //   m_turningPID.setReference(angle, CANSparkMax.ControlType.kPosition);
-  //   // m_turningPID.setReference(angle, CANSparkMax.ControlType.kSmartMotion);
-  //   lastAngle = angle;
-  // }
 
   public SwerveModuleState getState() {
     double velocity = m_driveEncoder.getVelocity();
@@ -187,10 +163,6 @@ public class SwerveModuleOffboard {
 
     // Drive motor configuration.
     m_driveMotor.restoreFactoryDefaults();
-    // m_driveMotor.setInverted(ConstantsOffboard.DRIVE_MOTOR_INVERSION);
-    // m_driveMotor.setIdleMode(ConstantsOffboard.DRIVE_IDLE_MODE);
-    // m_driveMotor.setOpenLoopRampRate(ConstantsOffboard.OPEN_LOOP_RAMP);
-    // m_driveMotor.setClosedLoopRampRate(ConstantsOffboard.CLOSED_LOOP_RAMP);
     m_driveMotor.setSmartCurrentLimit(ConstantsOffboard.DRIVE_CURRENT_LIMIT);
  
     if (ConstantsOffboard.DRIVE_MOTOR_PROFILED_MODE) {
@@ -214,10 +186,8 @@ public class SwerveModuleOffboard {
     m_driveEncoder.setVelocityConversionFactor(ConstantsOffboard.DRIVE_RPM_TO_METERS_PER_SECOND);
     m_driveEncoder.setPosition(0);
 
-    // turning motor configuration.
     m_turningMotor.restoreFactoryDefaults();
     m_turningMotor.setInverted(ConstantsOffboard.ANGLE_MOTOR_INVERSION);
-    // m_turningMotor.setIdleMode(ConstantsOffboard.ANGLE_IDLE_MODE);
     m_turningMotor.setSmartCurrentLimit(ConstantsOffboard.ANGLE_CURRENT_LIMIT);
 
     if (ConstantsOffboard.ANGLE_MOTOR_PROFILED_MODE) {

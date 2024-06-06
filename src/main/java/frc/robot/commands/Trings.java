@@ -29,7 +29,6 @@ public class Trings extends Command {
     addRequirements(m_lightbarLeds);
     m_drive = drive;
     addRequirements(m_drive);
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -40,7 +39,6 @@ m_turnCtrl.enableContinuousInput(-180, 180);
 m_turnCtrl.setTolerance(3.0);
 m_turnCtrl.setSetpoint(m_goalAngle);
 m_turnCtrl.reset();
-double angle1 = Math.atan2(1.0, 2.0);
 SmartDashboard.putData("PID", m_turnCtrl);
   }
 
@@ -58,22 +56,9 @@ SmartDashboard.putData("PID", m_turnCtrl);
       m_lightbarLeds.setLed(17, 255, 1, 1); // red
     }
         m_heading = m_drive.m_imu.getHeadingDegrees();
-        // if (tx >= 0){
-        //   m_goalAngle = m_heading + tx;
-        // }
-        // if (tx <= 0){
-        //   m_goalAngle = m_heading - tx;
-        // }
         m_goalAngle = m_heading + tx;
         m_turnCtrl.setSetpoint(m_goalAngle);
     m_output = MathUtil.clamp(m_turnCtrl.calculate(m_heading) + kTurnFF, -1.0, 1.0);
-    // Send PID output to drivebase
-    // if (tx >= 0){
-    //   m_drive.drive(0.0, 0.0, -m_output, false);
-    // }
-    // if (tx <= 0){
-    //   m_drive.drive(0.0, 0.0, -m_output, false);
-    // }
     m_drive.drive(0.0, 0.0, -m_output, false);
 
     // Debug information
