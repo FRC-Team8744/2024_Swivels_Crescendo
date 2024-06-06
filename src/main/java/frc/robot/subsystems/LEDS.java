@@ -20,39 +20,24 @@ public class LEDS extends SubsystemBase {
     // PWM port 9
     // Must be a PWM header, not MXP or DIO
     m_led = new AddressableLED(0);
-    // m_led2 = new AddressableLED(1);
 
     // Reuse buffer
     // Default to a length of 60, start empty output
     // Length is expensive to set, so only set it once, then just update data
     m_ledBuffer = new AddressableLEDBuffer(36);
     m_led.setLength(m_ledBuffer.getLength());
-    // m_led2.setLength(m_ledBuffer.getLength());
+
 
     // Set the data
     m_led.setData(m_ledBuffer);
-    // m_led2.setData(m_ledBuffer);
     m_led.start();
-    // m_led2.start();
   }
 
   @Override
   public void periodic() {
-    // Fill the buffer with a rainbow
-    //rainbow();
-    // setLed(35, 100);
     // Set the LEDs
     m_led.setData(m_ledBuffer);
-    // m_led2.setData(m_ledBuffer);
   }
-  
-  // public void solid() {
-      
-  //      for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-  //       m_ledBuffer.setRGB(i, 255, 0, 0);
-  //     }
-  
-  // }
 
   public void rainbow() {
     // For every pixel
@@ -71,11 +56,9 @@ public class LEDS extends SubsystemBase {
 
 public void ledOn(int r, int g, int b) {
   setRainbow(r, g, b);
-  // setLed(18, 255, 1, 1);
 }
 public void ledOff() {
   setRainbow(0, 0, 0);
-  // setLed(18, 1, 255, 1);
 }
 
 public void allOff(){

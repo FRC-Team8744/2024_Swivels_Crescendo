@@ -79,14 +79,6 @@ public class Auto_Path extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Calculate controller states
-    // thetaController.calculate()
-
-    // Apply controller states to wheels
-
-    // Run path following command, then stop at the end.
-    // return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
-
 
   }
 

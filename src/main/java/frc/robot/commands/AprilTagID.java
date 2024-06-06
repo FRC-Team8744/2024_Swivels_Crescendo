@@ -61,18 +61,6 @@ SmartDashboard.putData("PID", m_turnCtrl);
   public void execute() {
     m_AprilNumber = id.getDouble(0.0);
 
-    // tv = SmartDashboard.getNumber("tv", 0);
-    // tx = SmartDashboard.getNumber("LimelightX", 0);
-    // x = (int) (-tx * (36.0/30.0) + 17.0);//LED conversion.
-    // if (tv == 1){
-    //   m_lightbarLeds.allOff();
-    //   m_lightbarLeds.setLed(x,1,255,1); //green
-    // } else {
-    //   m_lightbarLeds.allOff(); // after it's done it will be red
-    //   m_lightbarLeds.setLed(17, 255, 1, 1); // red
-    // }
-        // m_heading = m_drive.getHeading();
-
         if (m_AprilNumber == 3){
           SmartDashboard.putNumber("yes", 3);
         } else {
@@ -83,22 +71,10 @@ SmartDashboard.putData("PID", m_turnCtrl);
           }
         }
 
-        // if (tx >= 0){
-        //   m_goalAngle = m_heading + tx;
-        // }
-        // if (tx <= 0){
-        //   m_goalAngle = m_heading - tx;
-        // }
         m_goalAngle = m_heading + tx;
         m_turnCtrl.setSetpoint(m_goalAngle);
     m_output = MathUtil.clamp(m_turnCtrl.calculate(m_heading) + kTurnFF, -1.0, 1.0);
-    // Send PID output to drivebase
-    // if (tx >= 0){
-    //   m_drive.drive(0.0, 0.0, -m_output, false);
-    // }
-    // if (tx <= 0){
-    //   m_drive.drive(0.0, 0.0, -m_output, false);
-    // }
+
     m_drive.drive(0.0, 0.0, -m_output, false);
 
     // Debug information

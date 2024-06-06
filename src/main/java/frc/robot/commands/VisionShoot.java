@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,10 +36,6 @@ public class VisionShoot extends Command {
   @Override
   public void initialize() {
     sensorState = 0;
-    // visShootAngle = (Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance()) * 180) / Math.PI;
-    // if (m_vis.getTargetDistance() > 8.23) {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / Math.abs(m_vis.getTargetDistance() - 16.459))) + Math.abs(m_vis.getTargetDistance() - 16.459) * 2/3 + 1; }
-    // else {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance())) + (m_vis.getTargetDistance() * 2/3);}
-    // SmartDashboard.putNumber("Shooter Angle", m_shooter.visionShootAngle);
     m_shooter.testShoot(m_shooter.visionShootVelocity);
     m_shooter.testAngle(m_shooter.visionShootAngle);
   }

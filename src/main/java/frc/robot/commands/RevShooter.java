@@ -12,7 +12,6 @@ public class RevShooter extends Command {
   /** Creates a new RevShooter. */
   private final Shooter m_shooter;
   private final Index m_index;
-  private double wantedSpeed;
   public RevShooter(Shooter sh, Index ind) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = sh;
@@ -24,7 +23,6 @@ public class RevShooter extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    wantedSpeed = m_shooter.shootingVelocity;
     if (m_index.inputIR.get() == false) {
       m_shooter.testShoot(2500);
     }
