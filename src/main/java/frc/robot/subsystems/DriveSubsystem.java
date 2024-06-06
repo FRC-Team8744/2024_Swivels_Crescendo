@@ -56,6 +56,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
 
+  private final String controllerMode = "x";
+
   // The imu sensor
   public final Multi_IMU m_imu = new Multi_IMU();
   
@@ -184,11 +186,13 @@ public class DriveSubsystem extends SubsystemBase {
     // Update robot position on Field2d.
     m_field.setRobotPose(getPose());
 
-    if (m_Joystick.getRawAxis(3) < 0) {
-      m_DriverSpeedScale = 1.0;
-    }
-    else {
-      m_DriverSpeedScale = Constants.kDriverSpeedLimit;
+    if (controllerMode == "j") {
+      if (m_Joystick.getRawAxis(3) < 0) {
+        m_DriverSpeedScale = 1.0;
+      }
+      else {
+        m_DriverSpeedScale = Constants.kDriverSpeedLimit;
+      }
     }
 
     pose_publisher.set(getPose());
