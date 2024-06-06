@@ -17,6 +17,7 @@ public class ShootA extends Command {
   private final LEDS m_led;
   private final Timer m_timer = new Timer();
   private int sensorState = 0;
+  private int sensorStateT = 0;
 
   public ShootA(Shooter sh, Index ind, LEDS le) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -41,7 +42,11 @@ public class ShootA extends Command {
   @Override
   public void execute() {
     m_led.rainbow();
-    if (m_shooter.ampAtSpeed() && m_timer.get() >= 0.5) {
+    if (m_shooter.ampAtSpeed() && m_timer.get() >= 0.5 && sensorStateT == 0) {
+      sensorStateT = 1;
+      m_timer.restart();
+    }
+    if (m_shooter.ampAtSpeed() && m_timer.get() >= 0.5 && sensorStateT == 1) {
       m_index.indexRun(-m_index.indexSpeed);
     }
   }

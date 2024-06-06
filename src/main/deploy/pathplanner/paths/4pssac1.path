@@ -16,23 +16,23 @@
     },
     {
       "anchor": {
-        "x": 3.482724103194182,
-        "y": 2.9811935115820147
+        "x": 3.386119849162777,
+        "y": 2.83
       },
       "prevControl": {
-        "x": 2.865896544740568,
-        "y": 2.3937965660834637
+        "x": 2.769292290709163,
+        "y": 2.242603054501449
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "4palc1"
+      "linkedName": "4pssac1"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
+      "name": "Preset",
       "waypointRelativePos": 0,
       "command": {
         "type": "sequential",
@@ -41,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "4palc1Preset"
+                "name": "4pssac1Preset"
               }
             }
           ]
@@ -49,7 +49,7 @@
       }
     },
     {
-      "name": "New Event Marker",
+      "name": "Start",
       "waypointRelativePos": 0,
       "command": {
         "type": "parallel",
@@ -74,7 +74,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -41.5,
+    "rotation": -41.0,
     "rotateFast": false
   },
   "reversed": false,

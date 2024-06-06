@@ -18,7 +18,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -54,6 +58,8 @@ public class Vision2 extends SubsystemBase {
   private double heightMatters;
   public double m_goalAngle;
 
+  // private Optional<Alliance> alliance = DriverStation.getAlliance();
+  // private boolean isRed = false;
   // Translation2d translation = PhotonUtils.estimateCameratoTargetTranslation(distanceMeters, Rotation2d.fromDegrees(-target.getYaw()));
 
   // NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -78,9 +84,43 @@ public class Vision2 extends SubsystemBase {
     }
     result.getTargets();
     
+    // if (alliance.isPresent()) {
+      // isRed = alliance.get() == DriverStation.Alliance.Red;
+    // }
 
     if (result.hasTargets()){
       PhotonTrackedTarget localTarget = result.getBestTarget();
+
+      // Start of check list
+      boolean foundSpeaker = false;
+      for (var thisTarget : result.targets) {  // Java 'for each' loop
+        int myID = thisTarget.getFiducialId();
+        if ((myID == 4) || (myID == 7)) {
+          foundSpeaker = true;
+          localTarget = thisTarget;  // fix 'best' target
+        }
+        //they have -31 for height of camera
+        if (myID >= 11 && myID <= 16){
+          //this is chian thingy
+          heightMatters = 1.35;
+          // cameraToTarget = cameraToTarget.plus(stageOffSet);
+          // SmartDashboard.putNumber("Height",135);
+        }
+        else if (myID == 5 || myID == 6){
+          //this is amp
+          heightMatters = .61;
+          // cameraToTarget = cameraToTarget.plus(ampOffSet);
+          // SmartDashboard.putNumber("Height",61);
+        }
+        else if (myID == 8 || myID == 7 || myID == 3 || myID == 4){
+          heightMatters = 1.76;
+          //this is speaker
+          // cameraToTarget = cameraToTarget.plus(speakerOffSet);
+          // SmartDashboard.putNumber("Height", 176);
+        }
+        else {heightMatters = -1;}
+      }
+
       Transform3d cameraToTarget = localTarget.getBestCameraToTarget();
 
       Pose3d aprilTagPose3d = aprilTagFieldLayout.getTagPose(localTarget.getFiducialId()).get();
@@ -89,7 +129,10 @@ public class Vision2 extends SubsystemBase {
 
       ID = localTarget.getFiducialId();
 
-      if ((ID == 4) || (ID == 7)) { //blue-7 red-4
+      // if(ID == 3){ID = 4;}
+
+      // if ((ID == 4) || (ID == 7)) { //blue-7 red-4
+      if (foundSpeaker) {
         speakerInView = true;
         target = localTarget;
         double angleMultiplier = ID == 7 ? 180 : 180;
@@ -101,7 +144,11 @@ public class Vision2 extends SubsystemBase {
         tx_out = yaw; //m_lowpass.calculate(yaw);
 
         SmartDashboard.putNumber("Filtered Tx", tx_out);
-
+        
+        double visionShootAngleTEST = 36;
+        if (getTargetDistance() > 8.23) {visionShootAngleTEST = Math.toDegrees(Math.atan(getTargetVertAngle() / Math.abs(getTargetDistance() - 16.459))) + Math.abs(getTargetDistance() - 16.459) * 2/3 -1; }
+        else {visionShootAngleTEST = Math.toDegrees(Math.atan(getTargetVertAngle() / getTargetDistance())) + (getTargetDistance() * 2/3 -1);}
+        SmartDashboard.putNumber("TEST Vision angle", visionShootAngleTEST);
 
       } else {
         target = null;
@@ -112,26 +159,26 @@ public class Vision2 extends SubsystemBase {
       SmartDashboard.putBoolean("SpeakerInView", speakerInView_filtered);
 
 
-//they have -31 for height of camera
-    if (ID >= 11 && ID <= 16){
-    //this is chian thingy
-      heightMatters = 1.35;
-   // cameraToTarget = cameraToTarget.plus(stageOffSet);
-  // SmartDashboard.putNumber("Height",135);
-    }
-  else if (ID == 5 || ID == 6){
-    //this is amp
-    heightMatters = .61;
-  // cameraToTarget = cameraToTarget.plus(ampOffSet);
-  // SmartDashboard.putNumber("Height",61);
-  }
-  else if (ID == 8 || ID == 7 || ID == 3 || ID == 4){
-    heightMatters = 1.76;
-    //this is speaker
-  // cameraToTarget = cameraToTarget.plus(speakerOffSet);
-  // SmartDashboard.putNumber("Height", 176);
-  }
-  else {heightMatters = -1;}
+// //they have -31 for height of camera
+//     if (ID >= 11 && ID <= 16){
+//     //this is chian thingy
+//       heightMatters = 1.35;
+//    // cameraToTarget = cameraToTarget.plus(stageOffSet);
+//   // SmartDashboard.putNumber("Height",135);
+//     }
+//   else if (ID == 5 || ID == 6){
+//     //this is amp
+//     heightMatters = .61;
+//   // cameraToTarget = cameraToTarget.plus(ampOffSet);
+//   // SmartDashboard.putNumber("Height",61);
+//   }
+//   else if (ID == 8 || ID == 7 || ID == 3 || ID == 4){
+//     heightMatters = 1.76;
+//     //this is speaker
+//   // cameraToTarget = cameraToTarget.plus(speakerOffSet);
+//   // SmartDashboard.putNumber("Height", 176);
+//   }
+//   else {heightMatters = -1;}
   // Translation3d ampOffSet;
   SmartDashboard.putNumber("Height",heightMatters);
 

@@ -30,9 +30,9 @@ public class Shooter extends SubsystemBase {
   private static final double maximumAngle = 70.0;
   public double shootingAngle = 58;
   public double shootingVelocity = 2430;
-  public double ampShootingAngle = 66.5;
-  public double ampShootingVelocity = 2350;
-  public double visionShootAngle = 60;
+  public double ampShootingAngle = 65.5;
+  public double ampShootingVelocity = 2150;
+  public double visionShootAngle = 26;
   public double visionShootVelocity = 3780;
   public double ampTopShootingVelocity = ampShootingVelocity / 6;
   public String shootingPreset = "Woofer";
@@ -193,6 +193,14 @@ public class Shooter extends SubsystemBase {
     }
   }
 
+  /**
+   * Configures the preset of the shooter
+   *
+   * @param angle sets the preset of the shooter's angle.
+   * @param velocity sets the preset of the shooter's velocity
+   * @param name sets the name of the shooter preset
+   */
+
   public void setShooterStuff(double angle, double velocity, String name) {
     // Velocity will be RPM
     shootingAngle = angle;
@@ -201,5 +209,3 @@ public class Shooter extends SubsystemBase {
   }
 
 }
-
-// .32 maximum vert. .2 minimum vert.

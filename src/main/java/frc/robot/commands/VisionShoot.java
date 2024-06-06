@@ -38,9 +38,9 @@ public class VisionShoot extends Command {
   public void initialize() {
     sensorState = 0;
     // visShootAngle = (Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance()) * 180) / Math.PI;
-    if (m_vis.getTargetDistance() > 8.23) {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / Math.abs(m_vis.getTargetDistance() - 16.459))); }
-    else {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance())) + (m_vis.getTargetDistance() * 2/3);}
-    SmartDashboard.putNumber("Shooter Angle", m_shooter.visionShootAngle);
+    // if (m_vis.getTargetDistance() > 8.23) {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / Math.abs(m_vis.getTargetDistance() - 16.459))) + Math.abs(m_vis.getTargetDistance() - 16.459) * 2/3 + 1; }
+    // else {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vis.getTargetVertAngle() / m_vis.getTargetDistance())) + (m_vis.getTargetDistance() * 2/3);}
+    // SmartDashboard.putNumber("Shooter Angle", m_shooter.visionShootAngle);
     m_shooter.testShoot(m_shooter.visionShootVelocity);
     m_shooter.testAngle(m_shooter.visionShootAngle);
   }
@@ -48,7 +48,12 @@ public class VisionShoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_led.rainbow();
+    if (m_shooter.visionShootAngle == 26) {
+      m_led.ledOn(255, 0, 0);
+    }
+    else {
+      m_led.rainbow();
+    }
     if (m_shooter.visionAtSpeed()) {
       m_index.indexRun(-m_index.indexSpeed);
     }

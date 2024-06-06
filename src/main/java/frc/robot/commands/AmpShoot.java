@@ -25,8 +25,8 @@ public class AmpShoot extends SequentialCommandGroup {
     m_led = le;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new ClimbUp(m_climber).withTimeout(.2),
-    new ShootA(m_shooter, m_index, m_led),
-    new ClimbDown(m_climber).withTimeout(.2));
+    addCommands(new ClimbUp(m_climber).withTimeout(.5),
+    new ShootA(m_shooter, m_index, m_led).withTimeout(2),
+    new ClimbDown(m_climber).withTimeout(.5));
   }
 }

@@ -14,12 +14,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision2;
 
 public class auto_led extends Command {
   private final Vision2 m_vision;
   private final LEDS m_leds;
   private final DriveSubsystem m_drive;
+  private final Shooter m_shooter;
     PIDController m_turnCtrl = new PIDController(0.02, 0, 0);
   // private static final double kTurnFF = 0.0;
   private double m_output;
@@ -39,7 +41,7 @@ public class auto_led extends Command {
  private double angleOffset;
 
   /** Creates a new auto_led. */
-  public auto_led(Vision2 vision, DriveSubsystem drive, LEDS leds) {
+  public auto_led(Vision2 vision, DriveSubsystem drive, LEDS leds, Shooter sh) {
     m_vision = vision;
     addRequirements(m_vision);
     // m_lightbarLeds = light;
@@ -48,6 +50,8 @@ public class auto_led extends Command {
     addRequirements(m_drive);
     m_leds = leds;
     addRequirements(m_leds);
+    m_shooter = sh;
+    addRequirements(m_shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -65,26 +69,34 @@ public class auto_led extends Command {
     NoTargetAtInit = m_vision.isSpeakerInView();
     PhotonTrackedTarget target = m_vision.getTarget();
     if (NoTargetAtInit && target != null) {
+      if (m_vision.getTargetDistance() > 8.23) {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / Math.abs(m_vision.getTargetDistance() - 16.459))) + Math.abs(m_vision.getTargetDistance() - 16.459) * 2/3 -1; }
+      else {m_shooter.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / m_vision.getTargetDistance())) + (m_vision.getTargetDistance() * 2/3 -1);}
       angleOffset = target.getYaw() -6.0 + (2 * m_vision.getTargetDistance() / 3);
       // goAngle = 60;
-      tx = SmartDashboard.getNumber("tx",0);
+      tx = SmartDashboard.getNumber("tx", 0);
       // if (m_vision.getTargetYDistance() < 5.54)  
       //   goAngle = Math.toDegrees(Math.atan2(m_vision.getTargetYDistance(), m_vision.getTargetDistance()));
       // else 
       //   goAngle = -1 * (Math.toDegrees(Math.atan2(Math.abs(m_vision.getTargetYDistance() - 5.54), m_vision.getTargetDistance())));
       // goAngle = ((m_vision.getTargetHorzAngle()));
       goAngle = m_heading - angleOffset;
+      m_turnCtrl.setSetpoint(goAngle);
       // goAngle += m_heading;
     } else {
-      goAngle = m_heading;
+      m_shooter.visionShootAngle = 32;
+      m_leds.ledOn(255, 0, 0);
+      // goAngle = m_heading;
+      m_turnCtrl.setSetpoint(m_heading);
     }
-    
-    m_turnCtrl.setSetpoint(goAngle);
+    m_shooter.testShoot(m_shooter.visionShootVelocity);
+    m_shooter.testAngle(m_shooter.visionShootAngle);
+    // m_turnCtrl.setSetpoint(goAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putNumber("Shooter Angle", m_shooter.visionShootAngle);
     // ControlButtonB = !ControlButtonB;
     // if (false) { //ControlButtonB){
     //   tv = SmartDashboard.getNumber("tv", 0);
@@ -144,6 +156,8 @@ public class auto_led extends Command {
   public void end(boolean interrupted) {
   //  m_lightbarLeds.allOff();
    m_drive.drive(0.0, 0.0, 0.0, false);
+   m_shooter.stopShooter();
+   m_shooter.stopAngle();
   }
 
   // Returns true when the command should end.

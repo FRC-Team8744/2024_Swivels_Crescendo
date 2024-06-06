@@ -200,13 +200,13 @@ public class DriveSubsystem extends SubsystemBase {
             m_frontLeft.getState(),
             m_frontRight.getState(),
             m_rearLeft.getState(),
-            m_rearRight.getState() } );
+            m_rearRight.getState() } ); // :3
 
     
 
     // Diagnostics
 
-  if (Constants.kDebugLevel >=3) { 
+  if (Constants.kDebugLevel >=3) {
 
       // SmartDashboard.putBoolean("DigitalInput", input.get());
       // SmartDashboard.putBoolean("DigitalInputI", inputIR.get());
@@ -293,6 +293,11 @@ public class DriveSubsystem extends SubsystemBase {
     ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
     rot = MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
 
+    // Apply speed scaling
+    xSpeed = xSpeed * m_DriverSpeedScale;
+    ySpeed = ySpeed * m_DriverSpeedScale;
+    rot = rot * m_DriverSpeedScale;
+
     var swerveModuleStates =
         SwerveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
@@ -342,11 +347,17 @@ public class DriveSubsystem extends SubsystemBase {
     m_rearRight.resetEncoders();
   }
 
-  public void toggleMaxInput() {
-    if (m_DriverSpeedScale == 1.0) {
+  /* sets how fast the human driver can drive */
+  public void setMaxOutput(double val) {
+    m_DriverSpeedScale = val;
+  }
+
+  public void toggleMaxOutput() {
+    if (m_DriverSpeedScale == 1.0){
       m_DriverSpeedScale = Constants.kDriverSpeedLimit;
     } else {
       m_DriverSpeedScale = 1.0;
     }
-    }
   }
+
+}

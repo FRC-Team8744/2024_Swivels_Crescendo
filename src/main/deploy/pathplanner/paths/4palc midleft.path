@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.584150277423991,
-        "y": 4.86096084893422
+        "x": 4.265150441855804,
+        "y": 5.305008955239023
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.609400835975197,
-        "y": 2.599365771182348
+        "x": 7.290401000407009,
+        "y": 3.0434138774871506
       },
       "isLocked": false,
       "linkedName": "4palc2"
     },
     {
       "anchor": {
-        "x": 8.29962790515921,
-        "y": 6.123929528717735
+        "x": 8.27025654051308,
+        "y": 6.101345840352166
       },
       "prevControl": {
-        "x": 6.445825890966063,
-        "y": 6.741863533448785
+        "x": 6.4164545263199315,
+        "y": 6.719279845083216
       },
       "nextControl": {
-        "x": 9.136711797573865,
-        "y": 5.844901564579517
+        "x": 9.107340432927733,
+        "y": 5.822317876213948
       },
       "isLocked": false,
       "linkedName": null
@@ -73,11 +73,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 20.0,
+    "rotation": 16.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "4 piece all left center",
+  "folder": "4 piece all amp center right start",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

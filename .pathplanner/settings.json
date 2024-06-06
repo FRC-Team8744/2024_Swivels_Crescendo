@@ -4,12 +4,12 @@
   "holonomicMode": true,
   "pathFolders": [
     "4 piece all left 2 center",
-    "4 piece all left center",
-    "4 piece middle",
+    "4 piece all amp center right start",
+    "4 piece wing",
+    "4 piece source side all center",
     "Bens",
     "LeftBaseLine(2)",
     "MiddleBaseLine(2)",
-    "4 piece source side all center",
     "Old autos"
   ],
   "autoFolders": [
