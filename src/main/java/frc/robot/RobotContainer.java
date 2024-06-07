@@ -64,7 +64,7 @@ public class RobotContainer {
 
   // A chooser for autonomous commands
   private final SendableChooser<Command> m_autoChooser;
-    // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
+  // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(5);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(5);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(5);

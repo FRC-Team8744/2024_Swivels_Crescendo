@@ -14,7 +14,7 @@ import frc.robot.subsystems.LEDS;
 public class Trings extends Command {
   private final LEDS m_lightbarLeds;
   private final DriveSubsystem m_drive;
-    PIDController m_turnCtrl = new PIDController(5, 0, 0);
+  PIDController m_turnCtrl = new PIDController(5, 0, 0);
   private static final double kTurnFF = 0.0;
   private double m_output;
   private double m_heading;
@@ -86,4 +86,3 @@ SmartDashboard.putData("PID", m_turnCtrl);
     return Done;
   }
 }
-

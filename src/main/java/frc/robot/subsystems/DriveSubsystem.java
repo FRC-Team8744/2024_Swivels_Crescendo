@@ -278,10 +278,9 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates =
         SwerveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_imu.getHeading()) // Rotation2d.fromDegrees(m_imu.getYaw()))
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_imu.getHeading())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
+    SwerveDriveKinematics.desaturateWheelSpeeds( swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFL_enum]);
     m_frontRight.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFR_enum]);
     m_rearLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveRL_enum]);
@@ -294,8 +293,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param desiredStates The desired SwerveModule states.
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        desiredStates, SwerveConstants.kMaxSpeedMetersPerSecond);
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveFL_enum]);
     m_frontRight.setDesiredState(desiredStates[SwerveConstants.kSwerveFR_enum]);
     m_rearLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveRL_enum]);
@@ -336,5 +334,4 @@ public class DriveSubsystem extends SubsystemBase {
       m_DriverSpeedScale = 1.0;
     }
   }
-
 }
