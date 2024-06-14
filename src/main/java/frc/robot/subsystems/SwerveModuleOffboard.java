@@ -47,8 +47,7 @@ public class SwerveModuleOffboard {
    * @param magEncoderID The CAN ID of the magnetic encoder.
    * @param magEncoderOffsetDegrees The absolute offset of the magnetic encoder.
    */
-  public SwerveModuleOffboard(int driveMotorID, int turningMotorID, int magEncoderID,
-      double magEncoderOffsetDegrees) {
+  public SwerveModuleOffboard(int driveMotorID, int turningMotorID, int magEncoderID, double magEncoderOffsetDegrees) {
     // Create drive motor objects
     m_driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
     m_driveEncoder = m_driveMotor.getEncoder();

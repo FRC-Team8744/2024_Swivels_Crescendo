@@ -38,8 +38,9 @@ public class TringsTest extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (m_vision2.getTargetYDistance() < 5.54)  m_vision2.m_goalAngle = (Math.toDegrees(Math.atan2(m_vision2.getTargetYDistance(), m_vision2.getTargetDistance())));
-    else m_vision2.m_goalAngle = -1 * Math.toDegrees(Math.atan2(Math.abs(m_vision2.getTargetYDistance() - 5.54), m_vision2.getTargetDistance()));
+    double yDistance = m_vision2.getTargetYDistance().orElse(0.0);
+    if (yDistance < 5.54)  m_vision2.m_goalAngle = (Math.toDegrees(Math.atan2(yDistance, m_vision2.getTargetDistance())));
+    else m_vision2.m_goalAngle = -1 * Math.toDegrees(Math.atan2(Math.abs(yDistance - 5.54), m_vision2.getTargetDistance()));
     m_lightbarLeds.setLed(17,255,255,0);
     m_turnCtrl.enableContinuousInput(-180, 180);
     m_turnCtrl.setTolerance(3.0);
@@ -87,7 +88,7 @@ SmartDashboard.putData("PID", m_turnCtrl);
     SmartDashboard.putNumber("PID setpoint error", m_turnCtrl.getPositionError());
     SmartDashboard.putNumber("PID velocity error", m_turnCtrl.getVelocityError());
     SmartDashboard.putNumber("PID measurement", m_heading);
-    SmartDashboard.putNumber("Target Y distance", m_vision2.getTargetYDistance());
+    // SmartDashboard.putNumber("Target Y distance", yDistance);
   }
 
   // Called once the command ends or is interrupted.

@@ -11,12 +11,15 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -49,10 +52,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
 
-  private final String controllerMode = "x";
-
   // The imu sensor
   public final Multi_IMU m_imu = new Multi_IMU();
+  private final Vision2 m_Vision2;
   
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry;
@@ -62,8 +64,20 @@ public class DriveSubsystem extends SubsystemBase {
 
   private String MyName;
   
+  public SwerveModulePosition[] getModulePositions() {
+    return new SwerveModulePosition[] {
+      m_frontLeft.getPosition(),
+      m_frontRight.getPosition(),
+      m_rearLeft.getPosition(),
+      m_rearRight.getPosition()
+    };
+  }
+
+  private final SwerveDrivePoseEstimator m_poseEstimator;
+
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem() {
+  public DriveSubsystem(Vision2 m_Vision2) {
+    this.m_Vision2 = m_Vision2;
     MyName = Preferences.getString("RobotName", "NoDefault");
     System.out.println("Robot ID: " + MyName);
     switch(MyName) {
@@ -127,10 +141,9 @@ public class DriveSubsystem extends SubsystemBase {
           // Create and push Field2d to SmartDashboard.
     m_field = new Field2d();
     SmartDashboard.putData(m_field);
-
     // Configure the AutoBuilder last
     
-      AutoBuilder.configureHolonomic(
+    AutoBuilder.configureHolonomic(
       this::getPose, // Robot pose supplier
       this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
       this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
@@ -162,6 +175,15 @@ public class DriveSubsystem extends SubsystemBase {
     PathPlannerLogging.setLogActivePathCallback((poses) -> m_field.getObject("path").setPoses(poses));
 
     SmartDashboard.putData(m_field);
+
+    m_poseEstimator =
+      new SwerveDrivePoseEstimator(
+        Constants.SwerveConstants.kDriveKinematics,
+        m_imu.getHeading(),
+        getModulePositions(),
+        getPose(),
+        VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+        VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
   }
 
   @Override
@@ -175,11 +197,15 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
         });
+
+    m_Vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_Vision2.getApriltagTime()));
+
+    m_poseEstimator.update(m_imu.getHeading(), getModulePositions());
     
     // Update robot position on Field2d.
     m_field.setRobotPose(getPose());
 
-    if (controllerMode == "j") {
+    if (Constants.controllerMode == "j") {
       if (m_Joystick.getRawAxis(3) < 0) {
         m_DriverSpeedScale = 1.0;
       }
@@ -194,9 +220,6 @@ public class DriveSubsystem extends SubsystemBase {
             m_frontRight.getState(),
             m_rearLeft.getState(),
             m_rearRight.getState() } ); // :3
-
-    
-
     // Diagnostics
 
   if (Constants.kDebugLevel >=3) {
@@ -216,6 +239,10 @@ public class DriveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
       SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
     }
+
+    SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Estimated Pose Rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
 }
 
   /**
@@ -229,6 +256,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void zeroIMU() {
     m_imu.zeroHeading();
+    m_poseEstimator.resetPosition(m_imu.getHeading(), getModulePositions(), getPose());
   }
 
   /**
@@ -333,5 +361,9 @@ public class DriveSubsystem extends SubsystemBase {
     } else {
       m_DriverSpeedScale = 1.0;
     }
+  }
+
+  public Pose2d getEstimatedPose() {
+    return m_poseEstimator.getEstimatedPosition();
   }
 }

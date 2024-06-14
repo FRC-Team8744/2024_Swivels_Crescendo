@@ -4,7 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -22,6 +27,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.Multi_IMU;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision2;
 import frc.robot.commands.AmpShoot;
@@ -29,6 +35,7 @@ import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeSpinUp;
+import frc.robot.commands.LockOnTarget;
 import frc.robot.commands.OuttakeRun;
 import frc.robot.commands.ShootRing;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,11 +56,11 @@ import com.pathplanner.lib.auto.AutoBuilder;
  */
 public class RobotContainer {
   // The robot's subsystems
-  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final Vision2 m_Vision2 = new Vision2();
+  public final DriveSubsystem m_robotDrive = new DriveSubsystem(m_Vision2);
   public final Intake m_intake = new Intake();
   public final Shooter m_shooter = new Shooter();
   public final Index m_index = new Index();
-  public final Vision2 m_Vision2 = new Vision2();
   public final LEDS m_leds = new LEDS();
   public final Climber m_climber = new Climber();
   // The driver's controller
@@ -68,8 +75,6 @@ public class RobotContainer {
   private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(5);
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(5);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(5);
-
-  private final String controllerMode = "x";
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -101,7 +106,7 @@ public class RobotContainer {
     configureButtonBindings();
 
   // Configure default commands
-  if (controllerMode == "x") {
+  if (Constants.controllerMode == "x") {
       m_robotDrive.setDefaultCommand(
           // The left stick controls translation of the robot.
           // Turning is controlled by the X axis of the right stick.
@@ -114,7 +119,7 @@ public class RobotContainer {
                       true),
               m_robotDrive));
   }
-  else if(controllerMode == "j") {
+  else if(Constants.controllerMode == "j") {
     m_robotDrive.setDefaultCommand(
       new RunCommand(
         () ->
@@ -136,12 +141,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  
+  Command lockOnTargetCommand = new LockOnTarget(m_robotDrive);
   private void configureButtonBindings() {
-    if (controllerMode == "x") {
+    if (Constants.controllerMode == "x") {
       new JoystickButton(m_driverController, Button.kB.value)
       .onTrue(new auto_led(m_Vision2, m_robotDrive, m_leds, m_shooter).withTimeout(2.0));
 
+      new JoystickButton(m_driverController, Button.kRightStick.value)
+      .toggleOnTrue(lockOnTargetCommand)
+      .toggleOnFalse(Commands.runOnce(() -> lockOnTargetCommand.end(true)));
 
       new JoystickButton(m_driverController, Button.kA.value)
       .onTrue(new Trings(m_leds, m_robotDrive));
@@ -173,7 +181,7 @@ public class RobotContainer {
       new JoystickButton(m_driverController, Button.kLeftStick.value)
       .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.toggleMaxOutput()));
     }
-    else if(controllerMode == "j") {
+    else if(Constants.controllerMode == "j") {
       new JoystickButton(m_Joystick, 1)
       .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
       new JoystickButton(m_Joystick, 2)
@@ -185,5 +193,7 @@ public class RobotContainer {
     }
   }
 
- public Command getAutonomousCommand() {return m_autoChooser.getSelected();}
+  public Command getAutonomousCommand() {
+    return m_autoChooser.getSelected();
+  }
 }

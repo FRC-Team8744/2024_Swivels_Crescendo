@@ -12,9 +12,12 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -28,6 +31,7 @@ public class Vision2 extends SubsystemBase {
   private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-23.7), Units.degreesToRadians(180));
   private Transform3d td = new Transform3d(0.04, 0.25, 0, rd);
   private Pose3d targetTd;
+  private double apriltagTime; 
   public double distanceToApriltag = 0;
 
   private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
@@ -42,7 +46,7 @@ public class Vision2 extends SubsystemBase {
   private Debouncer m_debouncer = new Debouncer (0.1, Debouncer.DebounceType.kBoth );
   private LinearFilter m_lowpass = LinearFilter.movingAverage(100);
   private double tx_out;
-//**heightMatters is the height of the object based on the april tags and the camera used for cacluations in shooting**//
+  //**heightMatters is the height of the object based on the april tags and the camera used for cacluations in shooting**//
   private double heightMatters;
   public double m_goalAngle;
 
@@ -54,12 +58,13 @@ public class Vision2 extends SubsystemBase {
   @Override
   public void periodic() {
     result = camera.getLatestResult();
+    apriltagTime = result.getTimestampSeconds();
     if (result.getMultiTagResult().estimatedPose.isPresent) {
       MultiTargetPNPResult multiTag = result.getMultiTagResult();
     }
     result.getTargets();
 
-    if (result.hasTargets()){
+    if (result.hasTargets()) {
       PhotonTrackedTarget localTarget = result.getBestTarget();
 
       // Start of check list
@@ -139,12 +144,13 @@ public class Vision2 extends SubsystemBase {
   SmartDashboard.putNumber("By", pitch);
 } else {
   ID = 0;
+  targetTd = null;
 }
 SmartDashboard.putNumber("Id", ID); 
 SmartDashboard.putBoolean("RT", m_debouncer.calculate(result.hasTargets()));
 SmartDashboard.putNumber("Angle", tx_out);
 }
-  // port: http://limelight.local:5801/
+  // port: http://photonvision.local:5800
 
   public boolean isSpeakerInView() {
     return speakerInView_filtered;
@@ -162,11 +168,19 @@ SmartDashboard.putNumber("Angle", tx_out);
     return distanceToApriltag;
   }
 
-  public double getTargetYDistance() {
-    return targetTd.getY();
+  public Optional <Double> getTargetYDistance() {
+    return Optional.ofNullable(targetTd).map((t) -> t.getY());
   }
 
   public PhotonTrackedTarget getTarget() {
     return target;
+  }
+
+  public Optional <Pose2d> getRobotPose() {
+    return Optional.ofNullable(targetTd).map((t) -> t.toPose2d());
+  }
+
+  public double getApriltagTime() {
+    return apriltagTime;
   }
 }
