@@ -27,6 +27,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.LockOnTarget;
 import frc.robot.subsystems.Multi_IMU;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision2;
@@ -35,7 +36,6 @@ import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeSpinUp;
-import frc.robot.commands.LockOnTarget;
 import frc.robot.commands.OuttakeRun;
 import frc.robot.commands.ShootRing;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -141,15 +141,15 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  Command lockOnTargetCommand = new LockOnTarget(m_robotDrive);
+  // Command lockOnTargetCommand = new LockOnTarget(m_robotDrive);
   private void configureButtonBindings() {
     if (Constants.controllerMode == "x") {
       new JoystickButton(m_driverController, Button.kB.value)
       .onTrue(new auto_led(m_Vision2, m_robotDrive, m_leds, m_shooter).withTimeout(2.0));
 
       new JoystickButton(m_driverController, Button.kRightStick.value)
-      .toggleOnTrue(lockOnTargetCommand)
-      .toggleOnFalse(Commands.runOnce(() -> lockOnTargetCommand.end(true)));
+      .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate));
+      // .toggleOnFalse(Commands.runOnce(() -> m_robotDrive.isAutoRotate = false));
 
       new JoystickButton(m_driverController, Button.kA.value)
       .onTrue(new Trings(m_leds, m_robotDrive));

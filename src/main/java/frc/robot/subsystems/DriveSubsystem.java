@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.concurrent.locks.Lock;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -29,6 +31,7 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -50,11 +53,16 @@ public class DriveSubsystem extends SubsystemBase {
   private final SwerveModuleOffboard m_frontRight;
   private final SwerveModuleOffboard m_rearRight;
 
+  private double autoRotateSpeed = 0;
+
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
 
   // The imu sensor
   public final Multi_IMU m_imu = new Multi_IMU();
+  public final LockOnTarget m_lock = new LockOnTarget();
   private final Vision2 m_Vision2;
+
+  public boolean isAutoRotate = false;
   
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry;
@@ -203,7 +211,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_poseEstimator.update(m_imu.getHeading(), getModulePositions());
     
     // Update robot position on Field2d.
-    m_field.setRobotPose(getPose());
+    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
 
     if (Constants.controllerMode == "j") {
       if (m_Joystick.getRawAxis(3) < 0) {
@@ -240,9 +248,14 @@ public class DriveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
     }
 
-    SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
-    SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
-    SmartDashboard.putNumber("Estimated Pose Rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+  SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
+  SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
+  SmartDashboard.putNumber("Estimated Pose Rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+  SmartDashboard.putBoolean("isAutoRotate", isAutoRotate);
+
+  if (isAutoRotate == true) {
+    autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition());
+  }
 }
 
   /**
@@ -285,6 +298,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    rot = isAutoRotate ? autoRotateSpeed : rot;
     SmartDashboard.putNumber("xSpeed", xSpeed);
     SmartDashboard.putNumber("ySpeed", ySpeed);
     SmartDashboard.putNumber("rot", rot);
@@ -296,7 +310,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
     ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
-    rot = MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
+    rot = isAutoRotate ? rot : MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
 
     // Apply speed scaling
     xSpeed = xSpeed * m_DriverSpeedScale;

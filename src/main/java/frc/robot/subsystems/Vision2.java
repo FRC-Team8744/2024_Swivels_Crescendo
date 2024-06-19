@@ -29,7 +29,7 @@ public class Vision2 extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
 
   private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-23.7), Units.degreesToRadians(180));
-  private Transform3d td = new Transform3d(0.04, 0.25, 0, rd);
+  private Transform3d td = new Transform3d(-0.04, -0.25, 0, rd);
   private Pose3d targetTd;
   private double apriltagTime; 
   public double distanceToApriltag = 0;
