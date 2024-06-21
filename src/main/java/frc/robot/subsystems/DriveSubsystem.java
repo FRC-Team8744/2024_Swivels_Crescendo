@@ -63,6 +63,8 @@ public class DriveSubsystem extends SubsystemBase {
   private final Vision2 m_Vision2;
 
   public boolean isAutoRotate = false;
+
+  public boolean isAutoRotateToggle = true;
   
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry;
@@ -255,6 +257,14 @@ public class DriveSubsystem extends SubsystemBase {
 
   if (isAutoRotate == true) {
     autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition());
+  }
+
+  if (isAutoRotate && isAutoRotateToggle) {
+    m_lock.initialize(m_poseEstimator.getEstimatedPosition());
+    isAutoRotateToggle = false;
+  }
+  else if (!isAutoRotate) {
+    isAutoRotateToggle = true;
   }
 }
 

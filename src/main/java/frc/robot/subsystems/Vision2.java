@@ -109,16 +109,16 @@ public class Vision2 extends SubsystemBase {
         double yaw = (PhotonUtils.getYawToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d()).getDegrees());
         yaw *= ID == 7 ? 1 : -1;
         distanceToApriltag = PhotonUtils.getDistanceToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d());
-        SmartDashboard.putNumber("yaw", yaw);
+        // SmartDashboard.putNumber("yaw", yaw);
 
         tx_out = yaw; //m_lowpass.calculate(yaw);
 
-        SmartDashboard.putNumber("Filtered Tx", tx_out);
+        // SmartDashboard.putNumber("Filtered Tx", tx_out);
         
         double visionShootAngleTEST = 36;
         if (getTargetDistance() > 8.23) {visionShootAngleTEST = Math.toDegrees(Math.atan(getTargetVertAngle() / Math.abs(getTargetDistance() - 16.459))) + Math.abs(getTargetDistance() - 16.459) * 2/3 -1; }
         else {visionShootAngleTEST = Math.toDegrees(Math.atan(getTargetVertAngle() / getTargetDistance())) + (getTargetDistance() * 2/3 -1);}
-        SmartDashboard.putNumber("TEST Vision angle", visionShootAngleTEST);
+        // SmartDashboard.putNumber("TEST Vision angle", visionShootAngleTEST);
 
       } else {
         target = null;
@@ -128,27 +128,27 @@ public class Vision2 extends SubsystemBase {
       speakerInView_filtered = m_filterSpeakerInView.calculate(speakerInView);
       SmartDashboard.putBoolean("SpeakerInView", speakerInView_filtered);
 
-  SmartDashboard.putNumber("Height",heightMatters);
+  // SmartDashboard.putNumber("Height",heightMatters);
 
   double yaw = Units.radiansToDegrees(targetTd.getRotation().getZ());
   tx_out = m_lowpass.calculate(yaw);
-  SmartDashboard.putNumber("Filtered Tx", tx_out);
+  // SmartDashboard.putNumber("Filtered Tx", tx_out);
 
   double pitch = Units.radiansToDegrees(Math.atan(1.76 / targetTd.getX()));
 
   double Apriltagid = ID;
-  SmartDashboard.putNumber("ApriltagIDback", Apriltagid);
-  SmartDashboard.putNumber("X", distanceToApriltag);
-  SmartDashboard.putNumber("Y distance", targetTd.getY());
-  SmartDashboard.putNumber("Y", Units.radiansToDegrees(cameraToTarget.getRotation().getY()));
-  SmartDashboard.putNumber("By", pitch);
+  // SmartDashboard.putNumber("ApriltagIDback", Apriltagid);
+  // SmartDashboard.putNumber("X", distanceToApriltag);
+  // SmartDashboard.putNumber("Y distance", targetTd.getY());
+  // SmartDashboard.putNumber("Y", Units.radiansToDegrees(cameraToTarget.getRotation().getY()));
+  // SmartDashboard.putNumber("By", pitch);
 } else {
   ID = 0;
   targetTd = null;
 }
-SmartDashboard.putNumber("Id", ID); 
-SmartDashboard.putBoolean("RT", m_debouncer.calculate(result.hasTargets()));
-SmartDashboard.putNumber("Angle", tx_out);
+// SmartDashboard.putNumber("Id", ID); 
+// SmartDashboard.putBoolean("RT", m_debouncer.calculate(result.hasTargets()));
+// SmartDashboard.putNumber("Angle", tx_out);
 }
   // port: http://photonvision.local:5800
 

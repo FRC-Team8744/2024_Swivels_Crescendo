@@ -17,13 +17,13 @@ import frc.robot.Constants.ConstantsOffboard;
 public class LockOnTarget {
   private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private Pose2d targetPose = aprilTagFieldLayout.getTagPose(7).get().toPose2d();
-  private PIDController m_turnCtrl = new PIDController(0.02, 0, 0);
+  private PIDController m_turnCtrl = new PIDController(0.02, 0.0003, 0.0015);
   private double goalAngle;
   private double heading;
   private double m_output;
 
   // Called when the command is initially scheduled.
-  public void initialize() {
+  public void initialize(Pose2d estimatedPose2d) {
     m_turnCtrl.enableContinuousInput(-180, 180);
     m_turnCtrl.setTolerance(1.0);
     m_turnCtrl.reset();
@@ -33,10 +33,11 @@ public class LockOnTarget {
   public double execute(Pose2d estimatedPose2d) {
     heading = estimatedPose2d.getRotation().getDegrees();
 
-    double distanceToTargetX = Math.abs(estimatedPose2d.getX() - targetPose.getX());
-    double distanceToTargetY = Math.abs(estimatedPose2d.getY() - targetPose.getY());
+    double distanceToTargetX = estimatedPose2d.getX() - targetPose.getX();
+    double distanceToTargetY = estimatedPose2d.getY() - targetPose.getY();
+    double distanceToTargetHyp = Math.abs(Math.sqrt(Math.pow(distanceToTargetX, 2) + Math.pow(distanceToTargetY, 2)));
 
-    goalAngle = Math.toDegrees(Math.atan(distanceToTargetX / distanceToTargetY));
+    goalAngle = Math.toDegrees(Math.atan(distanceToTargetY / distanceToTargetX));
     /* if (estimatedPose2d.getY() > targetPose.getY()) {
       goalAngle = Math.toDegrees(Math.atan(distanceToTargetX / distanceToTargetY)) + heading;
     }
@@ -58,17 +59,26 @@ public class LockOnTarget {
     }
     */
 
-    goalAngle = goalAngle - heading;
+    // goalAngle = heading - goalAngle;
 
-    goalAngle = goalAngle - 90;
+    // if (goalAngle > 180) {
+    //   goalAngle = 360 - goalAngle;
+    // }
+    // else if (goalAngle < -180) {
+    //   goalAngle = goalAngle + 360;
+    // }
+
+    // goalAngle = goalAngle + 90;
 
     SmartDashboard.putNumber("Goal Angle", goalAngle);
     SmartDashboard.putNumber("Target Pose X", targetPose.getX());
     SmartDashboard.putNumber("Target Pose Y", targetPose.getY());
 
-    // m_turnCtrl.setSetpoint(goalAngle);
+    m_turnCtrl.setSetpoint(goalAngle);
 
     m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);
+
+    // m_output = MathUtil.clamp(heading, -1.0, 1.0);
 
     return m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND;
     // m_drive.drive(0.0, 0.0, m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND, true);
