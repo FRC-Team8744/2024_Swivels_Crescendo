@@ -16,56 +16,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MechanismConstants;
 
 public class Shooter extends SubsystemBase {
-  private static final double initialAngle = 9.0;
-  private static final double shooterGearRatio = 15.0;
-  private static final double minimumAngle = 9.0;
-  private static final double maximumAngle = 70.0;
-  public double shootingAngle = 58;
   public double shootingVelocity = 2430;
-  public double ampShootingAngle = 65.5;
   public double ampShootingVelocity = 2150;
-  public double visionShootAngle = 26;
   public double visionShootVelocity = 3780;
   public double ampTopShootingVelocity = ampShootingVelocity / 6;
   public String shootingPreset = "Woofer";
 
   private CANSparkMax topShooterSparkMax = new CANSparkMax(MechanismConstants.kTopShooterPort, MotorType.kBrushless);
   private CANSparkMax bottomShooterSparkMax = new CANSparkMax(MechanismConstants.kBottomShooterPort, MotorType.kBrushless);
-  private CANSparkMax leftPivotSparkMax = new CANSparkMax(MechanismConstants.kLeftPivotShooterPort, MotorType.kBrushless); 
-  private CANSparkMax rightPivotSparkMax = new CANSparkMax(MechanismConstants.kRightPivotShooterPort, MotorType.kBrushless);
   
   private final RelativeEncoder topShooterEnc = topShooterSparkMax.getEncoder();
   private final RelativeEncoder bottomShooterEnc = bottomShooterSparkMax.getEncoder();
-  private final RelativeEncoder leftPivotEnc = leftPivotSparkMax.getEncoder();
-
-  private final SparkAbsoluteEncoder absoluteEncoder = leftPivotSparkMax.getAbsoluteEncoder(Type.kDutyCycle);
 
   private final SparkPIDController topShooterPID = topShooterSparkMax.getPIDController();
   private final SparkPIDController bottomShooterPID = bottomShooterSparkMax.getPIDController();
-  private final SparkPIDController leftPivotPID = leftPivotSparkMax.getPIDController();
+
+  public final Pivot m_pivot = new Pivot();
 
   public Shooter() {
-    leftPivotSparkMax.restoreFactoryDefaults();
-    rightPivotSparkMax.restoreFactoryDefaults();
-
-    leftPivotSparkMax.setSmartCurrentLimit(40);
-    rightPivotSparkMax.setSmartCurrentLimit(40);
     topShooterSparkMax.setSmartCurrentLimit(40);
     bottomShooterSparkMax.setSmartCurrentLimit(40);
-
-    rightPivotSparkMax.follow(leftPivotSparkMax, true);
-
-    leftPivotSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    rightPivotSparkMax.setIdleMode(CANSparkMax.IdleMode.kBrake);
-
-    leftPivotPID.setP(0.02);
-    leftPivotPID.setI(0);
-    leftPivotPID.setD(0);
-    leftPivotPID.setFF(0.0015);
-
-    leftPivotEnc.setPositionConversionFactor(360 / shooterGearRatio);
-    absoluteEncoder.setPositionConversionFactor(360);
-    leftPivotEnc.setPosition(initialAngle);
 
     bottomShooterSparkMax.setInverted(true);
 
@@ -78,21 +48,16 @@ public class Shooter extends SubsystemBase {
     topShooterPID.setI(0);
     topShooterPID.setD(0.001);
     topShooterPID.setFF(0.0002);
-
-    leftPivotPID.setFeedbackDevice(absoluteEncoder);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Abosulte encoder", absoluteEncoder.getPosition());
     SmartDashboard.putNumber("Flywheel top RPM", topShooterEnc.getVelocity());
     SmartDashboard.putNumber("Flywheel bottom RPM", bottomShooterEnc.getVelocity());
     SmartDashboard.putString("Shooting preset", shootingPreset);
     SmartDashboard.putNumber("Shooting velocity", shootingVelocity);
-    SmartDashboard.putNumber("Shooting angle", shootingAngle);
     SmartDashboard.putNumber("Vision velocity", visionShootVelocity);
-    SmartDashboard.putNumber("Vision angle", visionShootAngle);
   }
 
   public void testShoot(double speed) {
@@ -110,28 +75,10 @@ public class Shooter extends SubsystemBase {
     bottomShooterSparkMax.stopMotor();
   }
 
-  public void testAngle(double angle) {
-    if (angle < minimumAngle) angle = minimumAngle;
-    if (angle > maximumAngle) angle = maximumAngle;
-    leftPivotPID.setReference(angle, CANSparkMax.ControlType.kPosition);
-  }
-
-  public void testAngleAmp(double angle) {
-    angle -= 3.5;
-    if (angle < minimumAngle) angle = minimumAngle;
-    if (angle > maximumAngle) angle = maximumAngle;
-    leftPivotPID.setReference(angle, CANSparkMax.ControlType.kPosition);
-  }
-
-  public void stopAngle() {
-    leftPivotSparkMax.stopMotor();
-    rightPivotSparkMax.stopMotor();
-  }
-
   public boolean atSpeed() {
     if ((topShooterEnc.getVelocity()) >= (shootingVelocity * .95)
-    && (shootingAngle >= (absoluteEncoder.getPosition() * 0.9))
-    && (shootingAngle <= (absoluteEncoder.getPosition() * 1.1))) 
+    && (m_pivot.shootingAngle >= (m_pivot.absoluteEncoder.getPosition() * 0.9))
+    && (m_pivot.shootingAngle <= (m_pivot.absoluteEncoder.getPosition() * 1.1))) 
     {
       return true;
     }
@@ -142,8 +89,8 @@ public class Shooter extends SubsystemBase {
 
   public boolean visionAtSpeed() {
     if ((topShooterEnc.getVelocity()) >= (visionShootVelocity * .95)
-    && (visionShootAngle >= (absoluteEncoder.getPosition() * 0.9))
-    && (visionShootAngle <= (absoluteEncoder.getPosition() * 1.1))) 
+    && (m_pivot.visionShootAngle >= (m_pivot.absoluteEncoder.getPosition() * 0.9))
+    && (m_pivot.visionShootAngle <= (m_pivot.absoluteEncoder.getPosition() * 1.1))) 
     {
       return true;
     }
@@ -154,8 +101,8 @@ public class Shooter extends SubsystemBase {
 
   public boolean ampAtSpeed() {
     if ((bottomShooterEnc.getVelocity()) >= (ampShootingVelocity * 0.9)
-    && (ampShootingAngle >= ((absoluteEncoder.getPosition()) * 0.95))
-    && (ampShootingAngle <= ((absoluteEncoder.getPosition()) * 1.05)))
+    && (m_pivot.ampShootingAngle >= ((m_pivot.absoluteEncoder.getPosition()) * 0.95))
+    && (m_pivot.ampShootingAngle <= ((m_pivot.absoluteEncoder.getPosition()) * 1.05)))
     {
       return true;
     }
@@ -174,7 +121,7 @@ public class Shooter extends SubsystemBase {
 
   public void setShooterStuff(double angle, double velocity, String name) {
     // Velocity will be RPM
-    shootingAngle = angle;
+    m_pivot.shootingAngle = angle;
     shootingVelocity = velocity;
     shootingPreset = name;
   }

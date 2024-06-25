@@ -33,7 +33,7 @@ public class ShootRing extends Command {
   public void initialize() {
     sensorState = 0;
     m_shooter.testShoot(m_shooter.shootingVelocity);
-    m_shooter.testAngle(m_shooter.shootingAngle);
+    m_shooter.m_pivot.testAngle(m_shooter.m_pivot.shootingAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,7 +50,7 @@ public class ShootRing extends Command {
   public void end(boolean interrupted) {
     m_shooter.stopShooter();
     m_index.indexStop();
-    m_shooter.stopAngle();
+    m_shooter.m_pivot.stopAngle();
     m_led.ledOn(0, 0, 128);
   }
 

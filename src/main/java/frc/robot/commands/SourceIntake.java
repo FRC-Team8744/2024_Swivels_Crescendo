@@ -29,7 +29,7 @@ public class SourceIntake extends Command {
   @Override
   public void initialize() {
     m_shooter.testShoot(-1500);
-    m_shooter.testAngle(60);
+    m_shooter.m_pivot.testAngle(60);
     m_index.indexRun(m_index.indexSpeed);
     m_led.ledOn(128, 0, 0);
   }
@@ -41,7 +41,7 @@ public class SourceIntake extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_shooter.stopAngle();
+    m_shooter.m_pivot.stopAngle();
     m_shooter.stopShooter();
     m_index.indexStop();
     if (m_index.inputIR.get() == false) {

@@ -34,7 +34,7 @@ public class ShootA extends Command {
     m_timer.restart();
     sensorState = 0;
     m_shooter.ampShoot(m_shooter.ampTopShootingVelocity, m_shooter.ampShootingVelocity);
-    m_shooter.testAngleAmp(m_shooter.ampShootingAngle);
+    m_shooter.m_pivot.testAngleAmp(m_shooter.m_pivot.ampShootingAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,7 +55,7 @@ public class ShootA extends Command {
   public void end(boolean interrupted) {
     m_shooter.stopShooter();
     m_index.indexStop();
-    m_shooter.stopAngle();
+    m_shooter.m_pivot.stopAngle();
     m_led.ledOn(0, 0, 128);
   }
 
