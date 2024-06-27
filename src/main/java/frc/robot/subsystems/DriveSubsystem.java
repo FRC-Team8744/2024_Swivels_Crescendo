@@ -208,7 +208,9 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getPosition()
         });
 
-    m_Vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_Vision2.getApriltagTime()));
+    if (m_Vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2) { 
+      m_Vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_Vision2.getApriltagTime()));
+    }
 
     m_poseEstimator.update(m_imu.getHeading(), getModulePositions());
     

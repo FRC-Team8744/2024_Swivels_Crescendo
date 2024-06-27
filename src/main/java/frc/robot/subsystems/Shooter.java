@@ -11,6 +11,9 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkAbsoluteEncoder;
 import com.revrobotics.SparkPIDController;
 
+import edu.wpi.first.units.Power;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.MechanismConstants;
@@ -18,9 +21,12 @@ import frc.robot.Constants.MechanismConstants;
 public class Shooter extends SubsystemBase {
   public double shootingVelocity = 2430;
   public double ampShootingVelocity = 2150;
-  public double visionShootVelocity = 3780;
+  public double visionShootVelocity = 2500;
+  public double visionShootVelocityLimit = 3750;
   public double ampTopShootingVelocity = ampShootingVelocity / 6;
   public String shootingPreset = "Woofer";
+
+  public PowerDistribution PDH = new PowerDistribution(14, ModuleType.kRev);
 
   private CANSparkMax topShooterSparkMax = new CANSparkMax(MechanismConstants.kTopShooterPort, MotorType.kBrushless);
   private CANSparkMax bottomShooterSparkMax = new CANSparkMax(MechanismConstants.kBottomShooterPort, MotorType.kBrushless);
@@ -61,6 +67,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public void testShoot(double speed) {
+    if (speed >= visionShootVelocityLimit)  {
+      speed = visionShootVelocityLimit;
+    }
     bottomShooterPID.setReference(speed, CANSparkMax.ControlType.kVelocity);
     topShooterPID.setReference(speed, CANSparkMax.ControlType.kVelocity);
   }

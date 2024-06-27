@@ -143,7 +143,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   // Command lockOnTargetCommand = new LockOnTarget(m_robotDrive);
-  LockOnShooter lockOnShooter = new LockOnShooter(m_shooter.m_pivot, m_Vision2);
+  LockOnShooter lockOnShooter = new LockOnShooter(m_shooter.m_pivot, m_Vision2, m_robotDrive, m_shooter);
   private void configureButtonBindings() {
     if (Constants.controllerMode == "x") {
       new JoystickButton(m_driverController, Button.kB.value)
@@ -160,8 +160,12 @@ public class RobotContainer {
       m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
       new JoystickButton(m_driverController, Button.kLeftBumper.value)
       .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
+
       new JoystickButton(m_driverController, Button.kRightBumper.value)
-      .whileTrue(Commands.sequence(new auto_led(m_Vision2, m_robotDrive, m_leds, m_shooter, m_shooter.m_pivot).withTimeout(1.0), new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot)));
+      .whileTrue(new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot)
+      .andThen(Commands.runOnce(() -> m_robotDrive.isAutoRotate = false)
+      .alongWith(Commands.runOnce(() ->  lockOnShooter.toggle()))));
+      
       new JoystickButton(m_driverController, Button.kX.value)
       .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
       new JoystickButton(m_driverController, Button.kY.value)

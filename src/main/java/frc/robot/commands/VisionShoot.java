@@ -32,7 +32,7 @@ public class VisionShoot extends Command {
     addRequirements(m_shooter);
     addRequirements(m_index);
     addRequirements(m_led);
-    addRequirements(m_vis);
+    // addRequirements(m_vis);
   }
 
   // Called when the command is initially scheduled.
@@ -46,12 +46,6 @@ public class VisionShoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_pivot.visionShootAngle == 26) {
-      m_led.ledOn(255, 0, 0);
-    }
-    else {
-      m_led.rainbow();
-    }
     if (m_shooter.visionAtSpeed()) {
       m_index.indexRun(-m_index.indexSpeed);
     }

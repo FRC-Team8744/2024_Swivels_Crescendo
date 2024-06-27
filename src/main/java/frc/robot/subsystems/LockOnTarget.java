@@ -37,7 +37,7 @@ public class LockOnTarget {
     double distanceToTargetY = estimatedPose2d.getY() - targetPose.getY();
     double distanceToTargetHyp = Math.abs(Math.sqrt(Math.pow(distanceToTargetX, 2) + Math.pow(distanceToTargetY, 2)));
 
-    goalAngle = Math.toDegrees(Math.atan(distanceToTargetY / distanceToTargetX));
+    goalAngle = (Math.toDegrees(Math.atan(distanceToTargetY / distanceToTargetX)) - 6.0 + (2 * estimatedPose2d.getX() / 3));
     /* if (estimatedPose2d.getY() > targetPose.getY()) {
       goalAngle = Math.toDegrees(Math.atan(distanceToTargetX / distanceToTargetY)) + heading;
     }

@@ -63,7 +63,7 @@ public class auto_led extends Command {
     m_heading = m_drive.m_imu.getHeadingDegrees();
 
     NoTargetAtInit = m_vision.isSpeakerInView();
-    PhotonTrackedTarget target = m_vision.getTarget();
+    PhotonTrackedTarget target = m_vision.getTarget().orElse(null);
     if (NoTargetAtInit && target != null) {
       if (m_vision.getTargetDistance() > 8.23) {m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / Math.abs(m_vision.getTargetDistance() - 16.459))) + Math.abs(m_vision.getTargetDistance() - 16.459) * 2/3 -1; }
 

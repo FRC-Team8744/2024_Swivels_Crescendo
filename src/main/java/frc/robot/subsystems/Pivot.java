@@ -18,7 +18,7 @@ import frc.robot.Constants.MechanismConstants;
 public class Pivot extends SubsystemBase {
   private static final double initialAngle = 9.0;
   private static final double shooterGearRatio = 15.0;
-  private static final double minimumAngle = 9.0;
+  public static final double minimumAngle = 21.05;
   private static final double maximumAngle = 70.0;
 
   public double shootingAngle = 58;

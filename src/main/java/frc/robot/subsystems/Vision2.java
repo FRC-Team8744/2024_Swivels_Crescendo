@@ -172,8 +172,8 @@ public class Vision2 extends SubsystemBase {
     return Optional.ofNullable(targetTd).map((t) -> t.getY());
   }
 
-  public PhotonTrackedTarget getTarget() {
-    return target;
+  public Optional <PhotonTrackedTarget> getTarget() {
+    return Optional.ofNullable(target);
   }
 
   public Optional <Pose2d> getRobotPose() {
