@@ -7,6 +7,7 @@ package frc.robot.commands;
 // import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
@@ -40,7 +41,7 @@ public class LockOnShooter extends Command {
     var alliance = DriverStation.getAlliance();
 
     if (alliance.get() == DriverStation.Alliance.Red) {
-      m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / Math.abs(m_drive.getEstimatedPoseHyp() - 16.459))) + Math.abs(m_drive.getEstimatedPoseHyp() - 16.459) -1; 
+      m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / Math.abs(m_drive.getEstimatedPoseHyp()))) + Math.abs(m_drive.getEstimatedPoseHyp()) -1; 
     }
 
     else {

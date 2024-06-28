@@ -298,7 +298,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   if (isAutoRotate && isAutoRotateToggle) {
-    m_lock.initialize(m_poseEstimator.getEstimatedPosition());
+    m_lock.initialize();
     isAutoRotateToggle = false;
   }
   else if (!isAutoRotate) {
@@ -433,8 +433,15 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getEstimatedPoseHyp() {
-    SmartDashboard.putNumber("Hypot", Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY()) - 5.55);
-    return Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY() - 5.55);
+    var alliance = DriverStation.getAlliance();
+    if (alliance.get() == DriverStation.Alliance.Red) {
+      SmartDashboard.putNumber("Hypot", Math.hypot(16.459 - m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY()) - 5.55);
+      return Math.hypot(16.459 - m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY() - 5.55);
+    }
+    else {
+      SmartDashboard.putNumber("Hypot", Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY()) - 5.55);
+      return Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY() - 5.55);
+    }
   }
 
   public void getRobotVelocityX() {

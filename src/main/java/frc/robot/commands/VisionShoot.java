@@ -40,7 +40,7 @@ public class VisionShoot extends Command {
   public void initialize() {
     sensorState = 0;
     m_shooter.testShoot(m_shooter.visionShootVelocity);
-    // m_pivot.testAngle(m_pivot.visionShootAngle);
+    m_pivot.testAngle(m_pivot.visionShootAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
