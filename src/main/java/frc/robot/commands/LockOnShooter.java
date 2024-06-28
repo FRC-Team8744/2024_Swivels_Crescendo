@@ -40,7 +40,7 @@ public class LockOnShooter extends Command {
     var alliance = DriverStation.getAlliance();
 
     if (alliance.get() == DriverStation.Alliance.Red) {
-      m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / Math.abs(m_vision.getTargetDistance() - 16.459))) + Math.abs(m_vision.getTargetDistance() - 16.459) * 2/3 -1; 
+      m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / Math.abs(m_drive.getEstimatedPoseHyp() - 16.459))) + Math.abs(m_drive.getEstimatedPoseHyp() - 16.459) -1; 
     }
 
     else {

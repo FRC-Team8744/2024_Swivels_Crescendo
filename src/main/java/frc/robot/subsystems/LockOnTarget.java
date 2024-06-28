@@ -12,6 +12,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ConstantsOffboard;
@@ -29,9 +30,14 @@ public class LockOnTarget {
 
   // Called when the command is initially scheduled.
   public void initialize(Pose2d estimatedPose2d) {
+    var alliance = DriverStation.getAlliance();
     m_turnCtrl.enableContinuousInput(-180, 180);
     m_turnCtrl.setTolerance(1.0);
     m_turnCtrl.reset();
+
+    if (alliance.get() == DriverStation.Alliance.Red) {
+      targetPose = aprilTagFieldLayout.getTagPose(3).get().toPose2d();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,6 +45,13 @@ public class LockOnTarget {
     heading = estimatedPose2d.getRotation().getDegrees();
 
     shooterVelocity = SmartDashboard.getNumber("Flywheel top RPM", 0.0);
+
+    if (shooterVelocity <= 10) {
+      shooterVelocity = 0;
+    }
+
+    SmartDashboard.putNumber("Robot Vector X", robotVector.get(0));
+    SmartDashboard.putNumber("Robot Vector Y", robotVector.get(1));
 
     double distanceToTargetX = estimatedPose2d.getX() - targetPose.getX();
     double distanceToTargetY = estimatedPose2d.getY() - targetPose.getY();
@@ -52,10 +65,13 @@ public class LockOnTarget {
 
     ShooterVector = new Vector<>();
 
-    ShooterVector.add(shooterVelocity * wheelCirc * Math.sin(Math.toRadians(goalAngle)));
-    ShooterVector.add(shooterVelocity * wheelCirc * Math.cos(Math.toRadians(goalAngle)));
+    ShooterVector.add(shooterVelocity * wheelCirc * Math.toDegrees(Math.sin(Math.toRadians(goalAngle))));
+    ShooterVector.add(shooterVelocity * wheelCirc * Math.toDegrees(Math.cos(Math.toRadians(goalAngle))));
 
-    goalAngle += Math.toDegrees(Math.atan2(ShooterVector.get(0), ShooterVector.get(1)) - Math.atan2(robotVector.get(0), robotVector.get(1)));
+    SmartDashboard.putNumber("Shooter Vector Sin", ShooterVector.get(0));
+    SmartDashboard.putNumber("Shooter Vector Cos", ShooterVector.get(1));
+
+    // goalAngle += Math.toDegrees(Math.atan2(ShooterVector.get(0), ShooterVector.get(1)) - Math.atan2(robotVector.get(0), robotVector.get(1)));
 
     m_turnCtrl.setSetpoint(goalAngle);
 

@@ -280,10 +280,20 @@ public class DriveSubsystem extends SubsystemBase {
   SmartDashboard.putNumber("Robot Velocity Y", yVelocity);
 
   Vector<Double> robotVector = new Vector<>();
-  robotVector.add(yVelocity);
-  robotVector.add(xVelocity);
+  if (Math.abs(xVelocity) <= 0.1) {
+    robotVector.add(xVelocity);
+  }
+  else {
+    robotVector.add(0.0);
+  }
+  if (Math.abs(yVelocity) <= 0.1) {
+    robotVector.add(yVelocity);
+  }
+  else {
+    robotVector.add(0.0);
+  }
 
-  if (isAutoRotate == true) {
+  if (isAutoRotate) {
     autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition(), robotVector);
   }
 
@@ -423,7 +433,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getEstimatedPoseHyp() {
-    return Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Hypot", Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY()) - 5.55);
+    return Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY() - 5.55);
   }
 
   public void getRobotVelocityX() {
