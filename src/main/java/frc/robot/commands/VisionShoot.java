@@ -40,7 +40,7 @@ public class VisionShoot extends Command {
   public void initialize() {
     sensorState = 0;
     m_shooter.testShoot(m_shooter.visionShootVelocity);
-    m_pivot.testAngle(m_pivot.visionShootAngle);
+    // m_pivot.testAngle(m_pivot.visionShootAngle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,7 +63,7 @@ public class VisionShoot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putNumber("Sensor State", sensorState);
+    // SmartDashboard.putNumber("Sensor State", sensorState);
     if ((sensorState == 0) && (m_index.inputIR.get() == false)) sensorState = 1;
     if ((sensorState == 1) && (m_index.inputIR.get() == true)) {
     sensorState = 2; 

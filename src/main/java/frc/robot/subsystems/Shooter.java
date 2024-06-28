@@ -60,9 +60,9 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Flywheel top RPM", topShooterEnc.getVelocity());
-    SmartDashboard.putNumber("Flywheel bottom RPM", bottomShooterEnc.getVelocity());
-    SmartDashboard.putString("Shooting preset", shootingPreset);
-    SmartDashboard.putNumber("Shooting velocity", shootingVelocity);
+    // SmartDashboard.putNumber("Flywheel bottom RPM", bottomShooterEnc.getVelocity());
+    // SmartDashboard.putString("Shooting preset", shootingPreset);
+    // SmartDashboard.putNumber("Shooting velocity", shootingVelocity);
     SmartDashboard.putNumber("Vision velocity", visionShootVelocity);
   }
 

@@ -71,8 +71,8 @@ public class LockOnTarget {
     // goalAngle = goalAngle + 90;
 
     SmartDashboard.putNumber("Goal Angle", goalAngle);
-    SmartDashboard.putNumber("Target Pose X", targetPose.getX());
-    SmartDashboard.putNumber("Target Pose Y", targetPose.getY());
+    // SmartDashboard.putNumber("Target Pose X", targetPose.getX());
+    // SmartDashboard.putNumber("Target Pose Y", targetPose.getY());
 
     m_turnCtrl.setSetpoint(goalAngle);
 

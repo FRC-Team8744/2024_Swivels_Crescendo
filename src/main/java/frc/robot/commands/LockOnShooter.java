@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import org.photonvision.targeting.PhotonTrackedTarget;
+// import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Pivot;
@@ -44,7 +44,7 @@ public class LockOnShooter extends Command {
     }
 
     else {
-      m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / m_drive.getEstimatedPose().getX())) + (m_vision.getTargetDistance() -1);
+      m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / m_drive.getEstimatedPoseHyp())) + (m_drive.getEstimatedPoseHyp() -1);
     }
 
     if (m_pivot.visionShootAngle <= Pivot.minimumAngle) {
@@ -53,7 +53,7 @@ public class LockOnShooter extends Command {
 
     m_pivot.testAngle(m_pivot.visionShootAngle);
 
-    m_shooter.visionShootVelocity = (2500 + (390.625 * m_drive.getEstimatedPose().getX()));
+    m_shooter.visionShootVelocity = 2500 + (390.625 * m_drive.getEstimatedPoseHyp());
 
     if (m_shooter.visionShootVelocity >= (m_shooter.visionShootVelocityLimit / 12) * m_shooter.PDH.getVoltage())  {
       m_shooter.visionShootVelocity = (m_shooter.visionShootVelocityLimit / 12) * m_shooter.PDH.getVoltage();

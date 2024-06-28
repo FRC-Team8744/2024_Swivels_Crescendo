@@ -28,6 +28,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -45,7 +46,16 @@ public class DriveSubsystem extends SubsystemBase {
   double offset_FR = 0;
   double offset_RR = 0;
   
+  final Timer m_timerX = new Timer();
+  final Timer m_timerY = new Timer();
+
   private double m_DriverSpeedScale = 1.0;
+
+  public double xVelocity = 0;
+  public double yVelocity = 0;
+
+  private double originalX = 0;
+  private double originalY = 0;
 
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft;
@@ -194,7 +204,15 @@ public class DriveSubsystem extends SubsystemBase {
         getPose(),
         VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
         VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+    
+    originalX = m_poseEstimator.getEstimatedPosition().getX();
+    originalY = m_poseEstimator.getEstimatedPosition().getY();
+    m_timerX.start();
+    m_timerY.start();
   }
+
+
+  // private double newX = m_poseEstimator.getEstimatedPosition().getX();
 
   @Override
   public void periodic() {
@@ -255,7 +273,10 @@ public class DriveSubsystem extends SubsystemBase {
   SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
   SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
   SmartDashboard.putNumber("Estimated Pose Rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
-  SmartDashboard.putBoolean("isAutoRotate", isAutoRotate);
+  // SmartDashboard.putBoolean("isAutoRotate", isAutoRotate);
+
+  SmartDashboard.putNumber("Robot Velocity X", xVelocity);
+  SmartDashboard.putNumber("Robot Velocity Y", yVelocity);
 
   if (isAutoRotate == true) {
     autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition());
@@ -268,6 +289,9 @@ public class DriveSubsystem extends SubsystemBase {
   else if (!isAutoRotate) {
     isAutoRotateToggle = true;
   }
+
+  getRobotVelocityX();
+  getRobotVelocityY();
 }
 
   /**
@@ -356,9 +380,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void driveRobotRelative(ChassisSpeeds speeds){
     this.drive(speeds.vxMetersPerSecond,speeds.vyMetersPerSecond,speeds.omegaRadiansPerSecond,false);
-    SmartDashboard.putNumber("DriveVelX", speeds.vxMetersPerSecond);
-    SmartDashboard.putNumber("DriveVelY", speeds.vyMetersPerSecond);
-    SmartDashboard.putNumber("DriveRotZ", speeds.omegaRadiansPerSecond);
+    // SmartDashboard.putNumber("DriveVelX", speeds.vxMetersPerSecond);
+    // SmartDashboard.putNumber("DriveVelY", speeds.vyMetersPerSecond);
+    // SmartDashboard.putNumber("DriveRotZ", speeds.omegaRadiansPerSecond);
   }
   
   public ChassisSpeeds getRobotRelativeSpeeds(){
@@ -391,5 +415,27 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Pose2d getEstimatedPose() {
     return m_poseEstimator.getEstimatedPosition();
+  }
+
+  public double getEstimatedPoseHyp() {
+    return Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY());
+  }
+
+  public void getRobotVelocityX() {
+    if (m_timerX.hasElapsed(0.1)) {
+      double newX = m_poseEstimator.getEstimatedPosition().getX();
+      xVelocity = (newX - originalX) / m_timerX.get();
+      originalX = m_poseEstimator.getEstimatedPosition().getX();
+      m_timerX.restart();
+    }
+  }
+
+  public void getRobotVelocityY() {
+    if (m_timerY.hasElapsed(0.1)) {
+      double newY = m_poseEstimator.getEstimatedPosition().getY();
+      yVelocity = (newY - originalY) / m_timerY.get();
+      originalY = m_poseEstimator.getEstimatedPosition().getY();
+      m_timerY.restart();
+    }
   }
 }

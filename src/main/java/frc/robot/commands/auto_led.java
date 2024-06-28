@@ -70,7 +70,7 @@ public class auto_led extends Command {
       else {m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / m_vision.getTargetDistance())) + (m_vision.getTargetDistance() * 2/3 -1);}
 
       angleOffset = target.getYaw() -6.0 + (2 * m_vision.getTargetDistance() / 3);
-      tx = SmartDashboard.getNumber("tx", 0);
+      // tx = SmartDashboard.getNumber("tx", 0);
       goAngle = m_heading - angleOffset;
       m_turnCtrl.setSetpoint(goAngle);
     } else {
@@ -85,7 +85,7 @@ public class auto_led extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Shooter Angle", m_pivot.visionShootAngle);
+    // SmartDashboard.putNumber("Shooter Angle", m_pivot.visionShootAngle);
 
     m_heading = m_drive.m_imu.getHeadingDegrees();
 
@@ -94,14 +94,14 @@ public class auto_led extends Command {
     m_drive.drive(0.0, 0.0, m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND, false);
 
     // Debug information
-    SmartDashboard.putNumber("heading", m_heading);
-    SmartDashboard.putData("PID", m_turnCtrl);
-    SmartDashboard.putNumber("goangle", goAngle);
-    SmartDashboard.putNumber("PID output", m_output);
-    SmartDashboard.putNumber("PID setpoint error", m_turnCtrl.getPositionError());
-    SmartDashboard.putNumber("PID velocity error", m_turnCtrl.getVelocityError());
-    SmartDashboard.putNumber("PID measurement", m_heading);
-    SmartDashboard.putBoolean("Done", m_turnCtrl.atSetpoint());
+    // SmartDashboard.putNumber("heading", m_heading);
+    // SmartDashboard.putData("PID", m_turnCtrl);
+    // SmartDashboard.putNumber("goangle", goAngle);
+    // SmartDashboard.putNumber("PID output", m_output);
+    // SmartDashboard.putNumber("PID setpoint error", m_turnCtrl.getPositionError());
+    // SmartDashboard.putNumber("PID velocity error", m_turnCtrl.getVelocityError());
+    // SmartDashboard.putNumber("PID measurement", m_heading);
+    // SmartDashboard.putBoolean("Done", m_turnCtrl.atSetpoint());
     } 
 
   // Called once the command ends or is interrupted.
@@ -118,7 +118,7 @@ public class auto_led extends Command {
   public boolean isFinished() {
     
     Done = false;
-    SmartDashboard.putBoolean("Done", m_turnCtrl.atSetpoint());
+    // SmartDashboard.putBoolean("Done", m_turnCtrl.atSetpoint());
     if (m_turnCtrl.atSetpoint()) m_leds.ledOn(0, 128, 0);
     return m_turnCtrl.atSetpoint();
     // return Done;

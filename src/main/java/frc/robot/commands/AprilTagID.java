@@ -53,7 +53,7 @@ m_turnCtrl.reset();
 m_AprilNumber = id.getDouble(0.0);
 
 
-SmartDashboard.putData("PID", m_turnCtrl);
+// SmartDashboard.putData("PID", m_turnCtrl);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -62,12 +62,12 @@ SmartDashboard.putData("PID", m_turnCtrl);
     m_AprilNumber = id.getDouble(0.0);
 
         if (m_AprilNumber == 3){
-          SmartDashboard.putNumber("yes", 3);
+          // SmartDashboard.putNumber("yes", 3);
         } else {
           if (m_AprilNumber == 4){
-            SmartDashboard.putNumber("yes",4);
+            // SmartDashboard.putNumber("yes",4);
           } else {
-            SmartDashboard.putNumber("no", -1);
+            // SmartDashboard.putNumber("no", -1);
           }
         }
 
@@ -78,11 +78,11 @@ SmartDashboard.putData("PID", m_turnCtrl);
     m_drive.drive(0.0, 0.0, -m_output, false);
 
     // Debug information
-    SmartDashboard.putNumber("PID setpoint", m_goalAngle);
-    SmartDashboard.putNumber("PID output", m_output);
-    SmartDashboard.putNumber("PID setpoint error", m_turnCtrl.getPositionError());
-    SmartDashboard.putNumber("PID velocity error", m_turnCtrl.getVelocityError());
-    SmartDashboard.putNumber("PID measurement", m_heading);
+    // SmartDashboard.putNumber("PID setpoint", m_goalAngle);
+    // SmartDashboard.putNumber("PID output", m_output);
+    // SmartDashboard.putNumber("PID setpoint error", m_turnCtrl.getPositionError());
+    // SmartDashboard.putNumber("PID velocity error", m_turnCtrl.getVelocityError());
+    // SmartDashboard.putNumber("PID measurement", m_heading);
   }
 
   // Called once the command ends or is interrupted.

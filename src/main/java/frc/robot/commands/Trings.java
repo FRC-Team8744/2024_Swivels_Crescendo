@@ -39,14 +39,14 @@ m_turnCtrl.enableContinuousInput(-180, 180);
 m_turnCtrl.setTolerance(3.0);
 m_turnCtrl.setSetpoint(m_goalAngle);
 m_turnCtrl.reset();
-SmartDashboard.putData("PID", m_turnCtrl);
+// SmartDashboard.putData("PID", m_turnCtrl);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    tv = SmartDashboard.getNumber("tv", 0);
-    tx = SmartDashboard.getNumber("LimelightX", 0);
+    // tv = SmartDashboard.getNumber("tv", 0);
+    // tx = SmartDashboard.getNumber("LimelightX", 0);
     x = (int) (-tx * (36.0/30.0) + 17.0);//LED conversion.
     if (tv == 1){
       m_lightbarLeds.allOff();
@@ -62,11 +62,11 @@ SmartDashboard.putData("PID", m_turnCtrl);
     m_drive.drive(0.0, 0.0, -m_output, false);
 
     // Debug information
-    SmartDashboard.putNumber("PID setpoint", m_goalAngle);
-    SmartDashboard.putNumber("PID output", m_output);
-    SmartDashboard.putNumber("PID setpoint error", m_turnCtrl.getPositionError());
-    SmartDashboard.putNumber("PID velocity error", m_turnCtrl.getVelocityError());
-    SmartDashboard.putNumber("PID measurement", m_heading);
+    // SmartDashboard.putNumber("PID setpoint", m_goalAngle);
+    // SmartDashboard.putNumber("PID output", m_output);
+    // SmartDashboard.putNumber("PID setpoint error", m_turnCtrl.getPositionError());
+    // SmartDashboard.putNumber("PID velocity error", m_turnCtrl.getVelocityError());
+    // SmartDashboard.putNumber("PID measurement", m_heading);
   }
 
   // Called once the command ends or is interrupted.

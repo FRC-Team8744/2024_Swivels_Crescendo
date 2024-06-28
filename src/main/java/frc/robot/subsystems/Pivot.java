@@ -62,7 +62,7 @@ public class Pivot extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Abosulte encoder", absoluteEncoder.getPosition());
-    SmartDashboard.putNumber("Shooting angle", shootingAngle);
+    // SmartDashboard.putNumber("Shooting angle", shootingAngle);
     SmartDashboard.putNumber("Vision angle", visionShootAngle);
   }
 
