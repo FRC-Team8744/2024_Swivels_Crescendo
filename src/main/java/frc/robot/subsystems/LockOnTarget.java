@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Vector;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
@@ -21,6 +23,9 @@ public class LockOnTarget {
   private double goalAngle;
   private double heading;
   private double m_output;
+  private double wheelCirc = 0.319185814;
+  private double shooterVelocity;
+  private Vector<Double> ShooterVector;
 
   // Called when the command is initially scheduled.
   public void initialize(Pose2d estimatedPose2d) {
@@ -30,49 +35,27 @@ public class LockOnTarget {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
-  public double execute(Pose2d estimatedPose2d) {
+  public double execute(Pose2d estimatedPose2d, Vector<Double> robotVector) {
     heading = estimatedPose2d.getRotation().getDegrees();
+
+    shooterVelocity = SmartDashboard.getNumber("Flywheel top RPM", 0.0);
 
     double distanceToTargetX = estimatedPose2d.getX() - targetPose.getX();
     double distanceToTargetY = estimatedPose2d.getY() - targetPose.getY();
-    double distanceToTargetHyp = Math.abs(Math.sqrt(Math.pow(distanceToTargetX, 2) + Math.pow(distanceToTargetY, 2)));
+    // double distanceToTargetHyp = Math.abs(Math.sqrt(Math.pow(distanceToTargetX, 2) + Math.pow(distanceToTargetY, 2)));
 
     goalAngle = (Math.toDegrees(Math.atan(distanceToTargetY / distanceToTargetX)) - 6.0 + (2 * estimatedPose2d.getX() / 3));
-    /* if (estimatedPose2d.getY() > targetPose.getY()) {
-      goalAngle = Math.toDegrees(Math.atan(distanceToTargetX / distanceToTargetY)) + heading;
-    }
-    else {
-      goalAngle = Math.toDegrees(Math.atan(distanceToTargetX / distanceToTargetY)) - heading;
-    }
-
-    if (goalAngle >= 0 && heading >= 0 ) {
-      goalAngle = goalAngle - heading;
-    }
-    else if (goalAngle >= 0 && heading < 0) {
-      goalAngle = goalAngle - heading;
-    }
-    else if (goalAngle < 0 && heading >= 0) {
-      goalAngle = goalAngle - heading;
-    }
-    else {
-      goalAngle = goalAngle - heading;
-    }
-    */
-
-    // goalAngle = heading - goalAngle;
-
-    // if (goalAngle > 180) {
-    //   goalAngle = 360 - goalAngle;
-    // }
-    // else if (goalAngle < -180) {
-    //   goalAngle = goalAngle + 360;
-    // }
-
-    // goalAngle = goalAngle + 90;
 
     SmartDashboard.putNumber("Goal Angle", goalAngle);
     // SmartDashboard.putNumber("Target Pose X", targetPose.getX());
     // SmartDashboard.putNumber("Target Pose Y", targetPose.getY());
+
+    ShooterVector = new Vector<>();
+
+    ShooterVector.add(shooterVelocity * wheelCirc * Math.sin(Math.toRadians(goalAngle)));
+    ShooterVector.add(shooterVelocity * wheelCirc * Math.cos(Math.toRadians(goalAngle)));
+
+    goalAngle += Math.toDegrees(Math.atan2(ShooterVector.get(0), ShooterVector.get(1)) - Math.atan2(robotVector.get(0), robotVector.get(1)));
 
     m_turnCtrl.setSetpoint(goalAngle);
 

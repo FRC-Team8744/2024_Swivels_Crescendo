@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import java.util.Vector;
 import java.util.concurrent.locks.Lock;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -278,8 +279,12 @@ public class DriveSubsystem extends SubsystemBase {
   SmartDashboard.putNumber("Robot Velocity X", xVelocity);
   SmartDashboard.putNumber("Robot Velocity Y", yVelocity);
 
+  Vector<Double> robotVector = new Vector<>();
+  robotVector.add(yVelocity);
+  robotVector.add(xVelocity);
+
   if (isAutoRotate == true) {
-    autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition());
+    autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition(), robotVector);
   }
 
   if (isAutoRotate && isAutoRotateToggle) {
