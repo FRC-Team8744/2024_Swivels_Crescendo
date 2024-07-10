@@ -26,6 +26,6 @@ public class IntakeSpinUp extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(new IntakeRun(m_intake, m_shooter, m_index, m_leds),
-    new RevShooter(m_shooter, m_index).withTimeout(10));
+    new RevShooter(m_shooter, m_index, 2500).withTimeout(10));
   }
 }

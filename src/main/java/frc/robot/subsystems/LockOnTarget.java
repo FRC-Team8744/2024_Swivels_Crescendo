@@ -20,16 +20,26 @@ import frc.robot.Constants.ConstantsOffboard;
 public class LockOnTarget {
   private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private Pose2d targetPose = aprilTagFieldLayout.getTagPose(7).get().toPose2d();
-  private PIDController m_turnCtrl = new PIDController(0.02, 0.0003, 0.0015);
+  private PIDController m_turnCtrl = new PIDController(0.03, 0.0065, 0.0035);
   private double goalAngle;
   private double heading;
   private double m_output;
   private double wheelCirc = 0.319185814;
   private double shooterVelocity;
   private Vector<Double> ShooterVector;
+  private double CompFactor = 3.0;
+
+public LockOnTarget() {
+    SmartDashboard.putNumber("P", 0.02);
+    SmartDashboard.putNumber("I", 0.0003);
+    SmartDashboard.putNumber("D", 0.0015);
+}
 
   // Called when the command is initially scheduled.
   public void initialize() {
+    m_turnCtrl.setP(SmartDashboard.getNumber("P", 0));
+    m_turnCtrl.setI(SmartDashboard.getNumber("I", 0));
+    m_turnCtrl.setD(SmartDashboard.getNumber("D", 0));
     m_turnCtrl.enableContinuousInput(-180, 180);
     m_turnCtrl.setTolerance(1.0);
     m_turnCtrl.reset();
@@ -79,9 +89,16 @@ public class LockOnTarget {
 
     // goalAngle += Math.toDegrees(Math.atan2(ShooterVector.get(0), ShooterVector.get(1)) - Math.atan2(robotVector.get(0), robotVector.get(1)));
 
-    double v_sx = robotVector.get(0); // m/s, shooter velocity in x direction
-    double v_sy = robotVector.get(1); // m/s, shooter velocity in y direction
-    double n = SmartDashboard.getNumber("Flywheel top RPM", 0.0) * 60;   // rotations per second
+    double v_rx = robotVector.get(0); // m/s, robot velocity in x direction
+    double v_ry = robotVector.get(1) * CompFactor; // m/s, robot velocity in y direction
+
+    if (robotVector.get(1) >= 0) {
+      v_ry = robotVector.get(1) * CompFactor; // m/s, robot velocity in y direction
+    }
+    else {
+      v_ry = robotVector.get(1) * CompFactor * -1; // m/s, robot velocity in y direction
+    }
+    double n = SmartDashboard.getNumber("Vision velocity", 0.0) * 60;   // rotations per second
     double C = 0.319185814;    // meters, circumference of the wheel
     double theta_s = goalAngle; // degrees, current facing angle of the shooter
 
@@ -96,8 +113,8 @@ public class LockOnTarget {
     double v_py = v_p * Math.sin(theta_s_rad);
 
     // Calculate effective projectile velocity components
-    double v_px_eff = v_px + v_sx;
-    double v_py_eff = v_py + v_sy;
+    double v_px_eff = v_px + v_rx;
+    double v_py_eff = v_py + v_ry;
 
     // Calculate the effective shooting angle
     double theta_eff = Math.toDegrees(Math.atan2(v_py_eff, v_px_eff));
@@ -106,6 +123,7 @@ public class LockOnTarget {
     SmartDashboard.putNumber("v_py_eff", v_py_eff);
     SmartDashboard.putNumber("v_px_eff", v_px_eff);
 
+    m_turnCtrl.reset();
     if (n >= 100) {    
       m_turnCtrl.setSetpoint(theta_eff);
     }

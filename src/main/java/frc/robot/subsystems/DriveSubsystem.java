@@ -448,7 +448,7 @@ public class DriveSubsystem extends SubsystemBase {
     if (m_timerX.hasElapsed(0.1)) {
       double newX = m_poseEstimator.getEstimatedPosition().getX();
       xVelocity = (newX - originalX) / m_timerX.get();
-      originalX = m_poseEstimator.getEstimatedPosition().getX();
+      originalX = newX;
       m_timerX.restart();
     }
   }
@@ -457,7 +457,7 @@ public class DriveSubsystem extends SubsystemBase {
     if (m_timerY.hasElapsed(0.1)) {
       double newY = m_poseEstimator.getEstimatedPosition().getY();
       yVelocity = (newY - originalY) / m_timerY.get();
-      originalY = m_poseEstimator.getEstimatedPosition().getY();
+      originalY = newY;
       m_timerY.restart();
     }
   }

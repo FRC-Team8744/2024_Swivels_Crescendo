@@ -29,11 +29,14 @@ public class LockOnShooter extends Command {
     m_drive = dr;
     m_shooter = sh;
     addRequirements(m_pivot);
+    addRequirements(m_shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_shooter.testShoot(3500);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -66,12 +69,14 @@ public class LockOnShooter extends Command {
     if (toggle) {
       this.schedule();
     }
+    // SmartDashboard.putBoolean("Toggle", toggle);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_pivot.stopAngle();
+    m_shooter.stopShooter();
   }
 
   // Returns true when the command should end.

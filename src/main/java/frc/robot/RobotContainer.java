@@ -38,6 +38,7 @@ import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeSpinUp;
 import frc.robot.commands.LockOnShooter;
 import frc.robot.commands.OuttakeRun;
+import frc.robot.commands.RevShooter;
 import frc.robot.commands.ShootRing;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -146,11 +147,13 @@ public class RobotContainer {
   LockOnShooter lockOnShooter = new LockOnShooter(m_shooter.m_pivot, m_Vision2, m_robotDrive, m_shooter);
   private void configureButtonBindings() {
     if (Constants.controllerMode == "x") {
-      new JoystickButton(m_driverController, Button.kB.value)
-      .onTrue(new auto_led(m_Vision2, m_robotDrive, m_leds, m_shooter, m_shooter.m_pivot).withTimeout(2.0));
+      // new JoystickButton(m_driverController, Button.kB.value)
+      // .onTrue(new auto_led(m_Vision2, m_robotDrive, m_leds, m_shooter, m_shooter.m_pivot).withTimeout(2.0));
 
-      new JoystickButton(m_driverController, Button.kRightStick.value)
-      .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate).alongWith(Commands.runOnce(() -> lockOnShooter.toggle())));
+      new JoystickButton(m_driverController, Button.kB.value)
+      .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate)
+      .alongWith(Commands.runOnce(() -> lockOnShooter.toggle())));
+      // .alongWith(new RevShooter(m_shooter, m_index, 3500))));
       // .toggleOnFalse(Commands.runOnce(() -> m_robotDrive.isAutoRotate = false));
 
       new JoystickButton(m_driverController, Button.kA.value)
@@ -170,8 +173,8 @@ public class RobotContainer {
       .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
       new JoystickButton(m_driverController, Button.kY.value)
       .whileTrue(new ClimbUp(m_climber));
-      new JoystickButton(m_driverController, Button.kB.value)
-      .whileTrue(new auto_led(m_Vision2, m_robotDrive, m_leds, m_shooter, m_shooter.m_pivot));
+      // new JoystickButton(m_driverController, Button.kB.value)
+      // .whileTrue(new auto_led(m_Vision2, m_robotDrive, m_leds, m_shooter, m_shooter.m_pivot));
       new JoystickButton(m_driverController, Button.kA.value)
       .whileTrue(new ClimbDown(m_climber));
       new POVButton(m_driverController, 180)

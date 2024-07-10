@@ -12,19 +12,21 @@ public class RevShooter extends Command {
   /** Creates a new RevShooter. */
   private final Shooter m_shooter;
   private final Index m_index;
-  public RevShooter(Shooter sh, Index ind) {
+  private final double m_rpm;
+  public RevShooter(Shooter sh, Index ind, double rpm) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_shooter = sh;
     m_index = ind;
+    m_rpm = rpm;
     addRequirements(m_shooter);
-    addRequirements(m_index);
+    // addRequirements(m_index);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if (m_index.inputIR.get() == false) {
-      m_shooter.testShoot(2500);
+      m_shooter.testShoot(m_rpm);
     }
   }
 
