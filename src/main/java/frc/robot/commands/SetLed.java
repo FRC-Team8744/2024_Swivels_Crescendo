@@ -16,7 +16,7 @@ public class SetLed extends Command {
     m_led = le;
     m_index = ind;
     addRequirements(m_led);
-    addRequirements(m_led);
+    // addRequirements(m_led);
   }
 
   // Called when the command is initially scheduled.

@@ -27,6 +27,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.LockOnShooterAuto;
 import frc.robot.subsystems.LockOnTarget;
 import frc.robot.subsystems.Multi_IMU;
 import frc.robot.subsystems.Shooter;
@@ -48,6 +49,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerTrajectory;
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 /*
@@ -78,6 +83,8 @@ public class RobotContainer {
   private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(5);
   private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(5);
 
+  private final LockOnShooterAuto m_lockAuto = new LockOnShooterAuto(m_shooter.m_pivot, m_Vision2, m_robotDrive, m_shooter);
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     m_leds.ledOn(0, 0, 255);
@@ -85,13 +92,15 @@ public class RobotContainer {
     // // Register Named Commands
     NamedCommands.registerCommand("RunIntakeOld", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
+    // NamedCommands.registerCommand("RunIntakeNew", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds).andThen(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate).alongWith(Commands.runOnce(() -> lockOnShooter.toggle()))));
+    NamedCommands.registerCommand("LockIn", Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate).alongWith(m_lockAuto.toggle()));
+    NamedCommands.registerCommand("VisionShoot", new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot));
     NamedCommands.registerCommand("Climb Down", new ClimbDown(m_climber));
     NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.m_pivot.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
     NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(56, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
     NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(29, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
-
     // 4 piece all amp center
     NamedCommands.registerCommand("4palc1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(25.5, 3240, "4palc1"))); // First shot
     NamedCommands.registerCommand("4palc1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24, 3510, "4palc2")))); // Second shot

@@ -18,7 +18,7 @@ public class RevShooter extends Command {
     m_shooter = sh;
     m_index = ind;
     m_rpm = rpm;
-    addRequirements(m_shooter);
+    // addRequirements(m_shooter);
     // addRequirements(m_index);
   }
 

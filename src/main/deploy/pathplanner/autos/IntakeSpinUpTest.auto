@@ -14,13 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4 piece close middle"
+            "pathName": "Copy of 4 piece close middle"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootRingWoofer"
+            "name": "VisionShoot"
           }
         }
       ]

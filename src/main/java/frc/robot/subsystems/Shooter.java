@@ -97,9 +97,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public boolean visionAtSpeed() {
-    if ((topShooterEnc.getVelocity()) >= (visionShootVelocity * .95)
-    && (m_pivot.visionShootAngle >= (m_pivot.absoluteEncoder.getPosition() * 0.9))
-    && (m_pivot.visionShootAngle <= (m_pivot.absoluteEncoder.getPosition() * 1.1))) 
+    if ((topShooterEnc.getVelocity()) >= (visionShootVelocity * .925))
+    // && (m_pivot.visionShootAngle >= (m_pivot.absoluteEncoder.getPosition() * 0.9))
+    // && (m_pivot.visionShootAngle <= (m_pivot.absoluteEncoder.getPosition() * 1.1))) 
     {
       return true;
     }
