@@ -1,0 +1,91 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.454549670868242,
+      "y": 3.37
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 ring center part 1 (trueely)"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LockIn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ClimbDown"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VisionShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "part 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LockIn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "part 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VisionShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "part 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LockIn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Part 5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "VisionShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "FOA Comp Autos",
+  "choreoAuto": false
+}

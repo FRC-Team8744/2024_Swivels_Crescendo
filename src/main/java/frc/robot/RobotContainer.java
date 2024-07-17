@@ -94,7 +94,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     // NamedCommands.registerCommand("RunIntakeNew", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds).andThen(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate).alongWith(Commands.runOnce(() -> lockOnShooter.toggle()))));
     NamedCommands.registerCommand("LockIn", Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate).alongWith(m_lockAuto.toggle()));
-    NamedCommands.registerCommand("VisionShoot", new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot));
+    NamedCommands.registerCommand("VisionShoot", (new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot)).withTimeout(2));
     NamedCommands.registerCommand("Climb Down", new ClimbDown(m_climber));
     NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.m_pivot.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
     NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(56, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));

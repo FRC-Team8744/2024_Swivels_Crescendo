@@ -8,21 +8,25 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 
 public class IntakeRun extends Command {
   private final Intake m_intake;
   private final Shooter m_shooter;
+  private final Pivot m_Pivot;
   private final Index m_index;
   private final LEDS m_led;
   /** Creates a new IntakeRun. */
   public IntakeRun(Intake in, Shooter sh, Index ind, LEDS le) {
     m_intake = in;
     m_shooter = sh;
+    m_Pivot = sh.m_pivot;
     m_index = ind;
     m_led = le;
     addRequirements(m_intake);    
     addRequirements(m_shooter);
+    addRequirements(m_Pivot);
     addRequirements(m_index);
     addRequirements(m_led);
   }
@@ -32,6 +36,7 @@ public class IntakeRun extends Command {
   public void initialize() {
     m_intake.donutGrab(m_intake.intakeSpeed);
     m_index.indexRun(-.5);
+    m_Pivot.testAngle(35);
     m_led.ledOn(128, 0, 0);
   }
 
@@ -44,6 +49,7 @@ public class IntakeRun extends Command {
   public void end(boolean interrupted) {
     m_intake.motorOff();
     m_index.indexStop();
+    m_Pivot.stopAngle();
     if (m_index.inputIR.get() == false) {
       m_led.ledOn(0, 128, 0);
     }
