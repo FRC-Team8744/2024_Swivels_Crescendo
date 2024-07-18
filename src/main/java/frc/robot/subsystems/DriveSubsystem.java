@@ -50,7 +50,8 @@ public class DriveSubsystem extends SubsystemBase {
   final Timer m_timerX = new Timer();
   final Timer m_timerY = new Timer();
 
-  private double m_DriverSpeedScale = 1.0;
+  public double m_DriverSpeedScaleTran = 1.0;
+  public double m_DriverSpeedScaleRot = 1.0;
 
   public double xVelocity = 0;
   public double yVelocity = 0;
@@ -238,10 +239,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     if (Constants.controllerMode == "j") {
       if (m_Joystick.getRawAxis(3) < 0) {
-        m_DriverSpeedScale = 1.0;
+        m_DriverSpeedScaleTran = 1.0;
       }
       else {
-        m_DriverSpeedScale = Constants.kDriverSpeedLimit;
+        m_DriverSpeedScaleTran = Constants.kDriverSpeedLimitTran;
       }
     }
 
@@ -364,9 +365,9 @@ public class DriveSubsystem extends SubsystemBase {
     rot = isAutoRotate ? rot : MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
 
     // Apply speed scaling
-    xSpeed = xSpeed * m_DriverSpeedScale;
-    ySpeed = ySpeed * m_DriverSpeedScale;
-    rot = rot * m_DriverSpeedScale;
+    xSpeed = xSpeed * m_DriverSpeedScaleTran;
+    ySpeed = ySpeed * m_DriverSpeedScaleTran;
+    rot = rot * m_DriverSpeedScaleRot;
 
     var swerveModuleStates =
         SwerveConstants.kDriveKinematics.toSwerveModuleStates(
@@ -416,15 +417,18 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   /* Sets how fast the human driver can drive */
-  public void setMaxOutput(double val) {
-    m_DriverSpeedScale = val;
+  public void setMaxOutput(double tran, double rot) {
+    m_DriverSpeedScaleTran = tran;
+    m_DriverSpeedScaleRot = rot;
   }
 
   public void toggleMaxOutput() {
-    if (m_DriverSpeedScale == 1.0){
-      m_DriverSpeedScale = Constants.kDriverSpeedLimit;
+    if (m_DriverSpeedScaleTran == 1.0){
+      m_DriverSpeedScaleTran = Constants.kDriverSpeedLimitTran;
+      m_DriverSpeedScaleRot = Constants.kDriverSpeedLimitRot;
     } else {
-      m_DriverSpeedScale = 1.0;
+      m_DriverSpeedScaleTran = 1.0;
+      m_DriverSpeedScaleRot = 1.0;
     }
   }
 

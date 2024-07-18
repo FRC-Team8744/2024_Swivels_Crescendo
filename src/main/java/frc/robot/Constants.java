@@ -9,16 +9,21 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 public final class Constants {
   public static final int kDebugLevel = 0; // 0 = None, 1 = Errors, 2 = Info, 3 = Debug and USB data log
   
+  public static final PowerDistribution PDH = new PowerDistribution(14, ModuleType.kRev); 
+
   public static final String controllerMode = "x";
 
   public static final int kMaxSpeedPercentAuto = 100;
   public static final int kMaxSpeedPercentTeleop = 100;
   public static final int kMaxAccelerationPercent = 100;
-  public static final double kDriverSpeedLimit = 0.1; // sets how much the max speed is modified by when you press down on the left stick basicly make go slower the default is 1 btw 
+  public static final double kDriverSpeedLimitRot = 0.2; 
+  public static final double kDriverSpeedLimitTran = 0.1; // sets how much the max speed is modified by when you press down on the left stick basicly make go slower the default is 1 btw 
 
 
 

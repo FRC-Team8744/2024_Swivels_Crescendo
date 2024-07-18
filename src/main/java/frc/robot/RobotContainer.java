@@ -11,7 +11,10 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,6 +40,7 @@ import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeSpinUp;
+import frc.robot.commands.IntakeSpinUpTeleop;
 import frc.robot.commands.LockOnShooter;
 import frc.robot.commands.OuttakeRun;
 import frc.robot.commands.RevShooter;
@@ -87,14 +91,17 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_leds.ledOn(0, 0, 255);
-
+    if (Constants.PDH.getVoltage() <= Preferences.getDouble("BatteryJuice", Constants.PDH.getVoltage()) + 0.3) {
+      m_leds.ledOn(255, 0, 0);
+    } else {
+      m_leds.ledOn(0,0,255);
+    }
     // // Register Named Commands
     NamedCommands.registerCommand("RunIntakeOld", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
     NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
     // NamedCommands.registerCommand("RunIntakeNew", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds).andThen(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate).alongWith(Commands.runOnce(() -> lockOnShooter.toggle()))));
     NamedCommands.registerCommand("LockIn", Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate).alongWith(m_lockAuto.toggle()));
-    NamedCommands.registerCommand("VisionShoot", (new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot)).withTimeout(2));
+    NamedCommands.registerCommand("VisionShoot", (new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot, m_robotDrive)).withTimeout(2));
     NamedCommands.registerCommand("Climb Down", new ClimbDown(m_climber));
     NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.m_pivot.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
     NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(56, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
@@ -171,10 +178,10 @@ public class RobotContainer {
       m_driver.leftTrigger().whileTrue(new AmpShoot(m_climber, m_shooter, m_index, m_leds));
       m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
       new JoystickButton(m_driverController, Button.kLeftBumper.value)
-      .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
+      .whileTrue(new IntakeSpinUpTeleop(m_intake, m_shooter, m_index, m_leds, m_shooter.m_pivot, m_Vision2, m_robotDrive));
 
       new JoystickButton(m_driverController, Button.kRightBumper.value)
-      .whileTrue(new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot)
+      .whileTrue(new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot, m_robotDrive)
       .andThen(Commands.runOnce(() -> m_robotDrive.isAutoRotate = false)
       .alongWith(Commands.runOnce(() ->  lockOnShooter.toggle()))));
       

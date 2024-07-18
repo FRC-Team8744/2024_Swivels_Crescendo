@@ -26,8 +26,6 @@ public class Shooter extends SubsystemBase {
   public double ampTopShootingVelocity = ampShootingVelocity / 6;
   public String shootingPreset = "Woofer";
 
-  public PowerDistribution PDH = new PowerDistribution(14, ModuleType.kRev);
-
   private CANSparkMax topShooterSparkMax = new CANSparkMax(MechanismConstants.kTopShooterPort, MotorType.kBrushless);
   private CANSparkMax bottomShooterSparkMax = new CANSparkMax(MechanismConstants.kBottomShooterPort, MotorType.kBrushless);
   

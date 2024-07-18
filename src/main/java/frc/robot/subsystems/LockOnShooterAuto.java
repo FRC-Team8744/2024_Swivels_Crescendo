@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class LockOnShooterAuto extends SubsystemBase {
   private Pivot m_pivot;
@@ -44,8 +45,8 @@ public class LockOnShooterAuto extends SubsystemBase {
 
       m_shooter.visionShootVelocity = 2500 + (390.625 * m_drive.getEstimatedPoseHyp());
 
-      if (m_shooter.visionShootVelocity >= (m_shooter.visionShootVelocityLimit / 12) * m_shooter.PDH.getVoltage())  {
-        m_shooter.visionShootVelocity = (m_shooter.visionShootVelocityLimit / 12) * m_shooter.PDH.getVoltage();
+      if (m_shooter.visionShootVelocity >= (m_shooter.visionShootVelocityLimit / 12) * Constants.PDH.getVoltage())  {
+        m_shooter.visionShootVelocity = (m_shooter.visionShootVelocityLimit / 12) * Constants.PDH.getVoltage();
       }
     }
   }

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
@@ -59,8 +60,8 @@ public class LockOnShooter extends Command {
 
     m_shooter.visionShootVelocity = 2500 + (390.625 * m_drive.getEstimatedPoseHyp());
 
-    if (m_shooter.visionShootVelocity >= (m_shooter.visionShootVelocityLimit / 12) * m_shooter.PDH.getVoltage())  {
-      m_shooter.visionShootVelocity = (m_shooter.visionShootVelocityLimit / 12) * m_shooter.PDH.getVoltage();
+    if (m_shooter.visionShootVelocity >= (m_shooter.visionShootVelocityLimit / 12) * Constants.PDH.getVoltage())  {
+      m_shooter.visionShootVelocity = (m_shooter.visionShootVelocityLimit / 12) * Constants.PDH.getVoltage();
     }
   }
 
