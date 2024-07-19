@@ -73,7 +73,6 @@ public class Vision2 extends SubsystemBase {
         int myID = thisTarget.getFiducialId();
         if ((myID == 4) || (myID == 7)) {
           foundSpeaker = true;
-          localTarget = thisTarget;  // fix 'best' target
         }
         //they have -31 for height of camera
         if (myID >= 11 && myID <= 16){
@@ -102,10 +101,10 @@ public class Vision2 extends SubsystemBase {
       // if(ID == 3){ID = 4;}
 
       // if ((ID == 4) || (ID == 7)) { //blue-7 red-4
+      target = localTarget;
+
       if (foundSpeaker) {
         speakerInView = true;
-        target = localTarget;
-        double angleMultiplier = ID == 7 ? 180 : 180;
         double yaw = (PhotonUtils.getYawToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d()).getDegrees());
         yaw *= ID == 7 ? 1 : -1;
         distanceToApriltag = PhotonUtils.getDistanceToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d());
@@ -113,15 +112,7 @@ public class Vision2 extends SubsystemBase {
 
         tx_out = yaw; //m_lowpass.calculate(yaw);
 
-        // SmartDashboard.putNumber("Filtered Tx", tx_out);
-        
-        double visionShootAngleTEST = 36;
-        if (getTargetDistance() > 8.23) {visionShootAngleTEST = Math.toDegrees(Math.atan(getTargetVertAngle() / Math.abs(getTargetDistance() - 16.459))) + Math.abs(getTargetDistance() - 16.459) * 2/3 -1; }
-        else {visionShootAngleTEST = Math.toDegrees(Math.atan(getTargetVertAngle() / getTargetDistance())) + (getTargetDistance() * 2/3 -1);}
-        // SmartDashboard.putNumber("TEST Vision angle", visionShootAngleTEST);
-
       } else {
-        target = null;
         speakerInView = false;
         // m_lowpass.reset();
       }
@@ -145,6 +136,7 @@ public class Vision2 extends SubsystemBase {
 } else {
   ID = 0;
   targetTd = null;
+  target = null;
 }
 // SmartDashboard.putNumber("Id", ID); 
 // SmartDashboard.putBoolean("RT", m_debouncer.calculate(result.hasTargets()));

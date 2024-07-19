@@ -40,7 +40,7 @@ public class ShootA extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_led.rainbow();
+    m_led.rainbow(0, 35);
     if (m_shooter.ampAtSpeed() && m_timer.get() >= 0.5 && sensorStateT == 0) {
       sensorStateT = 1;
       m_timer.restart();

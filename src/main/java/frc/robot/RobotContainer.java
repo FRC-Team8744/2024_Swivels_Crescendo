@@ -91,10 +91,13 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    if (Constants.PDH.getVoltage() <= Preferences.getDouble("BatteryJuice", Constants.PDH.getVoltage()) + 0.3) {
-      m_leds.ledOn(255, 0, 0);
+    m_leds.ledOn(0,0,255);
+    if (Constants.PDH.getVoltage() < 12.3) {
+        m_leds.setSlashLed(255, 0, 0);
+    } else if (Constants.PDH.getVoltage() <= Preferences.getDouble("BatteryJuice", Constants.PDH.getVoltage()) + 0.2) {
+        m_leds.setSlashLed(255, 20, 0);
     } else {
-      m_leds.ledOn(0,0,255);
+      m_leds.ledOn(0, 0, 255);
     }
     // // Register Named Commands
     NamedCommands.registerCommand("RunIntakeOld", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
@@ -160,7 +163,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   // Command lockOnTargetCommand = new LockOnTarget(m_robotDrive);
-  LockOnShooter lockOnShooter = new LockOnShooter(m_shooter.m_pivot, m_Vision2, m_robotDrive, m_shooter);
+  LockOnShooter lockOnShooter = new LockOnShooter(m_shooter.m_pivot, m_Vision2, m_robotDrive, m_shooter, m_leds);
   private void configureButtonBindings() {
     if (Constants.controllerMode == "x") {
       // new JoystickButton(m_driverController, Button.kB.value)
@@ -172,32 +175,28 @@ public class RobotContainer {
       // .alongWith(new RevShooter(m_shooter, m_index, 3500))));
       // .toggleOnFalse(Commands.runOnce(() -> m_robotDrive.isAutoRotate = false));
 
-      new JoystickButton(m_driverController, Button.kA.value)
-      .onTrue(new Trings(m_leds, m_robotDrive));
-
       m_driver.leftTrigger().whileTrue(new AmpShoot(m_climber, m_shooter, m_index, m_leds));
       m_driver.rightTrigger().whileTrue(new ShootRing(m_shooter, m_index, m_leds));
       new JoystickButton(m_driverController, Button.kLeftBumper.value)
-      .whileTrue(new IntakeSpinUpTeleop(m_intake, m_shooter, m_index, m_leds, m_shooter.m_pivot, m_Vision2, m_robotDrive));
+      .whileTrue(new IntakeSpinUpTeleop(m_intake, m_shooter, m_index, m_leds, m_shooter.m_pivot, m_Vision2, m_robotDrive, m_driverController, lockOnShooter));
 
       new JoystickButton(m_driverController, Button.kRightBumper.value)
       .whileTrue(new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot, m_robotDrive)
-      .andThen(Commands.runOnce(() -> m_robotDrive.isAutoRotate = false)
-      .alongWith(Commands.runOnce(() ->  lockOnShooter.toggle()))));
+      .finallyDo(() -> {
+        m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate;
+        lockOnShooter.toggle();
+      }));
+     // .andThen(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate)
+     // .alongWith(Commands.runOnce(() ->  lockOnShooter.toggle()))));
       
       new JoystickButton(m_driverController, Button.kX.value)
       .whileTrue(new OuttakeRun(m_intake, m_shooter, m_index));
       new JoystickButton(m_driverController, Button.kY.value)
       .whileTrue(new ClimbUp(m_climber));
-      // new JoystickButton(m_driverController, Button.kB.value)
-      // .whileTrue(new auto_led(m_Vision2, m_robotDrive, m_leds, m_shooter, m_shooter.m_pivot));
       new JoystickButton(m_driverController, Button.kA.value)
       .whileTrue(new ClimbDown(m_climber));
       new POVButton(m_driverController, 180)
       .whileTrue(new InstantCommand(() -> m_shooter.stopShooter()));
-      new POVButton(m_driverController, 0)
-      .whileTrue(new TringsTest(m_leds, m_robotDrive, m_Vision2));
-  
 
       new POVButton(m_driverController, 0)
       .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));

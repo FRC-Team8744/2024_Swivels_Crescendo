@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -26,7 +28,9 @@ public class IntakeSpinUpTeleop extends SequentialCommandGroup {
   private final Pivot m_pivot;
   private final Vision2 m_vision2;
   private final DriveSubsystem m_driveSubsystem;
-  public IntakeSpinUpTeleop(Intake in, Shooter sh, Index ind, LEDS le, Pivot pi, Vision2 vis, DriveSubsystem dr) {
+  private final XboxController xboxController;
+  private final LockOnShooter lockOnShooter;
+  public IntakeSpinUpTeleop(Intake in, Shooter sh, Index ind, LEDS le, Pivot pi, Vision2 vis, DriveSubsystem dr, XboxController xb, LockOnShooter ls) {
     m_intake = in;
     m_shooter = sh;
     m_index = ind;
@@ -34,10 +38,11 @@ public class IntakeSpinUpTeleop extends SequentialCommandGroup {
     m_pivot = pi;
     m_vision2 = vis;
     m_driveSubsystem = dr;
-    LockOnShooter lockOnShooter = new LockOnShooter(m_pivot, m_vision2, m_driveSubsystem, m_shooter);
+    xboxController = xb;
+    lockOnShooter = ls;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new IntakeRun(m_intake, m_shooter, m_index, m_leds),
+    addCommands(new ParallelCommandGroup(new IntakeRun(m_intake, m_shooter, m_index, m_leds), (Commands.runOnce(() -> xboxController.setRumble(RumbleType.kBothRumble, 1)))).finallyDo(() -> xboxController.setRumble(RumbleType.kBothRumble, 0)),
     new ParallelCommandGroup(Commands.runOnce(() -> lockOnShooter.toggle()), Commands.runOnce (() -> m_driveSubsystem.isAutoRotate = !m_driveSubsystem.isAutoRotate)));
   }
 }

@@ -39,7 +39,7 @@ public class ShootRing extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_led.rainbow();
+    m_led.rainbow(0, 35);
     if (m_shooter.atSpeed()) {
       m_index.indexRun(-m_index.indexSpeed);
     }

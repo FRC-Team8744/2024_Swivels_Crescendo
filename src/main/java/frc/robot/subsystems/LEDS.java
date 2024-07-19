@@ -39,9 +39,13 @@ public class LEDS extends SubsystemBase {
     m_led.setData(m_ledBuffer);
   }
 
-  public void rainbow() {
+  /**
+   * @param start The start point of the rainbow
+   * @param end The end point of the rainbow
+   */
+  public void rainbow(int start, int end) {
     // For every pixel
-    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+    for (var i = start; i < end; i++) {
       // Calculate the hue - hue is easier for rainbows because the color
       // shape is a circle so only one value needs to precess
       final var hue = (m_rainbowFirstPixelHue + (i * 180 / m_ledBuffer.getLength())) % 180;
@@ -74,6 +78,11 @@ public void allOff(){
       m_ledBuffer.setRGB(position, r, g, b);
     }
   }
+  public void setSlashLed(int r, int g, int b) {
+      for (int Index = 19; Index <= 33; Index ++){
+        m_ledBuffer.setRGB(Index, r, g, b);
+      };
+    }
   private void setRainbow(int r, int g, int b) {
     for (var i = 0; i < m_ledBuffer.getLength(); i++) {
       if (i < m_ledBuffer.getLength()) {

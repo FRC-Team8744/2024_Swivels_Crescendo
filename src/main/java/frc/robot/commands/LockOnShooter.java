@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision2;
@@ -21,14 +22,16 @@ public class LockOnShooter extends Command {
   private final Vision2 m_vision;
   private final DriveSubsystem m_drive;
   private final Shooter m_shooter;
+  private final LEDS m_leds;
   private boolean toggle;
   /** Creates a new LockOnShooter. */
-  public LockOnShooter(Pivot pi, Vision2 vis, DriveSubsystem dr, Shooter sh) {
+  public LockOnShooter(Pivot pi, Vision2 vis, DriveSubsystem dr, Shooter sh, LEDS le) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_pivot = pi;
     m_vision = vis;
     m_drive = dr;
     m_shooter = sh;
+    m_leds = le;
     addRequirements(m_pivot);
     addRequirements(m_shooter);
   }
@@ -37,11 +40,14 @@ public class LockOnShooter extends Command {
   @Override
   public void initialize() {
     m_shooter.testShoot(3500);
+    m_leds.ledOn(0, 0, 255);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_leds.rainbow(19, 33);
+
     var alliance = DriverStation.getAlliance();
 
     if (alliance.get() == DriverStation.Alliance.Red) {
@@ -78,7 +84,8 @@ public class LockOnShooter extends Command {
   public void end(boolean interrupted) {
     m_pivot.stopAngle();
     m_shooter.stopShooter();
-  }
+    m_leds.ledOn(0, 0, 255);
+    }
 
   // Returns true when the command should end.
   @Override
