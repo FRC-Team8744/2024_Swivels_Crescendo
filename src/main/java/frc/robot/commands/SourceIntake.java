@@ -31,7 +31,7 @@ public class SourceIntake extends Command {
     m_shooter.testShoot(-1500);
     m_shooter.m_pivot.testAngle(60);
     m_index.indexRun(m_index.indexSpeed);
-    m_led.ledOn(128, 0, 0);
+    m_led.setSlashLed(128, 0, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,10 +45,10 @@ public class SourceIntake extends Command {
     m_shooter.stopShooter();
     m_index.indexStop();
     if (m_index.inputIR.get() == false) {
-      m_led.ledOn(0, 128, 0);
+      m_led.setSlashLed(0, 128, 0);
     }
     else {
-      m_led.ledOn(0, 0, 128);
+      m_led.setSlashLed(0, 0, 128);
     }
   }
 

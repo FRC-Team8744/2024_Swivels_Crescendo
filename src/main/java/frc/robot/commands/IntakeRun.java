@@ -37,7 +37,7 @@ public class IntakeRun extends Command {
     m_intake.donutGrab(m_intake.intakeSpeed);
     m_index.indexRun(-.5);
     m_Pivot.testAngle(35);
-    m_led.ledOn(128, 0, 0);
+    m_led.setSlashLed(128, 0, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,10 +51,10 @@ public class IntakeRun extends Command {
     m_index.indexStop();
     m_Pivot.stopAngle();
     if (m_index.inputIR.get() == false) {
-      m_led.ledOn(0, 128, 0);
+      m_led.setSlashLed(0, 128, 0);
     }
     else {
-      m_led.ledOn(0, 0, 128);
+      m_led.setSlashLed(0, 0, 128);
     }
   }
 
