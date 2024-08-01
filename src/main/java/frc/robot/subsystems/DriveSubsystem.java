@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.util.Vector;
 import java.util.concurrent.locks.Lock;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -70,7 +71,7 @@ public class DriveSubsystem extends SubsystemBase {
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
 
   // The imu sensor
-  public final Multi_IMU m_imu = new Multi_IMU();
+  public final Pigeon2 m_imu = new Pigeon2(14, "rio");
   public final LockOnTarget m_lock = new LockOnTarget();
   private final Vision2 m_Vision2;
 
@@ -152,7 +153,7 @@ public class DriveSubsystem extends SubsystemBase {
   m_odometry =
       new SwerveDriveOdometry(
           SwerveConstants.kDriveKinematics,
-          m_imu.getHeading(),
+          m_imu.getRotation2d(),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -201,7 +202,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_poseEstimator =
       new SwerveDrivePoseEstimator(
         Constants.SwerveConstants.kDriveKinematics,
-        m_imu.getHeading(),
+        m_imu.getRotation2d(),
         getModulePositions(),
         getPose(),
         VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
@@ -220,7 +221,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        m_imu.getHeading(),
+        m_imu.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -232,7 +233,7 @@ public class DriveSubsystem extends SubsystemBase {
       m_Vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_Vision2.getApriltagTime()));
     }
 
-    m_poseEstimator.update(m_imu.getHeading(), getModulePositions());
+    m_poseEstimator.update(m_imu.getRotation2d(), getModulePositions());
     
     // Update robot position on Field2d.
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
@@ -320,8 +321,8 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void zeroIMU() {
-    m_imu.zeroHeading();
-    m_poseEstimator.resetPosition(m_imu.getHeading(), getModulePositions(), getPose());
+    m_imu.setYaw(0.0);
+    m_poseEstimator.resetPosition(m_imu.getRotation2d(), getModulePositions(), getPose());
   }
 
   /**
@@ -331,7 +332,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        m_imu.getHeading(),
+        m_imu.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -339,6 +340,7 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearRight.getPosition()
         },
         pose);
+    m_poseEstimator.resetPosition(m_imu.getRotation2d(), getModulePositions(), pose);
   }
 
   /**
@@ -355,9 +357,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ySpeed", ySpeed);
     SmartDashboard.putNumber("rot", rot);
     //Square inputs
-    xSpeed=Math.signum(xSpeed)* xSpeed*xSpeed;
-    ySpeed=Math.signum(ySpeed)* ySpeed*ySpeed;
-    rot=Math.signum(rot)* rot*rot;
+    // xSpeed=Math.signum(xSpeed)* xSpeed*xSpeed;
+    // ySpeed=Math.signum(ySpeed)* ySpeed*ySpeed;
+    // rot=Math.signum(rot)* rot*rot;
 
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
@@ -372,7 +374,7 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates =
         SwerveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_imu.getHeading())
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_imu.getRotation2d())
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds( swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFL_enum]);

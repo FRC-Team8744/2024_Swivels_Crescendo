@@ -4,16 +4,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.DifferentialDrivePoseEstimator;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -21,9 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.commands.auto_led;
-import frc.robot.commands.Trings;
-import frc.robot.commands.TringsTest;
 import frc.robot.commands.VisionShoot;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
@@ -31,8 +20,6 @@ import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.LockOnShooterAuto;
-import frc.robot.subsystems.LockOnTarget;
-import frc.robot.subsystems.Multi_IMU;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision2;
 import frc.robot.commands.AmpShoot;
@@ -43,7 +30,6 @@ import frc.robot.commands.IntakeSpinUp;
 import frc.robot.commands.IntakeSpinUpTeleop;
 import frc.robot.commands.LockOnShooter;
 import frc.robot.commands.OuttakeRun;
-import frc.robot.commands.RevShooter;
 import frc.robot.commands.ShootRing;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -53,10 +39,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.path.PathPlannerTrajectory;
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 /*
@@ -82,10 +64,6 @@ public class RobotContainer {
 
   // A chooser for autonomous commands
   private final SendableChooser<Command> m_autoChooser;
-  // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
-  private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(5);
-  private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(5);
-  private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(5);
 
   private final LockOnShooterAuto m_lockAuto = new LockOnShooterAuto(m_shooter.m_pivot, m_Vision2, m_robotDrive, m_shooter);
   
@@ -105,12 +83,12 @@ public class RobotContainer {
     // NamedCommands.registerCommand("RunIntakeNew", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds).andThen(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate).alongWith(Commands.runOnce(() -> lockOnShooter.toggle()))));
     NamedCommands.registerCommand("LockIn", Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate).alongWith(m_lockAuto.toggle()));
     NamedCommands.registerCommand("VisionShoot", (new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot, m_robotDrive)).withTimeout(2));
-    NamedCommands.registerCommand("Climb Down", new ClimbDown(m_climber));
+    NamedCommands.registerCommand("ClimbDown", new ClimbDown(m_climber));
     NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.m_pivot.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
     NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(56, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));
-    NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(36, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(24, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
-    NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(29, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+    NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
     // 4 piece all amp center
     NamedCommands.registerCommand("4palc1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(25.5, 3240, "4palc1"))); // First shot
     NamedCommands.registerCommand("4palc1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24, 3510, "4palc2")))); // Second shot
@@ -134,22 +112,11 @@ public class RobotContainer {
           new RunCommand(
               () ->
                   m_robotDrive.drive(
-                      m_xspeedLimiter.calculate( -m_driverController.getLeftY() )*SwerveConstants.kMaxSpeedTeleop,
-                      m_yspeedLimiter.calculate( -m_driverController.getLeftX() )*SwerveConstants.kMaxSpeedTeleop,
-                      m_rotLimiter.calculate( -m_driverController.getRightX() )*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                      -m_driverController.getLeftY() * SwerveConstants.kMaxSpeedTeleop,
+                      -m_driverController.getLeftX() * SwerveConstants.kMaxSpeedTeleop,
+                      -m_driverController.getRightX() * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
                       true),
               m_robotDrive));
-  }
-  else if(Constants.controllerMode == "j") {
-    m_robotDrive.setDefaultCommand(
-      new RunCommand(
-        () ->
-          m_robotDrive.drive(
-                m_xspeedLimiter.calculate( -m_Joystick.getRawAxis(1) )*SwerveConstants.kMaxSpeedTeleop,
-                m_yspeedLimiter.calculate( -m_Joystick.getRawAxis(0) )*SwerveConstants.kMaxSpeedTeleop,
-                m_rotLimiter.calculate( -m_Joystick.getRawAxis(2) )*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
-                true),
-        m_robotDrive));
   }
     m_autoChooser = AutoBuilder.buildAutoChooser();  // Default auto will be 'Commands.none()'
 
@@ -204,16 +171,6 @@ public class RobotContainer {
       .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
       new JoystickButton(m_driverController, Button.kLeftStick.value)
       .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.toggleMaxOutput()));
-    }
-    else if(Constants.controllerMode == "j") {
-      new JoystickButton(m_Joystick, 1)
-      .whileTrue(new ShootRing(m_shooter, m_index, m_leds));
-      new JoystickButton(m_Joystick, 2)
-      .whileTrue(new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
-      new JoystickButton(m_Joystick, 6)
-      .whileTrue(new ClimbUp(m_climber));
-      new JoystickButton(m_Joystick, 4)
-      .whileTrue(new ClimbDown(m_climber));
     }
   }
 

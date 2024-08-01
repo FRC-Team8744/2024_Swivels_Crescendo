@@ -28,8 +28,10 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 public class Vision2 extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
 
-  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-23.7), Units.degreesToRadians(180));
-  private Transform3d td = new Transform3d(-0.04, -0.25, 0, rd);
+  // private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-23.7), Units.degreesToRadians(180));
+  // private Transform3d td = new Transform3d(-0.04, -0.25, 0, rd);
+  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-28.9), Units.degreesToRadians(180));
+  private Transform3d td = new Transform3d(-.237, -0.246, 0.284, rd);
   private Pose3d targetTd;
   private double apriltagTime; 
   public double distanceToApriltag = 0;
@@ -39,15 +41,15 @@ public class Vision2 extends SubsystemBase {
   private PhotonTrackedTarget target;
 
   private double ID = 0;
-  private Debouncer m_filterSpeakerInView = new Debouncer (0.1, Debouncer.DebounceType.kBoth );
+  private Debouncer m_filterSpeakerInView = new Debouncer (0.1, Debouncer.DebounceType.kBoth);
   private boolean speakerInView;
   private boolean speakerInView_filtered;
 
-  private Debouncer m_debouncer = new Debouncer (0.1, Debouncer.DebounceType.kBoth );
+  private Debouncer m_debouncer = new Debouncer (0.1, Debouncer.DebounceType.kBoth);
   private LinearFilter m_lowpass = LinearFilter.movingAverage(100);
   private double tx_out;
   //**heightMatters is the height of the object based on the april tags and the camera used for cacluations in shooting**//
-  private double heightMatters;
+  private double heightMatters = 2.025;
   public double m_goalAngle;
 
   public Vision2() {
@@ -77,17 +79,17 @@ public class Vision2 extends SubsystemBase {
         //they have -31 for height of camera
         if (myID >= 11 && myID <= 16){
           //this is chian thingy
-          heightMatters = 1.35;
+          //heightMatters = 1.35;
         }
         else if (myID == 5 || myID == 6){
           //this is amp
-          heightMatters = .61;
+          //heightMatters = .61;
         }
         else if (myID == 8 || myID == 7 || myID == 3 || myID == 4){
-          heightMatters = 1.76;
+          //heightMatters = 2.025;
           //this is speaker
         }
-        else {heightMatters = -1;}
+        //else {heightMatters = -1;}
       }
 
       Transform3d cameraToTarget = localTarget.getBestCameraToTarget();

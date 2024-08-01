@@ -20,8 +20,8 @@
         "y": 3.04
       },
       "prevControl": {
-        "x": 2.7193200178126453,
-        "y": 3.197058376998351
+        "x": 2.7208342602762787,
+        "y": 3.177662329235403
       },
       "nextControl": null,
       "isLocked": false,
@@ -39,11 +39,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -37.99873244250468,
+    "rotation": -41.64427742452091,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "gaming folder",
+  "folder": null,
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

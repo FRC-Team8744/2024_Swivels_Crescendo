@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 8.19999152123839,
-        "y": 2.365588982247864
+        "x": 8.399075742516676,
+        "y": 2.7871790978959985
       },
       "prevControl": {
-        "x": 7.6144496939493145,
-        "y": 1.6512279529551914
+        "x": 7.8135339152276,
+        "y": 2.072818068603326
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +61,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "gaming folder",
+  "folder": null,
   "previewStartingState": {
     "rotation": -42.932896783064635,
     "velocity": 0

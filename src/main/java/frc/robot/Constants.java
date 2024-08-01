@@ -82,6 +82,11 @@ public final class Constants {
     public static final double kRearLeftMagEncoderOffsetDegrees_NoNo = 241.87;
     public static final double kRearRightMagEncoderOffsetDegrees_NoNo = 133.46;
 
+    // public static final double kFrontLeftMagEncoderOffsetDegrees_NoNo = 0.876221 * 360;
+    // public static final double kFrontRightMagEncoderOffsetDegrees_NoNo = 0.364990 * 360;
+    // public static final double kRearLeftMagEncoderOffsetDegrees_NoNo = 0.670898 * 360;
+    // public static final double kRearRightMagEncoderOffsetDegrees_NoNo = 0.666260 * 360;
+
     public static final double kFrontLeftMagEncoderOffsetDegrees_Swivels = 81.12;
     public static final double kFrontRightMagEncoderOffsetDegrees_Swivels = 133.77;
     public static final double kRearLeftMagEncoderOffsetDegrees_Swivels = 11.25;
@@ -128,7 +133,7 @@ public final class Constants {
 
     /** Current limiting. */
     public static final int DRIVE_CURRENT_LIMIT = 40;
-    public static final int ANGLE_CURRENT_LIMIT = 20;
+    public static final int ANGLE_CURRENT_LIMIT = 25;
 
     public static final boolean DRIVE_MOTOR_PROFILED_MODE = true;
     /** Angle motor PID values for speed/acceleration limited mode. */
@@ -184,7 +189,7 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kCodriverControllerPort = 1;
-    public static final double kDeadband = 0.1;
+    public static final double kDeadband = 0.2;
   }
 
   public static final class AutoConstants {
