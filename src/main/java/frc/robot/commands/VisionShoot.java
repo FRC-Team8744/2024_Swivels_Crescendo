@@ -50,7 +50,7 @@ public class VisionShoot extends Command {
     m_shooter.testShoot(m_shooter.visionShootVelocity);
     m_pivot.testAngle(m_pivot.visionShootAngle);
 
-    SmartDashboard.putBoolean("Vision Shoot Running", true);
+    // SmartDashboard.putBoolean("Vision Shoot Running", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -59,7 +59,7 @@ public class VisionShoot extends Command {
     if (m_shooter.visionAtSpeed()) {
       m_index.indexRun(-m_index.indexSpeed);
     }
-    SmartDashboard.putBoolean("At Speed", m_shooter.visionAtSpeed());
+    // SmartDashboard.putBoolean("At Speed", m_shooter.visionAtSpeed());
   }
 
   // Called once the command ends or is interrupted.

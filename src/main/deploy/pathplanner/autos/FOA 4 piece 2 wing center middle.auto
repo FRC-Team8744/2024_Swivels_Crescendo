@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.44,
-      "y": 5.53
+      "x": 1.4707856249343993,
+      "y": 5.53650223579517
     },
     "rotation": 0
   },
@@ -14,7 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "LockIn"
+            "name": "VisionShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "FOA4p2wcm1"
           }
         },
         {
@@ -26,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4 piece close right"
+            "pathName": "FOA4p2wcm2"
           }
         },
         {
@@ -38,31 +44,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4 piece close middle"
+            "pathName": "FOA4p2wcm3"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "VisionShoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "4 piece close left"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "VisionShoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "4 piece final"
           }
         }
       ]

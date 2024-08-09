@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.util.Units;
+
 // import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -51,11 +53,11 @@ public class LockOnShooter extends Command {
     var alliance = DriverStation.getAlliance();
 
     if (alliance.get() == DriverStation.Alliance.Red) {
-      m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / Math.abs(m_drive.getEstimatedPoseHyp()))) + Math.abs(m_drive.getEstimatedPoseHyp()) -1; 
+      m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetHeight() / Math.abs(m_drive.getEstimatedPoseHyp()))) + Math.abs(m_drive.getEstimatedPoseHyp()) -1; 
     }
 
     else {
-      m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / m_drive.getEstimatedPoseHyp())) + (m_drive.getEstimatedPoseHyp() -1);
+      m_pivot.visionShootAngle = Math.toDegrees(Math.atan((m_vision.getTargetHeight() - Units.inchesToMeters(9.481)) / (m_drive.getEstimatedPoseHyp() - Units.inchesToMeters(1.15104)))) + Math.abs(m_drive.getEstimatedPoseHyp()) + 1;
     }
 
     if (m_pivot.visionShootAngle <= Pivot.minimumAngle) {
@@ -91,5 +93,9 @@ public class LockOnShooter extends Command {
   @Override
   public boolean isFinished() {
     return !toggle;
+  }
+
+  public void reset() {
+    toggle = false;
   }
 }

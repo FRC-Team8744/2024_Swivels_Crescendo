@@ -93,10 +93,10 @@ public final class Constants {
     public static final double kRearRightMagEncoderOffsetDegrees_Swivels = 66.71;
 
     // Distance between centers of right and left wheels on robot
-    public static final double kTrackWidth = Units.inchesToMeters(20.472);
+    public static final double kTrackWidth = Units.inchesToMeters(20.75);
 
     // Distance between front and back wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(20.472);
+    public static final double kWheelBase = Units.inchesToMeters(20.75);
 
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
@@ -189,7 +189,7 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kCodriverControllerPort = 1;
-    public static final double kDeadband = 0.2;
+    public static final double kDeadband = 0.25;
   }
 
   public static final class AutoConstants {

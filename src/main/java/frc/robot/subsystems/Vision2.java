@@ -49,7 +49,8 @@ public class Vision2 extends SubsystemBase {
   private LinearFilter m_lowpass = LinearFilter.movingAverage(100);
   private double tx_out;
   //**heightMatters is the height of the object based on the april tags and the camera used for cacluations in shooting**//
-  private double heightMatters = 2.025;
+  private double heightMatters = 1.93;
+  // private double heightMatters = 2.02;
   public double m_goalAngle;
 
   public Vision2() {
@@ -154,7 +155,7 @@ public class Vision2 extends SubsystemBase {
     return tx_out;
   }
 
-  public double getTargetVertAngle() {
+  public double getTargetHeight() {
     return heightMatters;
   }
 

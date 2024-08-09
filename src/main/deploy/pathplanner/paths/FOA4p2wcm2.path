@@ -3,80 +3,90 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.131641329472284,
-        "y": 4.097305368134887
+        "x": 2.9246681749177457,
+        "y": 7.0050704681015805
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1816413294722836,
-        "y": 4.097305368134887
+        "x": 2.909982492594682,
+        "y": 6.637928410024977
       },
       "isLocked": false,
-      "linkedName": "4PieceWing1"
+      "linkedName": "FOA4p2wssm1"
     },
     {
       "anchor": {
-        "x": 2.8806111279485536,
-        "y": 5.580559282764361
+        "x": 2.9246681749177457,
+        "y": 5.492445188825977
       },
       "prevControl": {
-        "x": 2.968725221886938,
-        "y": 4.581932884796002
+        "x": 2.895296810271618,
+        "y": 5.85958724690258
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "4pieceWing3"
+      "linkedName": "FOA4p2wssm2"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "New Constraints Zone",
-      "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 1.0,
+      "minWaypointRelativePos": 0.1,
+      "maxWaypointRelativePos": 0.8,
       "constraints": {
         "maxVelocity": 3.0,
-        "maxAcceleration": 1.0,
-        "maxAngularVelocity": 120.0,
-        "maxAngularAcceleration": 120.0
+        "maxAcceleration": 1.5,
+        "maxAngularVelocity": 480.0,
+        "maxAngularAcceleration": 240.0
       }
     }
   ],
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0.6,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "RunIntakeNew"
+                "name": "RunIntake"
               }
             }
           ]
         }
       }
+    },
+    {
+      "name": "Lock In",
+      "waypointRelativePos": 0.9,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": []
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 12.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0,
+    "rotation": -90.0,
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "4 piece wing",
+  "folder": "FOA 4 piece 2 wing cm",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

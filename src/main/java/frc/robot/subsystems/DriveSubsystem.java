@@ -16,6 +16,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -34,6 +35,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
@@ -60,6 +62,8 @@ public class DriveSubsystem extends SubsystemBase {
   private double originalX = 0;
   private double originalY = 0;
 
+  private boolean bigHitBoolean = false;
+
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft;
   private final SwerveModuleOffboard m_rearLeft;
@@ -76,6 +80,11 @@ public class DriveSubsystem extends SubsystemBase {
   private final Vision2 m_Vision2;
 
   public boolean isAutoRotate = false;
+
+  private double goalAngle = 0;
+  private PIDController m_turnCtrl = new PIDController(0.03, 0.0065, 0.0035);
+  private boolean roboNoSpino = true;
+  private Timer rotationTimer = new Timer();
 
   public boolean isAutoRotateToggle = true;
   
@@ -100,6 +109,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(Vision2 m_Vision2) {
+    m_turnCtrl.enableContinuousInput(-180, 180);
+    m_turnCtrl.setTolerance(1.0);
+    m_turnCtrl.reset();
     this.m_Vision2 = m_Vision2;
     MyName = Preferences.getString("RobotName", "NoDefault");
     System.out.println("Robot ID: " + MyName);
@@ -212,6 +224,7 @@ public class DriveSubsystem extends SubsystemBase {
     originalY = m_poseEstimator.getEstimatedPosition().getY();
     m_timerX.start();
     m_timerY.start();
+    rotationTimer.start();
   }
 
 
@@ -278,8 +291,20 @@ public class DriveSubsystem extends SubsystemBase {
   SmartDashboard.putNumber("Estimated Pose Rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
   // SmartDashboard.putBoolean("isAutoRotate", isAutoRotate);
 
-  SmartDashboard.putNumber("Robot Velocity X", xVelocity);
-  SmartDashboard.putNumber("Robot Velocity Y", yVelocity);
+  // SmartDashboard.putNumber("Robot Velocity X", xVelocity);
+  // SmartDashboard.putNumber("Robot Velocity Y", yVelocity);
+
+  if (Math.abs(m_imu.getAccelerationX().getValueAsDouble()) > 1) {
+    bigHitBoolean = true;
+  }
+  else if (Math.abs(m_imu.getAccelerationY().getValueAsDouble())> 1) {
+    bigHitBoolean = true;
+  }
+  else {
+    bigHitBoolean = false;
+  }
+  SmartDashboard.putBoolean("Big Hit", bigHitBoolean);
+  SmartDashboard.putNumber("Gyro Acc Z", m_imu.getAccelerationZ().getValueAsDouble());
 
   Vector<Double> robotVector = new Vector<>();
   if (Math.abs(xVelocity) <= 0.1) {
@@ -355,7 +380,7 @@ public class DriveSubsystem extends SubsystemBase {
     rot = isAutoRotate ? autoRotateSpeed : rot;
     SmartDashboard.putNumber("xSpeed", xSpeed);
     SmartDashboard.putNumber("ySpeed", ySpeed);
-    SmartDashboard.putNumber("rot", rot);
+    // SmartDashboard.putNumber("rot", rot);
     //Square inputs
     // xSpeed=Math.signum(xSpeed)* xSpeed*xSpeed;
     // ySpeed=Math.signum(ySpeed)* ySpeed*ySpeed;
@@ -364,12 +389,29 @@ public class DriveSubsystem extends SubsystemBase {
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
     ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
-    rot = isAutoRotate ? rot : MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
+    rot = isAutoRotate ? MathUtil.applyDeadband(rot, 0.064, 1.0) : MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
 
     // Apply speed scaling
     xSpeed = xSpeed * m_DriverSpeedScaleTran;
     ySpeed = ySpeed * m_DriverSpeedScaleTran;
     rot = rot * m_DriverSpeedScaleRot;
+
+    if (isAutoRotate == false && rot == 0 && rotationTimer.hasElapsed(0.1)) {
+      if (roboNoSpino) {
+        goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
+        roboNoSpino = false;
+      }
+      m_turnCtrl.setSetpoint(goalAngle);
+      double m_output = MathUtil.clamp(m_turnCtrl.calculate(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), -1.0, 1.0);
+      rot = m_output;
+    }
+    else {
+      goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
+      m_turnCtrl.reset();
+      roboNoSpino = true;
+      rotationTimer.restart();
+    }
+    SmartDashboard.putNumber("Goal Angle", goalAngle);
 
     var swerveModuleStates =
         SwerveConstants.kDriveKinematics.toSwerveModuleStates(

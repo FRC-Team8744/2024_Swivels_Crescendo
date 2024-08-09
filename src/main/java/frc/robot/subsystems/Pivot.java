@@ -23,7 +23,7 @@ public class Pivot extends SubsystemBase {
 
   public double shootingAngle = 58;
   public double ampShootingAngle = 65.5;
-  public double visionShootAngle = 26;
+  public double visionShootAngle = 58;
 
   private CANSparkMax leftPivotSparkMax = new CANSparkMax(MechanismConstants.kLeftPivotShooterPort, MotorType.kBrushless); 
   private CANSparkMax rightPivotSparkMax = new CANSparkMax(MechanismConstants.kRightPivotShooterPort, MotorType.kBrushless);

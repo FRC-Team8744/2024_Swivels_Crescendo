@@ -62,30 +62,17 @@ public LockOnTarget() {
       shooterVelocity = 0;
     }
 
-    SmartDashboard.putNumber("Robot Vector X", robotVector.get(0));
-    SmartDashboard.putNumber("Robot Vector Y", robotVector.get(1));
-
     double distanceToTargetX = estimatedPose2d.getX() - targetPose.getX();
     double distanceToTargetY = estimatedPose2d.getY() - targetPose.getY();
     // double distanceToTargetHyp = Math.abs(Math.sqrt(Math.pow(distanceToTargetX, 2) + Math.pow(distanceToTargetY, 2)));
 
     if (alliance.get() == DriverStation.Alliance.Red) {
-      goalAngle = (Math.toDegrees(Math.atan(distanceToTargetY / distanceToTargetX)) - 6 + (2 * (16.459 - estimatedPose2d.getX()) / 3)) - 180;
+      goalAngle = (Math.toDegrees(Math.atan(distanceToTargetY / distanceToTargetX)) - 11 + (2 * (16.459 - estimatedPose2d.getX()) / 3)) - 180;
     }
     else {
-      goalAngle = (Math.toDegrees(Math.atan(distanceToTargetY / distanceToTargetX)) - 6.0 + (2 * estimatedPose2d.getX() / 3));
+      goalAngle = (Math.toDegrees(Math.atan(distanceToTargetY / distanceToTargetX)) - 11 + (2 * estimatedPose2d.getX() / 3));
     }
     SmartDashboard.putNumber("Goal Angle", goalAngle);
-    // SmartDashboard.putNumber("Target Pose X", targetPose.getX());
-    // SmartDashboard.putNumber("Target Pose Y", targetPose.getY());
-
-    // ShooterVector = new Vector<>();
-
-    // ShooterVector.add(shooterVelocity * wheelCirc * Math.toDegrees(Math.sin(Math.toRadians(goalAngle))));
-    // ShooterVector.add(shooterVelocity * wheelCirc * Math.toDegrees(Math.cos(Math.toRadians(goalAngle))));
-
-    // SmartDashboard.putNumber("Shooter Vector Sin", ShooterVector.get(0));
-    // SmartDashboard.putNumber("Shooter Vector Cos", ShooterVector.get(1));
 
     // goalAngle += Math.toDegrees(Math.atan2(ShooterVector.get(0), ShooterVector.get(1)) - Math.atan2(robotVector.get(0), robotVector.get(1)));
 
@@ -119,10 +106,6 @@ public LockOnTarget() {
     // Calculate the effective shooting angle
     double theta_eff = Math.toDegrees(Math.atan2(v_py_eff, v_px_eff));
 
-    SmartDashboard.putNumber("theta eff", theta_eff);
-    SmartDashboard.putNumber("v_py_eff", v_py_eff);
-    SmartDashboard.putNumber("v_px_eff", v_px_eff);
-
     m_turnCtrl.reset();
     if (n >= 100) {    
       m_turnCtrl.setSetpoint(theta_eff);
@@ -134,6 +117,8 @@ public LockOnTarget() {
     m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);
 
     // m_output = MathUtil.clamp(heading, -1.0, 1.0);
+
+    // SmartDashboard.putNumber("m_output", m_output);
 
     return m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND;
     // m_drive.drive(0.0, 0.0, m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND, true);

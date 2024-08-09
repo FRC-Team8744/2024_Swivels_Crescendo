@@ -20,12 +20,6 @@
         {
           "type": "named",
           "data": {
-            "name": "ClimbDown"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "VisionShoot"
           }
         },

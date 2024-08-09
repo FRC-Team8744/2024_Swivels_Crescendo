@@ -3,17 +3,17 @@
   "robotLength": 0.8,
   "holonomicMode": true,
   "pathFolders": [
-    "4 piece all left 2 center",
     "4 piece all amp center right start",
-    "4 piece wing",
+    "4 piece all left 2 center",
     "4 piece source side all center",
+    "4 piece wing",
     "Bens",
+    "FOA 4 piece 2 wing cm",
     "LeftBaseLine(2)",
     "MiddleBaseLine(2)",
     "Old autos"
   ],
   "autoFolders": [
-    "Bens",
     "Comp Autos",
     "FOA Comp Autos",
     "Test Autos"

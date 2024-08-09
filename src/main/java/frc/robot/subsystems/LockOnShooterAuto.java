@@ -30,11 +30,11 @@ public class LockOnShooterAuto extends SubsystemBase {
       var alliance = DriverStation.getAlliance();
 
       if (alliance.get() == DriverStation.Alliance.Red) {
-        m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / Math.abs(m_drive.getEstimatedPoseHyp()))) + Math.abs(m_drive.getEstimatedPoseHyp()) -1; 
+        m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetHeight() / Math.abs(m_drive.getEstimatedPoseHyp()))) + Math.abs(m_drive.getEstimatedPoseHyp()) -1; 
       }
 
       else {
-        m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetVertAngle() / m_drive.getEstimatedPoseHyp())) + (m_drive.getEstimatedPoseHyp() -1);
+        m_pivot.visionShootAngle = Math.toDegrees(Math.atan(m_vision.getTargetHeight() / m_drive.getEstimatedPoseHyp())) + (m_drive.getEstimatedPoseHyp() -1);
       }
 
       if (m_pivot.visionShootAngle <= Pivot.minimumAngle) {
@@ -58,5 +58,10 @@ public class LockOnShooterAuto extends SubsystemBase {
         m_shooter.testShoot(3500);
       }
     });
+  }
+
+  public void reset() {
+    toggle = false;
+    m_pivot.stopAngle();
   }
 }
