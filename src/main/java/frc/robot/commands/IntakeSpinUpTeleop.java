@@ -25,8 +25,6 @@ public class IntakeSpinUpTeleop extends SequentialCommandGroup {
   private final Shooter m_shooter;
   private final Index m_index;
   private final LEDS m_leds;
-  private final Pivot m_pivot;
-  private final Vision2 m_vision2;
   private final DriveSubsystem m_driveSubsystem;
   private final XboxController xboxController;
   private final LockOnShooter lockOnShooter;
@@ -35,8 +33,6 @@ public class IntakeSpinUpTeleop extends SequentialCommandGroup {
     m_shooter = sh;
     m_index = ind;
     m_leds = le;
-    m_pivot = pi;
-    m_vision2 = vis;
     m_driveSubsystem = dr;
     xboxController = xb;
     lockOnShooter = ls;

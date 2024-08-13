@@ -5,9 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.LEDS;
@@ -20,7 +18,6 @@ public class VisionShoot extends Command {
   private final Index m_index;
   private final LEDS m_led;
   private final DriveSubsystem m_drive;
-  private final Vision2 m_vis;
   private final Pivot m_pivot;
   private final Timer m_timer = new Timer();
   private int sensorState = 0;
@@ -32,7 +29,6 @@ public class VisionShoot extends Command {
     m_shooter = sh;
     m_index = ind;
     m_led = le;
-    m_vis = vi;
     m_pivot = pi;
     m_drive = dr;
     addRequirements(m_shooter);
