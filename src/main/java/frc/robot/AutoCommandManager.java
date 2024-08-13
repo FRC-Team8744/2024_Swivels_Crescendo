@@ -86,7 +86,7 @@ public class AutoCommandManager {
         NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
         NamedCommands.registerCommand("RunIntakeNew", new IntakeSpinUpAuto(m_intake, m_index, m_shooter, m_leds, m_robotDrive, m_lockAuto));
         NamedCommands.registerCommand("LockIn", new ParallelCommandGroup(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate), m_lockAuto.toggle()));
-        NamedCommands.registerCommand("VisionShoot", (new VisionShoot(m_shooter, m_index, m_leds, m_vision, m_shooter.m_pivot, m_robotDrive)).withTimeout(2).finallyDo(() -> {m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate; m_lockAuto.toggle();}));
+        NamedCommands.registerCommand("VisionShoot", (new VisionShoot(m_shooter, m_index, m_leds, m_vision, m_shooter.m_pivot, m_robotDrive)).withTimeout(2).finallyDo(() -> {m_robotDrive.isAutoRotate = false; m_lockAuto.reset();}));
         NamedCommands.registerCommand("ClimbDown", new ClimbDown(m_climber));
         NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.m_pivot.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
         NamedCommands.registerCommand("ShootRingWoofer", new InstantCommand (() -> m_shooter.setShooterStuff(56, 2500, "Woofer")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(2)));

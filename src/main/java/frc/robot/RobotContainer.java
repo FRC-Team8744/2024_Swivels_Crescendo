@@ -163,7 +163,7 @@ public class RobotContainer {
       .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.toggleMaxOutput()));
       new JoystickButton(m_driverController, Button.kStart.value)
       .toggleOnTrue(Commands.runOnce(() -> {m_robotDrive.isAutoRotate = false; lockOnShooter.reset(); m_autoManager.m_lockAuto.reset();}));
-    }
+    } 
   }
 
   public Command getAutonomousCommand() {
