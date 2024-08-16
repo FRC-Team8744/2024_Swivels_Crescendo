@@ -57,16 +57,16 @@ public class AutoCommandManager {
             m_vision);
 
         PathPlannerAuto FOA4PieceWing = new PathPlannerAuto("FOA 4 piece wing");
-        PathPlannerAuto FOAMidSpeaker2ring = new PathPlannerAuto("FOA Mid speaker 2 ring real");
+        // PathPlannerAuto FOAMidSpeaker2ring = new PathPlannerAuto("FOA Mid speaker 2 ring real");
         PathPlannerAuto FOA4pssac = new PathPlannerAuto("FOA 4 piece source side all center");
-        PathPlannerAuto TurningTest = new PathPlannerAuto("Test Turning Auto");
+        // PathPlannerAuto TurningTest = new PathPlannerAuto("Test Turning Auto");
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 
         m_chooser.addOption("W Auto", FOA4PieceWing);
-        m_chooser.addOption("Mid Speaker 2 ring", FOAMidSpeaker2ring);
+        // m_chooser.addOption("Mid Speaker 2 ring", FOAMidSpeaker2ring);
         m_chooser.addOption("FOA4pssac", FOA4pssac);
-        m_chooser.addOption("Turning Test Auto", TurningTest);
+        // m_chooser.addOption("Turning Test Auto", TurningTest);
 
         SmartDashboard.putData("W Auto Chooser", m_chooser);
     }
