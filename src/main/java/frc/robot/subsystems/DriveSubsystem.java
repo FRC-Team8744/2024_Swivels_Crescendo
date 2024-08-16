@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import java.util.Vector;
-import java.util.concurrent.locks.Lock;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -35,8 +34,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -233,6 +230,7 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
+
     m_odometry.update(
         m_imu.getRotation2d(),
         new SwerveModulePosition[] {
@@ -380,7 +378,7 @@ public class DriveSubsystem extends SubsystemBase {
     rot = isAutoRotate ? autoRotateSpeed : rot;
     SmartDashboard.putNumber("xSpeed", xSpeed);
     SmartDashboard.putNumber("ySpeed", ySpeed);
-    // SmartDashboard.putNumber("rot", rot);
+    SmartDashboard.putNumber("rot", rot);
     //Square inputs
     // xSpeed=Math.signum(xSpeed)* xSpeed*xSpeed;
     // ySpeed=Math.signum(ySpeed)* ySpeed*ySpeed;
@@ -389,7 +387,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
     ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
-    rot = isAutoRotate ? MathUtil.applyDeadband(rot, 0.064, 1.0) : MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
+    rot = isAutoRotate ? rot : MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
 
     // Apply speed scaling
     xSpeed = xSpeed * m_DriverSpeedScaleTran;

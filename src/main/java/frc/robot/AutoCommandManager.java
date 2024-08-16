@@ -7,12 +7,14 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeSpinUp;
@@ -56,11 +58,15 @@ public class AutoCommandManager {
 
         PathPlannerAuto FOA4PieceWing = new PathPlannerAuto("FOA 4 piece wing");
         PathPlannerAuto FOAMidSpeaker2ring = new PathPlannerAuto("FOA Mid speaker 2 ring real");
+        PathPlannerAuto FOA4pssac = new PathPlannerAuto("FOA 4 piece source side all center");
+        PathPlannerAuto TurningTest = new PathPlannerAuto("Test Turning Auto");
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 
         m_chooser.addOption("W Auto", FOA4PieceWing);
         m_chooser.addOption("Mid Speaker 2 ring", FOAMidSpeaker2ring);
+        m_chooser.addOption("FOA4pssac", FOA4pssac);
+        m_chooser.addOption("Turning Test Auto", TurningTest);
 
         SmartDashboard.putData("W Auto Chooser", m_chooser);
     }
@@ -85,7 +91,7 @@ public class AutoCommandManager {
         NamedCommands.registerCommand("RunIntakeOld", new IntakeRun(m_intake, m_shooter, m_index, m_leds));
         NamedCommands.registerCommand("RunIntake", new IntakeSpinUp(m_intake, m_shooter, m_index, m_leds));
         NamedCommands.registerCommand("RunIntakeNew", new IntakeSpinUpAuto(m_intake, m_index, m_shooter, m_leds, m_robotDrive, m_lockAuto));
-        NamedCommands.registerCommand("LockIn", new ParallelCommandGroup(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate), m_lockAuto.toggle()));
+        NamedCommands.registerCommand("LockIn", new ParallelCommandGroup(Commands.runOnce(() -> m_robotDrive.isAutoRotate = true), Commands.runOnce(() -> m_lockAuto.enable())));
         NamedCommands.registerCommand("VisionShoot", (new VisionShoot(m_shooter, m_index, m_leds, m_vision, m_shooter.m_pivot, m_robotDrive)).withTimeout(2).finallyDo(() -> {m_robotDrive.isAutoRotate = false; m_lockAuto.reset();}));
         NamedCommands.registerCommand("ClimbDown", new ClimbDown(m_climber));
         NamedCommands.registerCommand("Start", new InstantCommand(() -> m_shooter.m_pivot.stopAngle()).andThen(new ClimbDown(m_climber).withTimeout(5)));
@@ -93,6 +99,7 @@ public class AutoCommandManager {
         NamedCommands.registerCommand("ShootRingPodium", new InstantCommand (() -> m_shooter.setShooterStuff(24, 3240, "Podium")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
         NamedCommands.registerCommand("ShootRingWing", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3780, "Wing")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
         NamedCommands.registerCommand("ShootRingMiddleStage", new InstantCommand (() -> m_shooter.setShooterStuff(22, 3510, "Middle Stage")).andThen(new ShootRing(m_shooter, m_index, m_leds).withTimeout(3)));
+        NamedCommands.registerCommand("TurnOffWheels", Commands.runOnce(() -> m_robotDrive.setModuleStates(SwerveConstants.kDriveKinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0)))));
 
         NamedCommands.registerCommand("4palc1Preset", new InstantCommand(() -> m_shooter.setShooterStuff(25.5, 3240, "4palc1"))); // First shot
         NamedCommands.registerCommand("4palc1", new ShootRing(m_shooter, m_index, m_leds).withTimeout(3).andThen(new InstantCommand (() -> m_shooter.setShooterStuff(24, 3510, "4palc2")))); // Second shot

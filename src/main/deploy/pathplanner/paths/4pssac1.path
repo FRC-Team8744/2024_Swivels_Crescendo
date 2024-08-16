@@ -32,23 +32,6 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Preset",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "4pssac1Preset"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Start",
       "waypointRelativePos": 0,
       "command": {
@@ -59,6 +42,23 @@
               "type": "named",
               "data": {
                 "name": "Start"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Lock In",
+      "waypointRelativePos": 0.7,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "RunIntakeNew"
               }
             }
           ]

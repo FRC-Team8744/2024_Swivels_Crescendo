@@ -20,13 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LockIn"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ClimbDown"
+            "name": "TurnOffWheels"
           }
         },
         {
@@ -44,7 +38,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LockIn"
+            "name": "TurnOffWheels"
           }
         },
         {
@@ -62,7 +56,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LockIn"
+            "name": "TurnOffWheels"
           }
         },
         {
@@ -80,7 +74,7 @@
         {
           "type": "named",
           "data": {
-            "name": "LockIn"
+            "name": "TurnOffWheels"
           }
         },
         {

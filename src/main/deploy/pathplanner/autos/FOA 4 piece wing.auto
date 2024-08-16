@@ -14,12 +14,6 @@
         {
           "type": "named",
           "data": {
-            "name": "LockIn"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "VisionShoot"
           }
         },
@@ -27,6 +21,12 @@
           "type": "path",
           "data": {
             "pathName": "4 piece close right"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TurnOffWheels"
           }
         },
         {
@@ -44,6 +44,12 @@
         {
           "type": "named",
           "data": {
+            "name": "TurnOffWheels"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "VisionShoot"
           }
         },
@@ -51,6 +57,18 @@
           "type": "path",
           "data": {
             "pathName": "4 piece close left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TurnOffWheels"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RunIntakeNew"
           }
         },
         {

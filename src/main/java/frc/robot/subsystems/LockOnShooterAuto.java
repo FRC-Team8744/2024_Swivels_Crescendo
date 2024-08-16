@@ -64,4 +64,8 @@ public class LockOnShooterAuto extends SubsystemBase {
     toggle = false;
     m_pivot.stopAngle();
   }
+
+  public void enable() {
+    toggle = true;
+  }
 }

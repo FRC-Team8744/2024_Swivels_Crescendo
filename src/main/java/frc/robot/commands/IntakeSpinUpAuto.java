@@ -31,10 +31,10 @@ public class IntakeSpinUpAuto extends SequentialCommandGroup {
     lockOnShooter = ls;
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new IntakeRun(m_intake, m_shooter, m_index, m_leds)
+    addCommands(new IntakeRun(m_intake, m_shooter, m_index, m_leds).withTimeout(2)
     .finallyDo(() -> {
-      lockOnShooter.toggle(); 
-      m_driveSubsystem.isAutoRotate = !m_driveSubsystem.isAutoRotate;
+      lockOnShooter.enable(); 
+      m_driveSubsystem.isAutoRotate = true;
     }));
   }
 }

@@ -140,8 +140,8 @@ public class RobotContainer {
       new JoystickButton(m_driverController, Button.kRightBumper.value)
       .whileTrue(new VisionShoot(m_shooter, m_index, m_leds, m_Vision2, m_shooter.m_pivot, m_robotDrive)
       .finallyDo(() -> {
-        m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate;
-        lockOnShooter.toggle();
+        m_robotDrive.isAutoRotate = false; 
+        lockOnShooter.reset();
       }));
      // .andThen(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate)
      // .alongWith(Commands.runOnce(() ->  lockOnShooter.toggle()))));
