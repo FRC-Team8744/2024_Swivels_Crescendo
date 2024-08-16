@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import java.lang.reflect.Field;
 import java.util.Vector;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -26,14 +27,18 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -88,8 +93,20 @@ public class DriveSubsystem extends SubsystemBase {
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry;
 
+  ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+
+  GenericEntry PigeonYaw = 
+  tab.add("Pigeon Yaw", 0)
+    .withPosition(0, 0)
+    .withSize(2, 1)
+    .getEntry();
+
   // Create Field2d for robot and trajectory visualizations.
-  public Field2d m_field;
+  public Field2d m_field; 
+  // tab.add("Field", 0)
+  //   .withPosition(0, 0)
+  //   .withSize(8, 4)
+  //   .getEntry();
 
   private String MyName;
   
@@ -225,10 +242,15 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
+  public void UpdateShuffleBoardValues() {
+    PigeonYaw.setDouble(m_imu.getYaw().getValueAsDouble());
+  }
+
   // private double newX = m_poseEstimator.getEstimatedPosition().getX();
 
   @Override
   public void periodic() {
+    UpdateShuffleBoardValues();
     // Update the odometry in the periodic block
 
     m_odometry.update(
@@ -394,7 +416,7 @@ public class DriveSubsystem extends SubsystemBase {
     ySpeed = ySpeed * m_DriverSpeedScaleTran;
     rot = rot * m_DriverSpeedScaleRot;
 
-    if (isAutoRotate == false && rot == 0 && rotationTimer.hasElapsed(0.1)) {
+    if (isAutoRotate == false && Math.abs(rot / ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND) <= 0.1 && rotationTimer.hasElapsed(0.1)) {
       if (roboNoSpino) {
         goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
         roboNoSpino = false;
