@@ -33,7 +33,10 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -95,12 +98,144 @@ public class DriveSubsystem extends SubsystemBase {
 
   ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
 
-  GenericEntry PigeonYaw = 
-  tab.add("Pigeon Yaw", 0)
-    .withPosition(0, 0)
+  GenericEntry m_poseX =
+  tab.add("Estimated Pose X", 0)
+    .withPosition(10, 0)
     .withSize(2, 1)
     .getEntry();
 
+  GenericEntry m_poseY =
+  tab.add("Estimated Pose Y", 0)
+    .withPosition(10, 1)
+    .withSize(2, 1)
+    .getEntry();
+
+  GenericEntry m_poseRot =
+  tab.add("Estimated Pose Rotation", 0)
+    .withPosition(10, 2)
+    .withSize(2, 1)
+    .getEntry();
+
+  GenericEntry m_GoalAngle =
+  tab.add("Goal Angle", 0)
+    .withPosition(10, 3)
+    .withSize(2, 1)
+    .getEntry();
+
+  GenericEntry m_xSpeed =
+  tab.add("X Speed", 0)
+    .withPosition(10, 4)
+    .withSize(2, 1)
+    .getEntry();
+
+  GenericEntry m_ySpeed =
+  tab.add("Y Speed", 0)
+    .withPosition(10, 5)
+    .withSize(2, 1)
+    .getEntry();
+
+  GenericEntry m_rSpeed =
+  tab.add("Spin Speed", 0)
+    .withPosition(10, 6)
+    .withSize(2, 1)
+    .getEntry();
+
+  GenericEntry m_hypot =
+  tab.add("Hypot", 0)
+    .withPosition(10, 7)
+    .withSize(2, 1)
+    .getEntry();
+
+  GenericEntry m_alliance =
+  tab.add("Alliance", "None")
+    .withPosition(10, 8)
+    .withSize(2, 1)
+    .getEntry();
+
+  ShuffleboardContainer m_pigeonValues = 
+  tab.getLayout("Pigeon Values", BuiltInLayouts.kList)
+    .withPosition(0, 0)
+    .withSize(2, 3);
+
+  ShuffleboardContainer m_frValues = 
+  tab.getLayout("Front Right", BuiltInLayouts.kList)
+    .withPosition(2, 0)
+    .withSize(2, 3);
+
+  ShuffleboardContainer m_flValues = 
+  tab.getLayout("Front Left", BuiltInLayouts.kList)
+    .withPosition(4, 0)
+    .withSize(2, 3);
+
+  ShuffleboardContainer m_brValues = 
+  tab.getLayout("Front Right", BuiltInLayouts.kList)
+    .withPosition(6, 0)
+    .withSize(2, 3);
+
+  ShuffleboardContainer m_blValues = 
+  tab.getLayout("Front Right", BuiltInLayouts.kList)
+    .withPosition(8, 0)    .withSize(2, 3);
+
+    //Front Right Module Values
+    GenericEntry m_frValuesAEA = m_frValues.add("Absolute Encoder Angle", 0).withSize(2,1).getEntry();
+    GenericEntry m_frValuesTMA = m_frValues.add("Turn Motor Angle", 0).withSize(2, 1).getEntry();
+    GenericEntry m_frValuesV = m_frValues.add("Velocity", 0).withSize(2, 1).getEntry();
+    GenericEntry m_frValuesDC = m_frValues.add("Drive Current", 0).withSize(2, 1).getEntry();
+    GenericEntry m_frValuesTC = m_frValues.add("Turn Current", 0).withSize(2, 1).getEntry();
+    //Front Left Module Values
+    GenericEntry m_flValuesAEA = m_flValues.add("Absolute Encoder Angle", 0).withSize(2,1).getEntry();
+    GenericEntry m_flValuesTMA = m_flValues.add("Turn Motor Angle", 0).withSize(2, 1).getEntry();
+    GenericEntry m_flValuesV = m_flValues.add("Velocity", 0).withSize(2, 1).getEntry();
+    GenericEntry m_flValuesDC = m_flValues.add("Drive Current", 0).withSize(2, 1).getEntry();
+    GenericEntry m_flValuesTC = m_flValues.add("Turn Current", 0).withSize(2, 1).getEntry();
+    //Back Right Module Values
+    GenericEntry m_brValuesAEA = m_brValues.add("Absolute Encoder Angle", 0).withSize(2,1).getEntry();
+    GenericEntry m_brValuesTMA = m_brValues.add("Turn Motor Angle", 0).withSize(2, 1).getEntry();
+    GenericEntry m_brValuesV = m_brValues.add("Velocity", 0).withSize(2, 1).getEntry();
+    GenericEntry m_brValuesDC = m_brValues.add("Drive Current", 0).withSize(2, 1).getEntry();
+    GenericEntry m_brValuesTC = m_brValues.add("Turn Current", 0).withSize(2, 1).getEntry();
+    //Back Left Module Values
+    GenericEntry m_blValuesAEA = m_blValues.add("Absolute Encoder Angle", 0).withSize(2,1).getEntry();
+    GenericEntry m_blValuesTMA = m_blValues.add("Turn Motor Angle", 0).withSize(2, 1).getEntry();
+    GenericEntry m_blValuesV = m_blValues.add("Velocity", 0).withSize(2, 1).getEntry();
+    GenericEntry m_blValuesDC = m_blValues.add("Drive Current", 0).withSize(2, 1).getEntry();
+    GenericEntry m_blValuesTC = m_blValues.add("Turn Current", 0).withSize(2, 1).getEntry();
+    // Pigeon Values
+    // m_pigeonValues.add("Yaw", m_imu.getYaw().getValueAsDouble());
+    // m_pigeonValues.add("Roll", m_imu.getRoll().getValueAsDouble());
+    // m_pigeonValues.add("Pitch", m_imu.getPitch().getValueAsDouble());
+    // m_pigeonValues.add("Acceleration X", m_imu.getAccelerationX().getValueAsDouble());
+    // m_pigeonValues.add("Acceleration Y", m_imu.getAccelerationY().getValueAsDouble());
+    // m_pigeonValues.add("Acceleration Z", m_imu.getAccelerationZ().getValueAsDouble());
+    // m_pigeonValues.add("Accumulated Gyro X", m_imu.getAccumGyroX().getValueAsDouble());
+    // m_pigeonValues.add("Accumulated Gyro Y", m_imu.getAccumGyroY().getValueAsDouble());
+    // m_pigeonValues.add("Accumulated Gyro Z", m_imu.getAccumGyroZ().getValueAsDouble());
+    // m_pigeonValues.add("Pigeon Angular Velocity X", m_imu.getAngularVelocityXDevice().getValueAsDouble());
+    // m_pigeonValues.add("Pigeon Angular Velocity Y", m_imu.getAngularVelocityYDevice().getValueAsDouble());
+    // m_pigeonValues.add("Pigeon Angular Velocity Z", m_imu.getAngularVelocityZDevice().getValueAsDouble());
+    // m_pigeonValues.add("World Angular Velocity X", m_imu.getAngularVelocityXWorld().getValueAsDouble());
+    // m_pigeonValues.add("World Angular Velocity Y", m_imu.getAngularVelocityYWorld().getValueAsDouble());
+    // m_pigeonValues.add("World Angluar Velocity Z", m_imu.getAngularVelocityZWorld().getValueAsDouble());
+    // m_pigeonValues.add("Gravity Vector X", m_imu.getGravityVectorX().getValueAsDouble());
+    // m_pigeonValues.add("Gravity Vector Y", m_imu.getGravityVectorY().getValueAsDouble());
+    // m_pigeonValues.add("Gravity Vector Z", m_imu.getGravityVectorZ().getValueAsDouble());
+    // m_pigeonValues.add("Magnetic Field X", m_imu.getMagneticFieldX().getValueAsDouble());
+    // m_pigeonValues.add("Magnetic Field Y", m_imu.getMagneticFieldY().getValueAsDouble());
+    // m_pigeonValues.add("Magnetic Field Z", m_imu.getMagneticFieldZ().getValueAsDouble());
+    // m_pigeonValues.add("No Motion Count", m_imu.getNoMotionCount().getValueAsDouble());
+    // m_pigeonValues.add("Quaternion W", m_imu.getQuatW().getValueAsDouble());
+    // m_pigeonValues.add("Quaternion X", m_imu.getQuatX().getValueAsDouble());
+    // m_pigeonValues.add("Quaternion Y", m_imu.getQuatY().getValueAsDouble());
+    // m_pigeonValues.add("Quaternion Z", m_imu.getQuatZ().getValueAsDouble());
+    // m_pigeonValues.add("Rate", m_imu.getRate());
+    // m_pigeonValues.add("Raw Magnetic Field X", m_imu.getRawMagneticFieldX().getValueAsDouble());
+    // m_pigeonValues.add("Raw Magnetic Field Y", m_imu.getRawMagneticFieldY().getValueAsDouble());
+    // m_pigeonValues.add("Raw Magnetic Field Z", m_imu.getRawMagneticFieldZ().getValueAsDouble());
+    // m_pigeonValues.add("Rotation 2D", m_imu.getRotation2d());
+    // m_pigeonValues.add("Rotation 3D", m_imu.getRotation3d());
+    // m_pigeonValues.add("Supply Voltage", m_imu.getSupplyVoltage().getValueAsDouble());
+    // m_pigeonValues.add("Temperature", m_imu.getTemperature().getValueAsDouble());
+    // m_pigeonValues.add("Up Time", m_imu.getUpTime().getValueAsDouble());
   // Create Field2d for robot and trajectory visualizations.
   public Field2d m_field; 
   // tab.add("Field", 0)
@@ -242,15 +377,81 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
-  public void UpdateShuffleBoardValues() {
-    PigeonYaw.setDouble(m_imu.getYaw().getValueAsDouble());
+  public void updateShuffleBoardValues(double xSpeed, double ySpeed, double rSpeed) {
+    m_xSpeed.setDouble(xSpeed);
+    m_ySpeed.setDouble(ySpeed);
+    m_rSpeed.setDouble(rSpeed);
+    m_poseX.setDouble(m_poseEstimator.getEstimatedPosition().getX());
+    m_poseY.setDouble(m_poseEstimator.getEstimatedPosition().getY());
+    m_poseRot.setDouble(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+    m_GoalAngle.setDouble(goalAngle);
+    //Front Right Module Values
+    m_frValuesAEA.setDouble(m_frontRight.getCanCoder());
+    m_frValuesTMA.setDouble(m_frontRight.getAngle().getDegrees());
+    m_frValuesV.setDouble(m_frontRight.getVelocity());
+    m_frValuesDC.setDouble(m_frontRight.getCurrent());
+    m_frValuesTC.setDouble(m_frontRight.getTurnCurrent());
+    //Front Left Module Values
+    m_flValuesAEA.setDouble(m_frontLeft.getCanCoder());
+    m_flValuesTMA.setDouble(m_frontLeft.getAngle().getDegrees());
+    m_flValuesV.setDouble(m_frontLeft.getVelocity());
+    m_flValuesDC.setDouble(m_frontLeft.getCurrent());
+    m_flValuesTC.setDouble(m_frontLeft.getTurnCurrent());
+    //Back Right Module Values
+    m_brValuesAEA.setDouble(m_rearRight.getCanCoder());
+    m_brValuesTMA.setDouble(m_rearRight.getAngle().getDegrees());
+    m_brValuesV.setDouble(m_rearRight.getVelocity());
+    m_brValuesDC.setDouble(m_rearRight.getCurrent());
+    m_brValuesTC.setDouble(m_rearRight.getTurnCurrent());
+    //Back Left Module Values
+    m_blValuesAEA.setDouble(m_rearLeft.getCanCoder());
+    m_blValuesTMA.setDouble(m_rearLeft.getAngle().getDegrees());
+    m_blValuesV.setDouble(m_rearLeft.getVelocity());
+    m_blValuesDC.setDouble(m_rearLeft.getCurrent());
+    m_blValuesTC.setDouble(m_rearLeft.getTurnCurrent());
+    // Pigeon Values
+    // m_pigeonValues.add("Yaw", m_imu.getYaw().getValueAsDouble());
+    // m_pigeonValues.add("Roll", m_imu.getRoll().getValueAsDouble());
+    // m_pigeonValues.add("Pitch", m_imu.getPitch().getValueAsDouble());
+    // m_pigeonValues.add("Acceleration X", m_imu.getAccelerationX().getValueAsDouble());
+    // m_pigeonValues.add("Acceleration Y", m_imu.getAccelerationY().getValueAsDouble());
+    // m_pigeonValues.add("Acceleration Z", m_imu.getAccelerationZ().getValueAsDouble());
+    // m_pigeonValues.add("Accumulated Gyro X", m_imu.getAccumGyroX().getValueAsDouble());
+    // m_pigeonValues.add("Accumulated Gyro Y", m_imu.getAccumGyroY().getValueAsDouble());
+    // m_pigeonValues.add("Accumulated Gyro Z", m_imu.getAccumGyroZ().getValueAsDouble());
+    // m_pigeonValues.add("Pigeon Angular Velocity X", m_imu.getAngularVelocityXDevice().getValueAsDouble());
+    // m_pigeonValues.add("Pigeon Angular Velocity Y", m_imu.getAngularVelocityYDevice().getValueAsDouble());
+    // m_pigeonValues.add("Pigeon Angular Velocity Z", m_imu.getAngularVelocityZDevice().getValueAsDouble());
+    // m_pigeonValues.add("World Angular Velocity X", m_imu.getAngularVelocityXWorld().getValueAsDouble());
+    // m_pigeonValues.add("World Angular Velocity Y", m_imu.getAngularVelocityYWorld().getValueAsDouble());
+    // m_pigeonValues.add("World Angluar Velocity Z", m_imu.getAngularVelocityZWorld().getValueAsDouble());
+    // m_pigeonValues.add("Gravity Vector X", m_imu.getGravityVectorX().getValueAsDouble());
+    // m_pigeonValues.add("Gravity Vector Y", m_imu.getGravityVectorY().getValueAsDouble());
+    // m_pigeonValues.add("Gravity Vector Z", m_imu.getGravityVectorZ().getValueAsDouble());
+    // m_pigeonValues.add("Magnetic Field X", m_imu.getMagneticFieldX().getValueAsDouble());
+    // m_pigeonValues.add("Magnetic Field Y", m_imu.getMagneticFieldY().getValueAsDouble());
+    // m_pigeonValues.add("Magnetic Field Z", m_imu.getMagneticFieldZ().getValueAsDouble());
+    // m_pigeonValues.add("No Motion Count", m_imu.getNoMotionCount().getValueAsDouble());
+    // m_pigeonValues.add("Quaternion W", m_imu.getQuatW().getValueAsDouble());
+    // m_pigeonValues.add("Quaternion X", m_imu.getQuatX().getValueAsDouble());
+    // m_pigeonValues.add("Quaternion Y", m_imu.getQuatY().getValueAsDouble());
+    // m_pigeonValues.add("Quaternion Z", m_imu.getQuatZ().getValueAsDouble());
+    // m_pigeonValues.add("Rate", m_imu.getRate());
+    // m_pigeonValues.add("Raw Magnetic Field X", m_imu.getRawMagneticFieldX().getValueAsDouble());
+    // m_pigeonValues.add("Raw Magnetic Field Y", m_imu.getRawMagneticFieldY().getValueAsDouble());
+    // m_pigeonValues.add("Raw Magnetic Field Z", m_imu.getRawMagneticFieldZ().getValueAsDouble());
+    // m_pigeonValues.add("Rotation 2D", m_imu.getRotation2d());
+    // m_pigeonValues.add("Rotation 3D", m_imu.getRotation3d());
+    // m_pigeonValues.add("Supply Voltage", m_imu.getSupplyVoltage().getValueAsDouble());
+    // m_pigeonValues.add("Temperature", m_imu.getTemperature().getValueAsDouble());
+    // m_pigeonValues.add("Up Time", m_imu.getUpTime().getValueAsDouble());
   }
 
   // private double newX = m_poseEstimator.getEstimatedPosition().getX();
 
   @Override
   public void periodic() {
-    UpdateShuffleBoardValues();
+    //updateShuffleBoardValues();
     // Update the odometry in the periodic block
 
     m_odometry.update(
@@ -306,9 +507,9 @@ public class DriveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
     }
 
-  SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
-  SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
-  SmartDashboard.putNumber("Estimated Pose Rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+  // SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
+  // SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
+  // SmartDashboard.putNumber("Estimated Pose Rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
   // SmartDashboard.putBoolean("isAutoRotate", isAutoRotate);
 
   // SmartDashboard.putNumber("Robot Velocity X", xVelocity);
@@ -397,10 +598,11 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    updateShuffleBoardValues(xSpeed, ySpeed, rot);
     rot = isAutoRotate ? autoRotateSpeed : rot;
-    SmartDashboard.putNumber("xSpeed", xSpeed);
-    SmartDashboard.putNumber("ySpeed", ySpeed);
-    SmartDashboard.putNumber("rot", rot);
+    // SmartDashboard.putNumber("xSpeed", xSpeed);
+    // SmartDashboard.putNumber("ySpeed", ySpeed);
+    // SmartDashboard.putNumber("rot", rot);
     //Square inputs
     // xSpeed=Math.signum(xSpeed)* xSpeed*xSpeed;
     // ySpeed=Math.signum(ySpeed)* ySpeed*ySpeed;
@@ -431,7 +633,7 @@ public class DriveSubsystem extends SubsystemBase {
       roboNoSpino = true;
       rotationTimer.restart();
     }
-    SmartDashboard.putNumber("Goal Angle", goalAngle);
+    //SmartDashboard.putNumber("Goal Angle", goalAngle);
 
     var swerveModuleStates =
         SwerveConstants.kDriveKinematics.toSwerveModuleStates(
@@ -503,11 +705,17 @@ public class DriveSubsystem extends SubsystemBase {
   public double getEstimatedPoseHyp() {
     var alliance = DriverStation.getAlliance();
     if (alliance.get() == DriverStation.Alliance.Red) {
-      SmartDashboard.putNumber("Hypot", Math.hypot(16.459 - m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY()) - 5.55);
+      m_alliance.setString("Red");
+      m_hypot.setDouble(Math.hypot(16.459 - m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY()) - 5.55);
       return Math.hypot(16.459 - m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY() - 5.55);
     }
     else {
-      SmartDashboard.putNumber("Hypot", Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY()) - 5.55);
+      if (alliance.get() == DriverStation.Alliance.Blue) {
+        m_alliance.setString("Blue");
+      } else {
+        m_alliance.setString("None");
+      }
+      m_hypot.setDouble(Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY()) - 5.55);
       return Math.hypot(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY() - 5.55);
     }
   }
