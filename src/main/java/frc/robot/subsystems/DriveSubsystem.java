@@ -324,7 +324,9 @@ public class DriveSubsystem extends SubsystemBase {
 
           // Create and push Field2d to SmartDashboard.
     m_field = new Field2d();
+
     SmartDashboard.putData(m_field);
+
     // Configure the AutoBuilder last
     
     AutoBuilder.configureHolonomic(
@@ -736,5 +738,12 @@ public class DriveSubsystem extends SubsystemBase {
       originalY = newY;
       m_timerY.restart();
     }
+  }
+
+  /**
+   * @param pose The x and y position the robot thinks it's at.
+   */
+  public void setEstimatedPose(Pose2d pose) {
+    m_poseEstimator.resetPosition(m_imu.getRotation2d(), getModulePositions(), pose);
   }
 }

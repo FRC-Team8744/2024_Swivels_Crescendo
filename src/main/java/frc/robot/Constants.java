@@ -207,4 +207,12 @@ public final class Constants {
         new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+
+  public static final class TrajectoryConstants {
+    public static final Translation2d blueWingNote1 = new Translation2d(Units.inchesToMeters(114), Units.inchesToMeters(161.5));
+    public static final Translation2d blueWingNote2 = new Translation2d(Units.inchesToMeters(114), Units.inchesToMeters(218.5));
+    public static final Translation2d blueWingNote3 = new Translation2d(Units.inchesToMeters(114), Units.inchesToMeters(275.5));
+
+    public static final Translation2d start = new Translation2d(Units.inchesToMeters(0), Units.inchesToMeters(0));
+  }
 }
