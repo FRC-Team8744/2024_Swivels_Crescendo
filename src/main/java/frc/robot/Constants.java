@@ -194,7 +194,7 @@ public final class Constants {
 
   public static final class AutoConstants {
     public static final double kMaxSpeedMetersPerSecond = (4.4 * kMaxSpeedPercentAuto) / 100;
-    public static final double kMaxAccelerationMetersPerSecondSquared = (30 * kMaxAccelerationPercent) / 100;
+    public static final double kMaxAccelerationMetersPerSecondSquared = (3 * kMaxAccelerationPercent) / 100;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
@@ -213,6 +213,11 @@ public final class Constants {
     public static final Translation2d blueWingNote2 = new Translation2d(Units.inchesToMeters(114), Units.inchesToMeters(218.5));
     public static final Translation2d blueWingNote3 = new Translation2d(Units.inchesToMeters(114), Units.inchesToMeters(275.5));
 
-    public static final Translation2d start = new Translation2d(Units.inchesToMeters(0), Units.inchesToMeters(0));
+    public static final Translation2d redWingNote1 = new Translation2d(16.4592 - Units.inchesToMeters(114), Units.inchesToMeters(161.5));
+    public static final Translation2d redWingNote2 = new Translation2d(16.4592 - Units.inchesToMeters(114), Units.inchesToMeters(218.5));
+    public static final Translation2d redWingNote3 = new Translation2d(16.4592 - Units.inchesToMeters(114), Units.inchesToMeters(275.5));
+
+    public static final Translation2d blueStart = new Translation2d(1.30, 5.56);
+    public static final Translation2d redStart = new Translation2d(16.4592 - 1.30, 5.56);
   }
 }

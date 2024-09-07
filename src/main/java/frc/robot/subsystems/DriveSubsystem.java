@@ -19,6 +19,8 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -40,6 +42,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.AutoCommandManager;
 import frc.robot.Constants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
@@ -177,29 +180,29 @@ public class DriveSubsystem extends SubsystemBase {
     .withPosition(8, 0)    .withSize(2, 3);
 
     //Front Right Module Values
-    GenericEntry m_frValuesAEA = m_frValues.add("Absolute Encoder Angle", 0).withSize(2,1).getEntry();
-    GenericEntry m_frValuesTMA = m_frValues.add("Turn Motor Angle", 0).withSize(2, 1).getEntry();
-    GenericEntry m_frValuesV = m_frValues.add("Velocity", 0).withSize(2, 1).getEntry();
-    GenericEntry m_frValuesDC = m_frValues.add("Drive Current", 0).withSize(2, 1).getEntry();
-    GenericEntry m_frValuesTC = m_frValues.add("Turn Current", 0).withSize(2, 1).getEntry();
+    GenericEntry m_frValuesAEA = m_frValues.add("Absolute Encoder Angle1", 0).withSize(2,1).getEntry();
+    GenericEntry m_frValuesTMA = m_frValues.add("Turn Motor Angle1", 0).withSize(2, 1).getEntry();
+    GenericEntry m_frValuesV = m_frValues.add("Velocity1", 0).withSize(2, 1).getEntry();
+    GenericEntry m_frValuesDC = m_frValues.add("Drive Current1", 0).withSize(2, 1).getEntry();
+    GenericEntry m_frValuesTC = m_frValues.add("Turn Current1", 0).withSize(2, 1).getEntry();
     //Front Left Module Values
-    GenericEntry m_flValuesAEA = m_flValues.add("Absolute Encoder Angle", 0).withSize(2,1).getEntry();
-    GenericEntry m_flValuesTMA = m_flValues.add("Turn Motor Angle", 0).withSize(2, 1).getEntry();
-    GenericEntry m_flValuesV = m_flValues.add("Velocity", 0).withSize(2, 1).getEntry();
-    GenericEntry m_flValuesDC = m_flValues.add("Drive Current", 0).withSize(2, 1).getEntry();
-    GenericEntry m_flValuesTC = m_flValues.add("Turn Current", 0).withSize(2, 1).getEntry();
+    GenericEntry m_flValuesAEA = m_flValues.add("Absolute Encoder Angle2", 0).withSize(2,1).getEntry();
+    GenericEntry m_flValuesTMA = m_flValues.add("Turn Motor Angle2", 0).withSize(2, 1).getEntry();
+    GenericEntry m_flValuesV = m_flValues.add("Velocity2", 0).withSize(2, 1).getEntry();
+    GenericEntry m_flValuesDC = m_flValues.add("Drive Current2", 0).withSize(2, 1).getEntry();
+    GenericEntry m_flValuesTC = m_flValues.add("Turn Current2", 0).withSize(2, 1).getEntry();
     //Back Right Module Values
-    GenericEntry m_brValuesAEA = m_brValues.add("Absolute Encoder Angle", 0).withSize(2,1).getEntry();
-    GenericEntry m_brValuesTMA = m_brValues.add("Turn Motor Angle", 0).withSize(2, 1).getEntry();
-    GenericEntry m_brValuesV = m_brValues.add("Velocity", 0).withSize(2, 1).getEntry();
-    GenericEntry m_brValuesDC = m_brValues.add("Drive Current", 0).withSize(2, 1).getEntry();
-    GenericEntry m_brValuesTC = m_brValues.add("Turn Current", 0).withSize(2, 1).getEntry();
+    GenericEntry m_brValuesAEA = m_brValues.add("Absolute Encoder Angle3", 0).withSize(2,1).getEntry();
+    GenericEntry m_brValuesTMA = m_brValues.add("Turn Motor Angle3", 0).withSize(2, 1).getEntry();
+    GenericEntry m_brValuesV = m_brValues.add("Velocity3", 0).withSize(2, 1).getEntry();
+    GenericEntry m_brValuesDC = m_brValues.add("Drive Current3", 0).withSize(2, 1).getEntry();
+    GenericEntry m_brValuesTC = m_brValues.add("Turn Current3", 0).withSize(2, 1).getEntry();
     //Back Left Module Values
-    GenericEntry m_blValuesAEA = m_blValues.add("Absolute Encoder Angle", 0).withSize(2,1).getEntry();
-    GenericEntry m_blValuesTMA = m_blValues.add("Turn Motor Angle", 0).withSize(2, 1).getEntry();
-    GenericEntry m_blValuesV = m_blValues.add("Velocity", 0).withSize(2, 1).getEntry();
-    GenericEntry m_blValuesDC = m_blValues.add("Drive Current", 0).withSize(2, 1).getEntry();
-    GenericEntry m_blValuesTC = m_blValues.add("Turn Current", 0).withSize(2, 1).getEntry();
+    GenericEntry m_blValuesAEA = m_blValues.add("Absolute Encoder Angle4", 0).withSize(2,1).getEntry();
+    GenericEntry m_blValuesTMA = m_blValues.add("Turn Motor Angle4", 0).withSize(2, 1).getEntry();
+    GenericEntry m_blValuesV = m_blValues.add("Velocity4", 0).withSize(2, 1).getEntry();
+    GenericEntry m_blValuesDC = m_blValues.add("Drive Current4", 0).withSize(2, 1).getEntry();
+    GenericEntry m_blValuesTC = m_blValues.add("Turn Current4", 0).withSize(2, 1).getEntry();
     // Pigeon Values
     // m_pigeonValues.add("Yaw", m_imu.getYaw().getValueAsDouble());
     // m_pigeonValues.add("Roll", m_imu.getRoll().getValueAsDouble());
@@ -472,7 +475,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_poseEstimator.update(m_imu.getRotation2d(), getModulePositions());
     
     // Update robot position on Field2d.
-    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
+    if (AutoCommandManager.isSim = false) {m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());}
 
     if (Constants.controllerMode == "j") {
       if (m_Joystick.getRawAxis(3) < 0) {
@@ -745,5 +748,9 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setEstimatedPose(Pose2d pose) {
     m_poseEstimator.resetPosition(m_imu.getRotation2d(), getModulePositions(), pose);
+  }
+
+  public void zeroEstimatedPose() {
+    m_poseEstimator.resetPosition(m_imu.getRotation2d(), getModulePositions(), new Pose2d(new Translation2d(0, 0), new Rotation2d(0)));
   }
 }

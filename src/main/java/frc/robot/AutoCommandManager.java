@@ -15,7 +15,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,6 +32,8 @@ import frc.robot.commands.IntakeSpinUp;
 import frc.robot.commands.IntakeSpinUpAuto;
 import frc.robot.commands.ShootRing;
 import frc.robot.commands.VisionShoot;
+import frc.robot.commands.autoCommands.Wing;
+import frc.robot.commands.autoCommands.StraightLine;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Index;
@@ -41,7 +42,6 @@ import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.LockOnShooterAuto;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision2;
-import frc.robot.TrajectoryAutoPaths.BlueWing;
 
 /** Add your docs here. */
 public class AutoCommandManager {
@@ -51,6 +51,8 @@ public class AutoCommandManager {
     public HolonomicDriveController holonomicDriveController;
     public IntakeSpinUpAuto m_runIntakeNew;
     public WrapperCommand m_visionShoot;
+    
+    public static boolean isSim;
 
     public TrajectoryConfig forwardConfig;
     public TrajectoryConfig reverseConfig;
@@ -87,22 +89,25 @@ public class AutoCommandManager {
             new PIDController(AutoConstants.kPYController, 0, 0),
             thetaController);
 
-        TrajectoryConfig forwardConfig = new TrajectoryConfig(
+        forwardConfig = new TrajectoryConfig(
             AutoConstants.kMaxSpeedMetersPerSecond, 
             AutoConstants.kMaxAccelerationMetersPerSecondSquared)
             .setKinematics(SwerveConstants.kDriveKinematics);
 
-        TrajectoryConfig reverseConfig = new TrajectoryConfig(
+        reverseConfig = new TrajectoryConfig(
             AutoConstants.kMaxSpeedMetersPerSecond, 
             AutoConstants.kMaxAccelerationMetersPerSecondSquared)
             .setKinematics(SwerveConstants.kDriveKinematics)
             .setReversed(true);
 
+        isSim = true;
+
         // PathPlannerAuto FOA4PieceWing = new PathPlannerAuto("FOA 4 piece wing");
         // PathPlannerAuto FOAMidSpeaker2ring = new PathPlannerAuto("FOA Mid speaker 2 ring real");
         // PathPlannerAuto FOA4pssac = new PathPlannerAuto("FOA 4 piece source side all center");
         // PathPlannerAuto TurningTest = new PathPlannerAuto("Test Turning Auto");
-        SequentialCommandGroup BlueWing2Piece = new BlueWing(m_robotDrive, this);
+        SequentialCommandGroup BlueWing2Piece = new Wing(m_robotDrive, this);
+        SequentialCommandGroup StraightLine = new StraightLine(m_robotDrive, this);
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 
@@ -112,6 +117,7 @@ public class AutoCommandManager {
         // m_chooser.addOption("Turning Test Auto", TurningTest);
 
         m_chooser.addOption("Blue Wing 2 Piece", BlueWing2Piece);
+        m_chooser.addOption("StraightLine", StraightLine);
 
         SmartDashboard.putData("W Auto Chooser", m_chooser);
     }
@@ -120,7 +126,7 @@ public class AutoCommandManager {
         return m_chooser;
     }
 
-    public Command getAutoManagerSelected(){
+    public Command getAutoManagerSelected() {
         return m_chooser.getSelected();
     }
 

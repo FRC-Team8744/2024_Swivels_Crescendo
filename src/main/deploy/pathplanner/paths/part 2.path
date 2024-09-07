@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.59,
-        "y": 3.04
+        "x": 15.348755420229981,
+        "y": 5.477759506502913
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.401101586796611,
-        "y": 1.4989870778600332
+        "x": 17.15985700702659,
+        "y": 3.9367465843629463
       },
       "isLocked": false,
       "linkedName": "2 ring center part 1 (trueely)"

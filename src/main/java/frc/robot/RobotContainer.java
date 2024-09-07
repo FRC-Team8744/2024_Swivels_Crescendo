@@ -148,8 +148,10 @@ public class RobotContainer {
 
       new POVButton(m_driverController, 0)
       .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
+      // new JoystickButton(m_driverController, Button.kBack.value)
+      // .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
       new JoystickButton(m_driverController, Button.kBack.value)
-      .whileTrue(new RunCommand(() -> m_robotDrive.zeroIMU()));
+      .whileTrue(new RunCommand(() -> m_robotDrive.zeroEstimatedPose()));
       new JoystickButton(m_driverController, Button.kLeftStick.value)
       .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.toggleMaxOutput()));
       new JoystickButton(m_driverController, Button.kStart.value)
