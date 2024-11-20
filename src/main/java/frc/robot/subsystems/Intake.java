@@ -12,7 +12,7 @@ import frc.robot.Constants.MechanismConstants;
 
 public class Intake extends SubsystemBase {
   public double intakeSpeed = 0.7;
-  private CANSparkMax frontIntakeSparkMax = new CANSparkMax(MechanismConstants.kFrontIntakePort, MotorType.kBrushless);
+  // private CANSparkMax frontIntakeSparkMax = new CANSparkMax(MechanismConstants.kFrontIntakePort, MotorType.kBrushless);
   private CANSparkMax rearIntakeSparkMax = new CANSparkMax(MechanismConstants.kRearIntakePort, MotorType.kBrushless);
   private CANSparkMax undertakerSparkMax = new CANSparkMax(MechanismConstants.kUndertakerIntakePort, MotorType.kBrushless);
   /** Creates a new Intake. */
@@ -21,19 +21,19 @@ public class Intake extends SubsystemBase {
   }
   
   public void donutGrab(double speed) {
-    frontIntakeSparkMax.set(-speed); 
+    // frontIntakeSparkMax.set(-speed); 
     rearIntakeSparkMax.set(-speed * 2/3); //Ratio of wheel sizes
     undertakerSparkMax.set(speed);
   }
  
     public void donutRelease(double speed) {
-    frontIntakeSparkMax.set(speed); 
+    // frontIntakeSparkMax.set(speed); 
     rearIntakeSparkMax.set(speed * 2/3); //Ratio of wheel sizes
     undertakerSparkMax.set(-speed);
   }
 
   public void motorOff() {
-    frontIntakeSparkMax.stopMotor();
+    // frontIntakeSparkMax.stopMotor();
     rearIntakeSparkMax.stopMotor();
     undertakerSparkMax.stopMotor();
   }

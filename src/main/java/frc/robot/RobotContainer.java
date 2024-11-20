@@ -24,11 +24,14 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision2;
+import frc.robot.subsystems.motorspin;
 import frc.robot.commands.AmpShoot;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
+import frc.robot.commands.CommandMotor;
 import frc.robot.commands.IntakeRun;
 import frc.robot.commands.IntakeSpinUp;
+import frc.robot.commands.NerfHearder;
 import frc.robot.commands.OuttakeRun;
 import frc.robot.commands.ShootRing;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -56,6 +59,8 @@ public class RobotContainer {
   public final Vision2 m_Vision2 = new Vision2();
   public final LEDS m_leds = new LEDS();
   public final Climber m_climber = new Climber();
+  public final motorspin m_Motorspin = new motorspin();
+
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
@@ -165,6 +170,10 @@ public class RobotContainer {
       new POVButton(m_driverController, 0)
       .whileTrue(new TringsTest(m_leds, m_robotDrive, m_Vision2));
   
+      new POVButton(m_driverController, 90)
+      .whileTrue(new CommandMotor(m_Motorspin));   //InstantCommand(() -> m_Motorspin.forward(0.2)));
+     new POVButton(m_driverController, 270)
+      .onTrue(new NerfHearder(m_climber, m_Motorspin));   //InstantCommand(() -> m_Motorspin.motorOff()));
 
       new POVButton(m_driverController ,0)
       .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
