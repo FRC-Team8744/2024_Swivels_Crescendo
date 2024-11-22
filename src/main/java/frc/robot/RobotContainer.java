@@ -14,6 +14,7 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.auto_led;
+import frc.robot.commands.commandmotor;
 import frc.robot.commands.Trings;
 import frc.robot.commands.TringsTest;
 import frc.robot.commands.VisionShoot;
@@ -22,9 +23,11 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Index;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.MotorSpin;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision2;
 import frc.robot.commands.AmpShoot;
+import frc.robot.commands.Braxton;
 import frc.robot.commands.ClimbDown;
 import frc.robot.commands.ClimbUp;
 import frc.robot.commands.IntakeRun;
@@ -56,6 +59,8 @@ public class RobotContainer {
   public final Vision2 m_Vision2 = new Vision2();
   public final LEDS m_leds = new LEDS();
   public final Climber m_climber = new Climber();
+public final MotorSpin m_motorspin = new MotorSpin();
+
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
@@ -165,6 +170,11 @@ public class RobotContainer {
       new POVButton(m_driverController, 0)
       .whileTrue(new TringsTest(m_leds, m_robotDrive, m_Vision2));
   
+      new POVButton(m_driverController, 90)
+      .whileTrue(new commandmotor(m_motorspin)); //InstantCommand(() -> m_motorspin.Forward(0.2)));
+      new POVButton(m_driverController, 270)
+      .whileTrue(new Braxton(m_climber, m_motorspin));
+
 
       new POVButton(m_driverController ,0)
       .whileTrue(new IntakeRun(m_intake, m_shooter, m_index, m_leds));
